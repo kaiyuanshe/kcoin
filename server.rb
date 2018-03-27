@@ -1,7 +1,7 @@
 require 'sinatra'
 
 get '/' do
-  haml :index, :format => :html5
+  haml :index
 end
 
 get '/dashboard' do
