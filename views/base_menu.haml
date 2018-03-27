@@ -9,19 +9,10 @@
         %script{:src=>"https://code.jquery.com/jquery-3.3.1.min.js"}
         %script{:src=>"https://cdn.metroui.org.ua/v4/js/metro.min.js"}
     %body
-        .container-fluid{:style=>"padding:0px;"}
-            %img{:src=>"big.jpg",:width=>"100%"}
+        .container{:style=>"padding:20px;"}
+            #body{:style=>"height: 600px;"}
+                = yield
             .grid
-                .row{:style=>"padding:20px 0px;background-color:#606060;"}
-                    .cell-3.offset-2
-                        %input{:type=>"text","data-role"=>"input","data-prepend"=>"<span class='mif-envelop'>","placeholder"=>"Enter your email...","data-validate"=>"required email"}
-                    .cell-3
-                        %input{:type=>"password","data-role"=>"input","data-prepend"=>"<span class='mif-key'>","placeholder"=>"Enter your password...","data-validate"=>"required  minlength=6"}
-                    .cell-2
-                        %button.button
-                            Login
-                        %button.button
-                            Register
                 .row{:align=>"center",:style=>"padding:20px 0px;"}
                     .cell-12
                         &nbsp;
