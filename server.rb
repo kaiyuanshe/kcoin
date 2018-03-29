@@ -1,13 +1,15 @@
-require 'sinatra'
+require 'sinatra/base'
 
-get '/' do
-  haml :index
-end
+class MyServer < Sinatra::Base
+  get '/' do
+    haml :index
+  end
 
-get '/dashboard' do
-  haml :dashboard, :layout => :base_menu
-end
+  get '/dashboard' do
+    haml :dashboard, :layout => :base_menu
+  end
 
-get '/explorer' do
-  haml :explorer, :layout => :base_menu
+  get '/explorer' do
+    haml :explorer, :layout => :base_menu
+  end
 end

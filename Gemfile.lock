@@ -5,6 +5,7 @@ GEM
       temple (>= 0.8.0)
       tilt
     mustermann (1.0.2)
+    puma (3.11.3)
     rack (2.0.4)
     rack-protection (2.0.1)
       rack
@@ -23,6 +24,7 @@ PLATFORMS
 
 DEPENDENCIES
   haml
+  puma
   sequel
   sinatra
   sqlite3
