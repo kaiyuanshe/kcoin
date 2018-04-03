@@ -1,15 +1,18 @@
-require 'sinatra/base'
+class KCoinApp
+  require './routes/website'
+  require './routes/auth'
 
-class MyServer < Sinatra::Base
-  get '/' do
-    haml :index
+  attr_reader :app
+
+  def initialize
+    @app = Rack::Builder.app do
+      map('/') { run WebsiteController }
+      map('/auth') { run AuthController }
+      map('/assets') { run BaseController.sprockets }
+    end
   end
 
-  get '/dashboard' do
-    haml :dashboard, :layout => :base_menu
-  end
-
-  get '/explorer' do
-    haml :explorer, :layout => :base_menu
+  def call(env)
+    app.call(env)
   end
 end

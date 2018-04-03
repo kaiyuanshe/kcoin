@@ -1,7 +1,12 @@
-source "https://anonymous:devcloud@mirrors.huaweicloud.com/repository/rubygems/"
+source 'https://anonymous:devcloud@mirrors.huaweicloud.com/repository/rubygems/'
 
-gem "sinatra"
-gem "puma"
-gem "haml"
-gem "sequel"
-gem "sqlite3"
+gem 'jwt'
+gem 'sinatra'
+gem 'puma'
+gem 'haml'
+gem 'sequel'
+gem 'sequel_secure_password'
+gem 'sinatra-sequel'
+gem 'sqlite3'
+gem 'multi_json'
+gem 'sprockets'
