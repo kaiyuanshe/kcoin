@@ -10,6 +10,13 @@
         %script{:src=>"https://cdn.metroui.org.ua/v4/js/metro.min.js"}
     %body
         .container{:style=>"padding:20px;"}
+            .grid
+                .row{:align=>'right'}
+                    .cell-12
+                        = current_user.name
+                        &nbsp;
+                        %a{:href=>'/auth/logout'}
+                            Logout
             #body{:style=>"height: 600px;"}
                 = yield
             .grid

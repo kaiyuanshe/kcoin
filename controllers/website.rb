@@ -1,4 +1,4 @@
-require './routes/base'
+require './controllers/base'
 require './helpers/website_helpers'
 
 class WebsiteController < BaseController
@@ -7,10 +7,6 @@ class WebsiteController < BaseController
 
   get '/' do
     haml :index
-  end
-
-  get '/dashboard' do
-    haml :dashboard, :layout => :base_menu
   end
 
   get '/explorer' do

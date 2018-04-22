@@ -27,14 +27,13 @@ class BaseController < Sinatra::Base
     set :session_secret, '%1qA2wS3eD4rF5tG6yH7uJ8iK9oL$'
   end
 
-
-  set :sprockets, Sprockets::Environment.new(root) { |env|
-    env.append_path(root.join(public_folder, 'javascripts'))
-  }
+  before do
+    set_current_user
+  end
 
   set(:auth) do |*roles|
     condition do
-      unless logged_in? && roles.any? {|role| set_current_user.in_role? role }
+      unless authenticated? && roles.any? {|role| set_current_user.in_role? role }
         halt 401, {:response=>'Unauthorized access'}
       end
     end
@@ -55,7 +54,7 @@ class BaseController < Sinatra::Base
   set(:only_owner) do |model|
     condition do
       @model = model[params[:id]] or halt 404
-      unless @model.user_id == session[:user]
+      unless @model.id == session[:user_id]
         halt 401, {:response=>'Unauthorized access'}
       end
     end
