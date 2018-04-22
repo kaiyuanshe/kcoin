@@ -8,8 +8,11 @@ GEM
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
+    httparty (0.16.2)
+      multi_xml (>= 0.5.2)
     jwt (2.1.0)
     multi_json (1.13.1)
+    multi_xml (0.6.0)
     mustermann (1.0.2)
     puma (3.11.3)
     rack (2.0.4)
@@ -42,6 +45,7 @@ PLATFORMS
 
 DEPENDENCIES
   haml
+  httparty
   jwt
   multi_json
   puma

@@ -1,24 +1,25 @@
 class User < Sequel::Model(:users)
-  plugin :secure_password
   plugin :timestamps
   plugin :validation_helpers
   plugin :json_serializer
 
   def validate
     super
-    validates_presence [:name, :password, :password_confirmation, :email, :oauth_provider, :open_id]
+    validates_presence [:login, :email, :oauth_provider]
     validates_format RegexPattern::Email, :email
-    validates_format RegexPattern::Username, :name
+    validates_format RegexPattern::Username, :login
   end
 
   def self.serialize id
     user = first :id=>id
 
-    { :name=>user.name,
-      :nickname=>user.nickname,
+    { :login=>user.login,
+      :name=>user.name,
       :email=>user.email,
-      :image_profile=>user.image_profile,
+      :avatar_url=>user.avatar_url,
     }.to_json
 
   end
+
+  many_to_many :roles
 end

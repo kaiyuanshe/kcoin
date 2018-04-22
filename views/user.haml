@@ -1,10 +1,10 @@
 .grid
     .row
         .cell-3{:align=>"center"}
-            %img{:src=>"https://avatars0.githubusercontent.com/u/93194?s=460&v=4",:width=>200}
+            %img{:src=>"#{current_user.avatar_url}",:width=>200}
             %br
             %h4
-                zhuangbiaowei
+                =current_user.name
         .cell-9
             .button{:style=>"float:right;margin-bottom: 20px;"}
                 import project

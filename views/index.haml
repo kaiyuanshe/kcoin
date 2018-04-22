@@ -16,39 +16,45 @@
                 %br
                 Incentives for open source contributions
             .grid
-                .row{:style=>"padding:20px 0px;background-color:#606060;"}
-                    .cell-3.offset-2
-                        %input{:type=>"text","data-role"=>"input","data-prepend"=>"<span class='mif-envelop'>","placeholder"=>"Enter your email...","data-validate"=>"required email"}
-                    .cell-3
-                        %input{:type=>"password","data-role"=>"input","data-prepend"=>"<span class='mif-key'>","placeholder"=>"Enter your password...","data-validate"=>"required  minlength=6"}
-                    .cell-2
-                        %button.button
-                            Login
-                        %button.button
-                            Register
-                .row{:align=>"center",:style=>"padding:20px 0px;"}
+                -#.row{:style=>"padding:20px 0px;background-color:#606060;"}
+                -#    .cell-3.offset-2
+                -#        %input{:type=>"text","data-role"=>"input","data-prepend"=>"<span class='mif-envelop'>","placeholder"=>"Enter your email...","data-validate"=>"required email"}
+                -#    .cell-3
+                -#        %input{:type=>"password","data-role"=>"input","data-prepend"=>"<span class='mif-key'>","placeholder"=>"Enter your password...","data-validate"=>"required  minlength=6"}
+                -#    .cell-2
+                -#        %button.button
+                -#            Login
+                -#        %button.button
+                -#            Register
+                .row{:align=>"center"}
+                    .cell-12
+                        %a.image-button{:href => '/auth/github/login'}
+                            %span.mif-github.icon
+                            %span.caption
+                                Login with Github
+                .row{:align=>'center',:style=>'padding:20px 0px;'}
                     .cell-12
                         &nbsp;
-                        %a{:href=>"/"}
+                        %a{:href=>'/'}
                             Home
                         &nbsp;
-                        %a{:href=>"/doc"}
+                        %a{:href=>'/doc'}
                             Document      
                         &nbsp;
-                        %a{:href=>"/download"}
+                        %a{:href=>'/download'}
                             Download
                         &nbsp;
-                        %a{:href=>"/explorer"}
+                        %a{:href=>'/explorer'}
                             Explorer
                         &nbsp;
-                        %a{:href=>"/club"}
+                        %a{:href=>'/club'}
                             Club
                         &nbsp;
-                        %a{:href=>"/blog"}
+                        %a{:href=>'/blog'}
                             Blog
                         &nbsp;
-                        %a{:href=>"/code"}
+                        %a{:href=>'/code'}
                             Code
                         &nbsp;    
-                        %a{:href=>"/about"}
+                        %a{:href=>'/about'}
                             About

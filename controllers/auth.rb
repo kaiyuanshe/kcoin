@@ -1,13 +1,18 @@
 require 'jwt'
 require 'openssl'
-require './routes/base'
+require './controllers/base'
 
 class AuthController < BaseController
-
-  before do
-    content_type 'application/json'
-    set_current_user true # Decode jwt token
+  get '/github/login' do
+    github_authorize
+    redirect '/user/'
   end
+
+  get '/github/callback' do
+    redirect '/user/' if handle_github_callback
+    halt 401, 'Unable to Authenticate Via GitHub'
+  end
+
 
   post '/login', :validate => %i(email password) do
     @user = User.first(:email=>params[:email])
@@ -19,7 +24,6 @@ class AuthController < BaseController
           :username=>@user.name,
           :email=>@user.email,
           :image_profile=>@user.image_profile,
-          :permission_level=> if RoleUser.user_have_role? @user.id, 'admin' then 2 else 1 end
         }.to_json
       else
         halt 403, {:response=>'Authentication failed'}.to_json
@@ -29,10 +33,9 @@ class AuthController < BaseController
     end
   end
 
-  post '/logout' do # TODO: FIXME
-    halt 401, {:response=>'Not authorized'}.to_json unless @current_user.is_authenticated
-
-    halt 200, {:response=>'User Logout successfully'}.to_json
+  get '/logout' do
+    logout!
+    redirect back
   end
 
 end

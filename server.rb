@@ -1,6 +1,8 @@
 class KCoinApp
-  require './routes/website'
-  require './routes/auth'
+  require './controllers/website'
+  require './controllers/auth'
+  require './controllers/user'
+  require './lib/config'
 
   attr_reader :app
 
@@ -8,7 +10,7 @@ class KCoinApp
     @app = Rack::Builder.app do
       map('/') { run WebsiteController }
       map('/auth') { run AuthController }
-      map('/assets') { run BaseController.sprockets }
+      map('/user') { run UserController }
     end
   end
 
