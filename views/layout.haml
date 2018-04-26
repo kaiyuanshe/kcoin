@@ -1,0 +1,57 @@
+!!!
+%html{:lang => 'en'}
+    %head
+        %title
+            KCoin Project
+        %meta{:charset => 'utf-8'}
+        %meta{:name => 'viewport', :content=>'width=device-width, initial-scale=1, shrink-to-fit=no'}
+
+        = include_stylesheet 'https://cdn.metroui.org.ua/v4/css/metro-all.min.css'
+        = content :stylesheets
+
+        = include_javascript 'https://code.jquery.com/jquery-3.3.1.min.js'
+        = include_javascript 'https://cdn.metroui.org.ua/v4/js/metro.min.js'
+
+    %body
+        .container{:style => 'padding:20px;'}
+            .grid
+                .row{:align=>'right'}
+                    .cell-12
+                        = current_user.name
+                        &nbsp;
+                        %a{:href=>'/auth/logout'}
+                            Logout
+            #body{:style => 'min-height: 600px;'}
+                = yield
+            .grid
+                .row{:align => 'center', :style => 'padding:20px 0px;'}
+                    .cell-12
+                        &nbsp;
+                        %a{:href => '/'}
+                            Home
+                        &nbsp;
+                        %a{:href=>'/user'}
+                            Dashboard
+                        &nbsp;
+                        %a{:href => '/doc'}
+                            Document
+                        &nbsp;
+                        %a{:href => '/download'}
+                            Download
+                        &nbsp;
+                        %a{:href => '/explorer'}
+                            Explorer
+                        &nbsp;
+                        %a{:href => '/club'}
+                            Club
+                        &nbsp;
+                        %a{:href => '/blog'}
+                            Blog
+                        &nbsp;
+                        %a{:href => '/code'}
+                            Code
+                        &nbsp;
+                        %a{:href => '/about'}
+                            About
+
+        = content :javascripts

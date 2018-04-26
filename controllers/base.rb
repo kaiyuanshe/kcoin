@@ -3,11 +3,13 @@ Bundler.require
 require './config/init'
 require './helpers/user_helper'
 require './lib/json_params'
-
+require 'sinatra/reloader'
+require 'sinatra-initializers'
 
 class BaseController < Sinatra::Base
   require './lib/regex_pattern'
 
+  helpers Sinatra::ContentFor
   helpers UserAppHelpers
   register Sinatra::JsonBodyParams
 
@@ -15,6 +17,7 @@ class BaseController < Sinatra::Base
     enable :protection # https://stackoverflow.com/questions/10509774/sinatra-and-rack-protection-setting
     enable :sessions
     enable :logging
+    enable :dump_errors if development?
 
     disable :show_exceptions
 
@@ -25,6 +28,10 @@ class BaseController < Sinatra::Base
     set :static, true
     set :static_cache_control, [:public, max_age: 0]
     set :session_secret, '%1qA2wS3eD4rF5tG6yH7uJ8iK9oL$'
+  end
+
+  configure :development do
+    register Sinatra::Reloader
   end
 
   before do
