@@ -11,7 +11,7 @@ class UserController < BaseController
   end
 
   get '/' do
-    haml :user, :layout => :base_menu
+    haml :user
   end
 
 end

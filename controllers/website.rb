@@ -6,10 +6,11 @@ class WebsiteController < BaseController
   helpers WebsiteHelpers
 
   get '/' do
-    haml :index
+    haml :index, :layout => false
   end
 
   get '/explorer' do
-    haml :explorer, :layout => :base_menu
+    haml :explorer
   end
+
 end
