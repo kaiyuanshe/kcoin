@@ -30,7 +30,8 @@ module UserAppHelpers
                  user[:name],
                  user[:email],
                  user[:avatar_url],
-                 user[:oauth_provider])
+                 user[:oauth_provider],
+                 user[:eth_account])
   end
 
   def set_current_user
@@ -43,10 +44,10 @@ module UserAppHelpers
 
     session['github_oauth_state'] = SecureRandom.hex
     auth_params = {
-        :client_id => CONFIG[:login][:github][:client_id],
-        :redirect_uri => request.base_url + '/auth/github/callback',
-        :scope => 'user',
-        :state => session['github_oauth_state']
+      :client_id => CONFIG[:login][:github][:client_id],
+      :redirect_uri => request.base_url + '/auth/github/callback',
+      :scope => 'user',
+      :state => session['github_oauth_state']
     }
     redirect 'https://github.com/login/oauth/authorize?' + URI.encode_www_form(auth_params)
   end
@@ -58,12 +59,12 @@ module UserAppHelpers
     github_code = params[:code]
     github_response = HTTParty.post('https://github.com/login/oauth/access_token',
                                     :body => {
-                                        :client_id => CONFIG[:login][:github][:client_id],
-                                        :code => github_code,
-                                        :client_secret => CONFIG[:login][:github][:client_secret]
+                                      :client_id => CONFIG[:login][:github][:client_id],
+                                      :code => github_code,
+                                      :client_secret => CONFIG[:login][:github][:client_secret]
                                     },
                                     :headers => {
-                                        :Accept => 'application/json'
+                                      :Accept => 'application/json'
                                     })
 
     if github_response.code == 200
@@ -71,9 +72,9 @@ module UserAppHelpers
       if token_details.key?('access_token')
         user_lookup = HTTParty.get('https://api.github.com/user?',
                                    headers: {
-                                       :Accept => 'application/json',
-                                       :Authorization => "token #{token_details['access_token']}",
-                                       'User-Agent' => 'Kaiyuanshe KCoin project'
+                                     :Accept => 'application/json',
+                                     :Authorization => "token #{token_details['access_token']}",
+                                     'User-Agent' => 'Kaiyuanshe KCoin project'
                                    })
         return set_current_github_user JSON.parse(user_lookup.body), token_details['access_token']
       end
@@ -83,12 +84,12 @@ module UserAppHelpers
 
   def set_current_github_user(github_user, auth_token)
     user_info = {
-        :login => github_user['login'],
-        :name => github_user['name'],
-        :oauth_provider => GITHUB,
-        :open_id => github_user['id'],
-        :email => github_user['email'],
-        :avatar_url => github_user['avatar_url']
+      :login => github_user['login'],
+      :name => github_user['name'],
+      :oauth_provider => GITHUB,
+      :open_id => github_user['id'],
+      :email => github_user['email'],
+      :avatar_url => github_user['avatar_url']
     }
 
     persist_user user_info
@@ -113,16 +114,25 @@ module UserAppHelpers
                   created_at: Time.now,
                   last_login_at: Time.now)
       user = User.first(:oauth_provider => user_info[:oauth_provider], :open_id => user_info[:open_id])
-      user_info[:id] = user.id
     end
 
+    user_info[:id] = user.id
+    user_info[:eth_account] = user.eth_account
     session[KCOIN_LOGIN_INFO] = user_info
+  end
+
+  def save_address(eth_account)
+    user = User[current_user.id]
+    user.update(eth_account: eth_account, updated_at: Time.now)
+    session[KCOIN_LOGIN_INFO][:eth_account] = eth_account
+    true
   end
 
 end
 
 class GuestUser
   attr_accessor :expired
+
   def initialize(params = {})
     @expired = params.fetch(:expired, false)
   end
@@ -130,6 +140,7 @@ class GuestUser
   def is_anonymous
     true
   end
+
   # current_user.admin? returns false. current_user.has_a_baby? returns false.
   # (which is a bit of an assumption I suppose)
   def method_missing(m, *args)
@@ -138,14 +149,16 @@ class GuestUser
 end
 
 class AuthUser
-  attr_reader :id, :login, :name, :email, :avatar_url, :oauth
-  def initialize(id, login, name, email, avatar_url, oauth)
+  attr_reader :id, :login, :name, :email, :avatar_url, :oauth, :eth_account
+
+  def initialize(id, login, name, email, avatar_url, oauth, eth_account)
     @login = login
     @name = name
     @email = email
     @avatar_url = avatar_url
     @id = id
     @oauth = oauth
+    @eth_account = eth_account
   end
 
   def is_authenticated?

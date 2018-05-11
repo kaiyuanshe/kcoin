@@ -27,31 +27,22 @@
                 .row{:align => 'center', :style => 'padding:20px 0px;'}
                     .cell-12
                         &nbsp;
-                        %a{:href => '/'}
-                            Home
+                        = link_to('Home', '/')
                         &nbsp;
-                        %a{:href=>'/user'}
-                            Dashboard
+                        = link_to('Dashboard', '/user')
                         &nbsp;
-                        %a{:href => '/doc'}
-                            Document
+                        = link_to('Document', '/doc')
                         &nbsp;
-                        %a{:href => '/download'}
-                            Download
+                        = link_to('Download', '/download')
                         &nbsp;
-                        %a{:href => '/explorer'}
-                            Explorer
+                        = link_to('Explorer', '/explorer')
                         &nbsp;
-                        %a{:href => '/club'}
-                            Club
+                        = link_to('Club', '/club')
                         &nbsp;
-                        %a{:href => '/blog'}
-                            Blog
+                        = link_to('Blog', '/blog')
                         &nbsp;
-                        %a{:href => '/code'}
-                            Code
+                        = link_to('Code', '/code')
                         &nbsp;
-                        %a{:href => '/about'}
-                            About
+                        = link_to('About', '/about')
 
         = content :javascripts
