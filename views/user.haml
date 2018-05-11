@@ -6,8 +6,32 @@
             %h4
                 =current_user.name
         .cell-9
-            .button{:style=>"float:right;margin-bottom: 20px;"}
-                import project
+            .grid
+                .row
+                    .cell-6
+                        %h4 Ethereum Account
+                .row
+                    %form.ml-6{"data-role"=>'validator', :action=>"/user/address", :method=>'post'}
+                        %div.row.mb-2{:style=>'width:480px'}
+                            %lable
+                                Address
+                            %input.text{'data-role'=>'input',
+                                        :name=>'address',
+                                        :value=>"#{current_user.eth_account ||= ''}",
+                                        :placeholder=>'Enter your Ethereum Account',
+                                        "data-validate"=>'required length=42 pattern=^0[xX][A-Za-z0-9]{40}$'}
+                            %span.invalid_feedback
+                                Invalid address
+                        %div.form-actions
+                            %input.button.secondary{:type=>'submit',
+                                                    :value=>"#{current_user.eth_account ? 'Update':'Save'}",
+                                                    :id=>'submit'}
+                .row.mt-10
+                    .cell-6
+                        %h4 Projects
+                    .cell-6
+                        %a.button.info.float-right{:href=>'/project/import'}
+                            Import project
             %table.table.row-hover.cell-border.table-border
                 %thead
                     %tr

@@ -3,6 +3,7 @@ Bundler.require
 require './config/init'
 require './helpers/user_helper'
 require './lib/json_params'
+require './lib/ethereum/init'
 require 'sinatra/reloader'
 require 'sinatra-initializers'
 
@@ -38,7 +39,13 @@ class BaseController < Sinatra::Base
     set_current_user
   end
 
-  set(:auth) do |*roles|
+  set(:auth) do |*params_array|
+    condition do
+      redirect '/' unless authenticated?
+    end
+  end
+
+  set(:role) do |*roles|
     condition do
       unless authenticated? && roles.any? {|role| set_current_user.in_role? role }
         halt 401, {:response=>'Unauthorized access'}

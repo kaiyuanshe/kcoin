@@ -14,4 +14,9 @@ class UserController < BaseController
     haml :user
   end
 
+  post '/address' do
+    save_address params[:address]
+    redirect '/user'
+  end
+
 end
