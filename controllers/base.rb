@@ -13,6 +13,7 @@ class BaseController < Sinatra::Base
   helpers Sinatra::ContentFor
   helpers UserAppHelpers
   register Sinatra::JsonBodyParams
+  helpers WebsiteHelpers
 
   configure do
     enable :protection # https://stackoverflow.com/questions/10509774/sinatra-and-rack-protection-setting
@@ -23,6 +24,7 @@ class BaseController < Sinatra::Base
     disable :show_exceptions
 
     set :template_engine, :haml
+    set :haml, :format => :html5
     set :root,  Pathname(File.expand_path('../..', __FILE__))
     set :views, 'views'
     set :public_folder, 'public'

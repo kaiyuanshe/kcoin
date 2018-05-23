@@ -3,8 +3,6 @@ require './helpers/website_helpers'
 
 class UserController < BaseController
 
-  helpers WebsiteHelpers
-
   before do
     set_current_user
     redirect '/' unless authenticated?
@@ -18,5 +16,4 @@ class UserController < BaseController
     save_address params[:address]
     redirect '/user'
   end
-
 end

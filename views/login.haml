@@ -1,0 +1,40 @@
+!!!
+%html{:lang => 'en'}
+  %head
+    %title
+      KCoin
+    %meta{:charset => 'utf-8'}
+    %meta{:name => 'viewport', :content=>'width=device-width, initial-scale=1.0, maximum-scale=1.0 user-scalable=no shrink-to-fit=no'}
+
+    = include_stylesheet 'https://cdn.metroui.org.ua/v4/css/metro-all.min.css'
+    = content :stylesheets
+    = include_stylesheet 'login'
+
+    = include_javascript 'https://code.jquery.com/jquery-3.3.1.min.js'
+    = include_javascript 'https://cdn.metroui.org.ua/v4/js/metro.min.js'
+
+  %body
+    .container-fluid.kcoin-background
+      .text-center.login-title= link_to('Kcoin', '/')
+      .text-center.login-sub-title 登录
+      .form.login-form
+        .grid
+          .row
+            .cell-sm-8.offset-sm-2.cell-md-6.offset-md-3.cell-lg-4.offset-lg-4.cell-xl-4.offset-xl-4.cell-xxl-4.offset-xxl-4
+              .form-group
+                %label 邮箱账号
+                %input{:type => 'email'}
+              .form-group
+                %label 密码
+                .button.link= link_to('忘记密码', '/auth/password_reset')
+                %input{:type => 'password'}
+              .form-group
+                .button.info 登录
+                .button.link= link_to('注册账号', '/auth/join')
+          .row
+            .cell-sm-8.offset-sm-2.cell-md-6.offset-md-3.cell-lg-4.offset-lg-4.cell-xl-4.offset-xl-4.cell-xxl-4.offset-xxl-4
+              .button.dark
+                %img{:src=>"icons/github-icon.png"}使用GitHub账号登录
+
+
+    = include_javascript 'login'
