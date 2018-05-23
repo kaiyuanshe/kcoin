@@ -3,6 +3,8 @@ require 'openssl'
 require './controllers/base'
 
 class AuthController < BaseController
+  helpers WebsiteHelpers
+
   get '/github/login' do
     github_authorize
     redirect '/user/'

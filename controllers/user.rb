@@ -2,6 +2,7 @@ require './controllers/base'
 require './helpers/website_helpers'
 
 class UserController < BaseController
+  helpers WebsiteHelpers
 
   before do
     set_current_user

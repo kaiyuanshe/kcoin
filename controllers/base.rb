@@ -13,7 +13,6 @@ class BaseController < Sinatra::Base
   helpers Sinatra::ContentFor
   helpers UserAppHelpers
   register Sinatra::JsonBodyParams
-  helpers WebsiteHelpers
 
   configure do
     enable :protection # https://stackoverflow.com/questions/10509774/sinatra-and-rack-protection-setting
