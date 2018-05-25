@@ -21,21 +21,30 @@
         .grid
           .row
             .cell-sm-8.offset-sm-2.cell-md-6.offset-md-3.cell-lg-4.offset-lg-4.cell-xl-4.offset-xl-4.cell-xxl-4.offset-xxl-4
-              .form-group
-                %label 邮箱账号
-                %span.kcoin-sub-text（将给您的邮箱发送激活邮件）
-                %input{:type => 'email'}
-              .form-group
-                %label 密码
-                %input{:type => 'password'}
-              .form-group
-                .button.info 立即注册
-                .button.link= link_to('已有帐号登录', '/auth/login')
+              %form{:action=>"/user/join", :method=>'post',"data-role"=>'validator', "data-interactive-check" => "true"}
+                .form-group
+                  %label 邮箱账号
+                  %span.kcoin-sub-text（将给您的邮箱发送激活邮件）
+                  %input{:type => 'email',
+                         :name => 'email',
+                         :value => '',
+                         "data-validate" => 'required email'}
+                  %span.invalid_feedback
+                    Invalid email
+                .form-group
+                  %label 密码
+                  %input{:type => 'password',
+                         :name => 'password',
+                         :value => '',
+                         "data-validate" => "required minlength=6 pattern=^\\w{6,10}$"}
+                  %span.invalid_feedback
+                    Password requires 6 to 10 letters or numbers or underscore
+                .form-group
+                  %input.button.info{:type=>'submit',:value=>'立即注册'}
+                  .button.link= link_to('已有帐号登录', '/user/login')
           .row
             .cell-sm-8.offset-sm-2.cell-md-6.offset-md-3.cell-lg-4.offset-lg-4.cell-xl-4.offset-xl-4.cell-xxl-4.offset-xxl-4
               .button.dark
-                %img{:src=>"icons/github-icon.png"}使用GitHub账号登录
-
+                %img{:src=>"icons/github-icon.png"}使用 GitHub 账号登录
 
     = include_javascript 'join'
-

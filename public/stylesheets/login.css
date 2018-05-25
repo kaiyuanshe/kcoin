@@ -31,6 +31,10 @@
     }
 }
 
+.required{
+    border: 1px #1ba1e2 solid !important;
+}
+
 body {
     font-family: "Microsoft YaHei";
     font-size: 1em;
@@ -69,6 +73,7 @@ html, body {
     background: #00a3d9;
     border-radius: 5px;
     font-size: 1.25em;
+    width: 100%;
 }
 
 /* link-btn style */
@@ -100,12 +105,12 @@ img {
 /* input style */
 input {
     background: #ffffff;
-    border: 1px solid #979797;
+    border: 1px solid #979797 !important;
     border-radius: 5px;
 }
 
 input.focused, input:focus, input:focus {
-    border: 2px solid #00a3d9 !important;
+    border: 1px solid #00a3d9 !important;
     box-shadow: 0 0 0 0 rgba(0, 0, 0, .10) !important;
 }
 

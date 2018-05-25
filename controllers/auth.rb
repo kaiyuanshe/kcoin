@@ -15,13 +15,6 @@ class AuthController < BaseController
     halt 401, 'Unable to Authenticate Via GitHub'
   end
 
-  get '/login' do
-    haml :login, layout: false
-  end
-
-  get '/join' do
-    haml :join, layout: false
-  end
 
   post '/login', :validate => %i(email password) do
     @user = User.first(:email => params[:email])
