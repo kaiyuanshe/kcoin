@@ -6,6 +6,10 @@ configure :development do
   set :database, 'sqlite://kcoin.sqlite'
 end
 
+configure :production do
+  set :database, 'sqlite://kcoin.sqlite'
+end
+
 configure :test do
   set :database, 'sqlite::memory:'
 end
