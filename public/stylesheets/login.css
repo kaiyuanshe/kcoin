@@ -46,6 +46,11 @@ html, body {
     height: 100%;
 }
 
+/* Kcoin title style */
+.kcoin-title {
+    color: #00a3d9;
+}
+
 /* container style */
 .container-fluid {
     background-color: #333333;
