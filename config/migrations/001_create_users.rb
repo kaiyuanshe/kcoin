@@ -6,7 +6,7 @@ migration 'create the users table' do
     String :oauth_provider, :null => false
     String :open_id, :null => false
     String :password_digest, :null => true
-    String :email, :unique => true
+    String :email, :unique => true, :null => true
     String :avatar_url, :null => true
     Timestamp :created_at, null: false
     Timestamp :updated_at, :null => true
