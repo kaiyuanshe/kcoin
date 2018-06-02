@@ -28,23 +28,30 @@
                   %input{:type => 'email',
                          :name => 'email',
                          :value => '',
-                         "data-validate" => 'required email'}
+                         maxlength: 120,
+                         autofocus: "autofocus",
+                         :placeholder => "you@example.com",
+                         "data-validate" => "required email custom=validateExistEmail"}
                   %span.invalid_feedback
-                    Invalid email
+                    邮箱格式不正确或该帐号已经注册！
                 .form-group
                   %label 密码
-                  %input{:type => 'password',
+                  %input.border-radius-5.border{:type => 'password',
                          :name => 'password',
                          :value => '',
-                         "data-validate" => "required minlength=6 pattern=^\\w{6,10}$"}
+                         maxlength: 10,
+                         :placeholder => "密码应由 6- 10 位数字、字母、下划线组成",
+                         "data-role" => "input",
+                         "data-clear-button" => "false",
+                         "data-validate" => "required pattern=^\\w{6,10}$"}
                   %span.invalid_feedback
-                    Password requires 6 to 10 letters or numbers or underscore
+                    密码格式不正确！密码应由 6- 10 位数字、字母、下划线组成。
                 .form-group
                   %input.button.info{:type=>'submit',:value=>'立即注册'}
-                  .button.link= link_to('已有帐号登录', '/user/login')
+                  .link= link_to('已有帐号登录', '/user/login')
           .row
             .cell-sm-8.offset-sm-2.cell-md-6.offset-md-3.cell-lg-4.offset-lg-4.cell-xl-4.offset-xl-4.cell-xxl-4.offset-xxl-4
-              .button.dark
+              %a.button.dark{:href => '/auth/github/login'}
                 %img{:src=>"icons/github-icon.png"}使用 GitHub 账号登录
 
     = include_javascript 'join'

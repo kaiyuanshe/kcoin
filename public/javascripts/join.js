@@ -1,12 +1,16 @@
-/**
- * Created by juniwang on 25/04/2018.
- */
-function dataChange(el) {
-    console.log(el);
-}
+$.ajaxSetup({cache:false});
 
-var MyPackage = {
-    dataChange: function (el) {
-        console.log(el)
-    }
+// validate email for kcoin
+function validateExistEmail(val) {
+    var flag = true;
+    $.ajax({
+        type: "GET",
+        url: "/user/validate/email",
+        data: $("form").serialize(),
+        async: false,
+        success: function (msg) {
+            flag = JSON.parse(msg).flag;
+        }
+    });
+    return flag;
 }
