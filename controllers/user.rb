@@ -41,13 +41,13 @@ class UserController < BaseController
   end
 
   post '/join' do
-    user = User.new(login: 'login' + Time.now.to_i.to_s,
-                    name: 'name' + Time.now.to_i.to_s,
+    user = User.new(login: params[:email].split('@')[0],
+                    name: nil,
                     oauth_provider: 'kcoin',
-                    open_id: 'open_id' + Time.now.to_i.to_s,
+                    open_id: nil,
                     password_digest: params[:password],
                     email: params[:email],
-                    avatar_url: 'avatar_url' + Time.now.to_i.to_s,
+                    avatar_url: nil,
                     creawted_at: Time.now,
                     updateed_at: Time.now,
                     last_login_at: Time.now)

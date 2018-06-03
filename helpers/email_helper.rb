@@ -4,7 +4,7 @@ module EmailAppHelpers
   def send_email(_user)
     email = _user.email
     name = _user.email.split('@')[0]
-    activeUrl = request.base_url + '/user/activeUser?' + URI.encode('dsa')
+    activeUrl = request.base_url + '/user/activeUser?' + URI.encode(_user.id)
 
     message = <<MESSAGE_END
 From: kcoin@163.com
