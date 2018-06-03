@@ -70,25 +70,42 @@ module UserAppHelpers
     if github_response.code == 200
       token_details = JSON.parse(github_response.body)
       if token_details.key?('access_token')
-        user_lookup = HTTParty.get('https://api.github.com/user?',
-                                   headers: {
-                                     :Accept => 'application/json',
-                                     :Authorization => "token #{token_details['access_token']}",
-                                     'User-Agent' => 'Kaiyuanshe KCoin project'
-                                   })
-        return set_current_github_user JSON.parse(user_lookup.body), token_details['access_token']
+        headers = {
+          :Accept => 'application/json',
+          :Authorization => "token #{token_details['access_token']}",
+          'User-Agent' => 'Kaiyuanshe KCoin project'
+        }
+
+        user_lookup = HTTParty.get('https://api.github.com/user?', headers: headers)
+        email_lookup = HTTParty.get('https://api.github.com/user/emails', headers: headers)
+
+        return set_current_github_user JSON.parse(user_lookup.body),
+                                       JSON.parse(email_lookup.body),
+                                       token_details['access_token']
       end
     end
     false
   end
 
-  def set_current_github_user(github_user, auth_token)
+  def set_current_github_user(github_user, email_list, auth_token)
+    login = github_user['login']
+    name = login
+    if github_user.key?('name')
+      name = github_user['name']
+    end
+
+    primary = email_list.select{|x| x['primary']}
+    email = github_user['email']
+    if primary.any?
+      email = primary[0]['email']
+    end
+
     user_info = {
-      :login => github_user['login'],
-      :name => github_user['name'],
+      :login => login,
+      :name => name,
       :oauth_provider => GITHUB,
       :open_id => github_user['id'],
-      :email => github_user['email'],
+      :email => email,
       :avatar_url => github_user['avatar_url']
     }
 
