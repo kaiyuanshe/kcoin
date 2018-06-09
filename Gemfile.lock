@@ -1,57 +1,43 @@
 GEM
   remote: https://anonymous:devcloud@mirrors.huaweicloud.com/repository/rubygems/
   specs:
-    activesupport (5.2.0)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (>= 0.7, < 2)
-      minitest (~> 5.1)
-      tzinfo (~> 1.1)
-    backports (3.11.3)
-    bacon (1.2.0)
-    bcrypt (3.1.11)
-    bcrypt (3.1.11-x64-mingw32)
+    backports (2.8.2)
+    bcrypt (3.1.12)
+    bcrypt (3.1.12-x64-mingw32)
     concurrent-ruby (1.0.5)
-    digest-sha3 (1.1.0)
-    ethereum.rb (2.2)
-      activesupport (>= 4.0)
-      digest-sha3 (~> 1.1)
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
     httparty (0.16.2)
       multi_xml (>= 0.5.2)
-    i18n (1.0.1)
-      concurrent-ruby (~> 1.0)
     jwt (2.1.0)
-    minitest (5.11.3)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     mustermann (1.0.2)
-    puma (3.11.3)
-    rack (2.0.4)
-    rack-protection (2.0.1)
+    puma (3.11.4)
+    rack (2.0.5)
+    rack-protection (2.0.2)
       rack
-    sequel (5.6.0)
+    sequel (5.9.0)
     sequel_secure_password (0.2.15)
       bcrypt (>= 3.1, < 4.0)
       sequel (>= 4.1.0, < 6.0)
-    sinatra (2.0.1)
+    sinatra (2.0.2)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.1)
+      rack-protection (= 2.0.2)
       tilt (~> 2.0)
-    sinatra-contrib (2.0.1)
-      backports (>= 2.0)
+    sinatra-contrib (2.0.2)
+      backports (~> 2.8.2)
       multi_json
       mustermann (~> 1.0)
-      rack-protection (= 2.0.1)
-      sinatra (= 2.0.1)
+      rack-protection (= 2.0.2)
+      sinatra (= 2.0.2)
       tilt (>= 1.3, < 3)
     sinatra-initializers (0.1.4)
     sinatra-reloader (1.0)
       sinatra-contrib
     sinatra-sequel (0.9.0)
-      bacon
       sequel (>= 3.2.0)
       sinatra (>= 0.9.4)
     sprockets (3.7.1)
@@ -60,17 +46,13 @@ GEM
     sqlite3 (1.3.13)
     sqlite3 (1.3.13-x64-mingw32)
     temple (0.8.0)
-    thread_safe (0.3.6)
     tilt (2.0.8)
-    tzinfo (1.2.5)
-      thread_safe (~> 0.1)
 
 PLATFORMS
   ruby
   x64-mingw32
 
 DEPENDENCIES
-  ethereum.rb
   haml
   httparty
   jwt
