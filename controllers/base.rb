@@ -3,7 +3,6 @@ Bundler.require
 require './config/init'
 require './helpers/user_helper'
 require './lib/json_params'
-require './lib/ethereum/init'
 require 'sinatra/reloader'
 require 'sinatra-initializers'
 
@@ -73,5 +72,4 @@ class BaseController < Sinatra::Base
       end
     end
   end
-
 end
