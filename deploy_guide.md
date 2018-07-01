@@ -5,7 +5,7 @@ Instructions to deploy KCoin on CentOS 7(verified on Huawei cloud).
 ### Install Nginx
 Config yum repo for Nginx by adding file `/etc/yum.repos.d/nginx.repo` with content:
 ```
-[ginx]
+[nginx]
 name=nginx repo
 baseurl=http://nginx.org/packages/centos/7/$basearch/
 gpgcheck=0
