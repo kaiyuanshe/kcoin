@@ -93,6 +93,9 @@ module UserAppHelpers
     name = login
     if github_user.key?('name')
       name = github_user['name']
+      if name.to_s.empty?
+        name = login
+      end
     end
 
     primary = email_list.select {|x| x['primary']}
