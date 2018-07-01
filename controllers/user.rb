@@ -1,10 +1,13 @@
 require 'jwt'
 require './controllers/base'
 require './helpers/website_helpers'
+require './helpers/email_helper'
 require 'net/smtp'
 
 class UserController < BaseController
   helpers WebsiteHelpers
+  helpers EmailAppHelpers
+  KCOIN = 'kcoin'
 
   before do
     set_current_user
@@ -29,57 +32,60 @@ class UserController < BaseController
   end
 
   post '/login' do
-    @user = User.find(email: params[:email])
+    param = params[:email].to_s
+    @user = nil
+    if param.include? '@'
+      @user = User.first(email: param, oauth_provider: KCOIN, password_digest: params[:password])
+    else
+      @user = User.first(login: param, oauth_provider: KCOIN, password_digest: params[:password])
+    end
     if @user
       if @user.password_digest == params[:password]
         session[:user_id] = @user.id
         redirect '/'
-      else
-        halt 403, { response: 'password is invalid' }.to_json
       end
     end
   end
 
+  # Registered user
   post '/join' do
-    user = User.new(login: 'login' + Time.now.to_i.to_s,
-                    name: 'name' + Time.now.to_i.to_s,
-                    oauth_provider: 'oauth' + Time.now.to_i.to_s,
-                    open_id: 'open_id' + Time.now.to_i.to_s,
+    login_value = nil
+    if params[:login].eql? ''
+      login_value = params[:email].split('@')[0]
+    end
+    user = User.new(login: login_value,
+                    name: params[:name],
+                    oauth_provider: KCOIN,
+                    open_id: nil,
                     password_digest: params[:password],
                     email: params[:email],
-                    avatar_url: 'avatar_url' + Time.now.to_i.to_s,
+                    avatar_url: nil,
                     creawted_at: Time.now,
                     updateed_at: Time.now,
                     last_login_at: Time.now)
 
-    send_email(user.email)
     user.save
-    redirect '/user/login'
+    session[:user_id] = user.id
+    send_email(user)
+    redirect '/'
   end
 
-  def send_email(_email)
-    require 'net/smtp'
-
-    message = <<MESSAGE_END
-From: 13993143738@163.com
-To: 1054602234@qq.com
-Subject: kcoin 帐号激活
-
-尊敬的用户:
-
-您在 kcoin 上注册了一个新用户，
-请点下面链接以激活您的账号：
-xxx
+  # Verify email is registered
+  get '/validate/email' do
+    user = User.first(email: params[:email], oauth_provider: KCOIN)
+    return user ? {flag: false}.to_json : {flag: true}.to_json
+  end
 
 
-MESSAGE_END
-
-    Net::SMTP.start('smtp.163.com',
-                    25,
-                    '163.com',
-                    '13993143738', 'a19924141', :plain) do |smtp|
-      smtp.send_message message, '13993143738@163.com',
-                        '1054602234@qq.com'
+  # Verify user is existed
+  get '/validate/user' do
+    param = params[:email].to_s
+    user = nil
+    if param.include? '@'
+      user = User.first(email: param, oauth_provider: KCOIN, password_digest: params[:password])
+    else
+      user = User.first(login: param, oauth_provider: KCOIN, password_digest: params[:password])
     end
+    return user ? {flag: true}.to_json : {flag: false}.to_json
   end
 end

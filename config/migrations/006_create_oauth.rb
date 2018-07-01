@@ -1,6 +1,7 @@
-migration 'create the users table' do
-  database.create_table :users do
+migration 'create the oauth table' do
+  database.create_table :oauth do
     primary_key :id
+    foreign_key :user_id, :users
     String :login
     String :name, :null => true
     String :oauth_provider, :null => false
