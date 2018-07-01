@@ -7,6 +7,7 @@ require 'net/smtp'
 class UserController < BaseController
   helpers WebsiteHelpers
   helpers EmailAppHelpers
+  KCOIN = 'kcoin'
 
   before do
     set_current_user
@@ -31,7 +32,13 @@ class UserController < BaseController
   end
 
   post '/login' do
-    @user = User.find(email: params[:email])
+    param = params[:email].to_s
+    @user = nil
+    if param.include? '@'
+      @user = User.first(email: param, oauth_provider: KCOIN, password_digest: params[:password])
+    else
+      @user = User.first(login: param, oauth_provider: KCOIN, password_digest: params[:password])
+    end
     if @user
       if @user.password_digest == params[:password]
         session[:user_id] = @user.id
@@ -40,10 +47,15 @@ class UserController < BaseController
     end
   end
 
+  # Registered user
   post '/join' do
-    user = User.new(login: params[:email].split('@')[0],
-                    name: nil,
-                    oauth_provider: 'kcoin',
+    login_value = nil
+    if params[:login].eql? ''
+      login_value = params[:email].split('@')[0]
+    end
+    user = User.new(login: login_value,
+                    name: params[:name],
+                    oauth_provider: KCOIN,
                     open_id: nil,
                     password_digest: params[:password],
                     email: params[:email],
@@ -58,15 +70,22 @@ class UserController < BaseController
     redirect '/'
   end
 
+  # Verify email is registered
   get '/validate/email' do
-    user = User.first(email: params[:email], oauth_provider: 'kcoin')
-    return {flag: false}.to_json if user
-    return {flag: true}.to_json
+    user = User.first(email: params[:email], oauth_provider: KCOIN)
+    return user ? {flag: false}.to_json : {flag: true}.to_json
   end
 
+
+  # Verify user is existed
   get '/validate/user' do
-    user = User.first(email: params[:email], oauth_provider: 'kcoin', password_digest: params[:password])
-    return {flag: true}.to_json if user
-    return {flag: false}.to_json
+    param = params[:email].to_s
+    user = nil
+    if param.include? '@'
+      user = User.first(email: param, oauth_provider: KCOIN, password_digest: params[:password])
+    else
+      user = User.first(login: param, oauth_provider: KCOIN, password_digest: params[:password])
+    end
+    return user ? {flag: true}.to_json : {flag: false}.to_json
   end
 end

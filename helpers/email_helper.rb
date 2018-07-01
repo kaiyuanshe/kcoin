@@ -2,13 +2,11 @@ module EmailAppHelpers
   require 'net/smtp'
 
   def send_email(_user)
-    email = _user.email
-    name = _user.email.split('@')[0]
-    activeUrl = request.base_url + '/user/activeUser?' + URI.encode(_user.id)
+    active_url = request.base_url + '/user/activeUser?'
 
     message = <<MESSAGE_END
-From: kcoin@163.com
-To: #{email}
+From: #{EMAIL[:form]}
+To: #{_user.email}
 MIME-Version: 1.0
 Content-type: text/html
 Subject: kcoin 帐号激活
@@ -47,7 +45,7 @@ Subject: kcoin 帐号激活
                 <tr bgcolor="#17212e">
                     <td style="padding-top: 32px;">
 					<span style="padding-top: 16px; padding-bottom: 16px; font-size: 24px; color: #66c0f4; font-family: Microsoft YaHei, sans-serif; font-weight: bold;">
-						尊敬的 #{name}：
+						尊敬的 #{_user.name}：
 					</span><br>
                     </td>
                 </tr>
@@ -55,10 +53,10 @@ Subject: kcoin 帐号激活
                 <tr>
                     <td style="padding-top: 12px;">
 					<span style="font-size: 17px; color: #c6d4df; font-family: Microsoft YaHei, sans-serif; font-weight: bold;">
-						<p>您在 kcoin 上注册了一个新用户，帐号为：#{email}</p>
+						<p>您在 kcoin 上注册了一个新用户，帐号为：#{_user.login}</p>
                         <p>请点下面链接以激活您的账号：</p>
                         <p><a style="color: #8f98a0;"
-                              href="#{activeUrl}">#{activeUrl}</a>
+                              href="#{active_url}">#{active_url}</a>
                         </p>
 					</span>
                     </td>
@@ -100,12 +98,12 @@ Subject: kcoin 帐号激活
 
 MESSAGE_END
 
-    Net::SMTP.start('smtp.163.com',
-                    25,
-                    '163.com',
-                    '13993143738', 'a19924141', :plain) do |smtp|
-      smtp.send_message message, '13993143738@163.com',
-                        email
+    Net::SMTP.start(EMAIL[:address],
+                    EMAIL[:port],
+                    EMAIL[:helo],
+                    EMAIL[:user], EMAIL[:secret], :plain) do |smtp|
+      smtp.send_message message, EMAIL[:account],
+                        _user.email.to_s
     end
   end
 end

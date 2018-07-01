@@ -4,6 +4,7 @@ class KCoinApp
   require './controllers/user'
   require './controllers/project'
   require './lib/config'
+  require './lib/email_params'
 
   attr_reader :app
 

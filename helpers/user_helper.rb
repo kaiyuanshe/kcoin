@@ -2,6 +2,7 @@ module UserAppHelpers
 
   KCOIN_LOGIN_INFO = 'kcoin_login_info'
   GITHUB = 'github'
+  KCOIN = 'kcoin'
 
   require 'httparty'
   require 'date'
@@ -26,7 +27,7 @@ module UserAppHelpers
 
     user = session[KCOIN_LOGIN_INFO]
     AuthUser.new(user[:id],
-                 user[:name],
+                 user[:login],
                  user[:name],
                  user[:email],
                  user[:avatar_url],
@@ -44,10 +45,10 @@ module UserAppHelpers
 
     session['github_oauth_state'] = SecureRandom.hex
     auth_params = {
-      :client_id => CONFIG[:login][:github][:client_id],
-      :redirect_uri => request.base_url + '/auth/github/callback',
-      :scope => 'user',
-      :state => session['github_oauth_state']
+        :client_id => CONFIG[:login][:github][:client_id],
+        :redirect_uri => request.base_url + '/auth/github/callback',
+        :scope => 'user',
+        :state => session['github_oauth_state']
     }
     redirect 'https://github.com/login/oauth/authorize?' + URI.encode_www_form(auth_params)
   end
@@ -59,21 +60,21 @@ module UserAppHelpers
     github_code = params[:code]
     github_response = HTTParty.post('https://github.com/login/oauth/access_token',
                                     :body => {
-                                      :client_id => CONFIG[:login][:github][:client_id],
-                                      :code => github_code,
-                                      :client_secret => CONFIG[:login][:github][:client_secret]
+                                        :client_id => CONFIG[:login][:github][:client_id],
+                                        :code => github_code,
+                                        :client_secret => CONFIG[:login][:github][:client_secret]
                                     },
                                     :headers => {
-                                      :Accept => 'application/json'
+                                        :Accept => 'application/json'
                                     })
 
     if github_response.code == 200
       token_details = JSON.parse(github_response.body)
       if token_details.key?('access_token')
         headers = {
-          :Accept => 'application/json',
-          :Authorization => "token #{token_details['access_token']}",
-          'User-Agent' => 'Kaiyuanshe KCoin project'
+            :Accept => 'application/json',
+            :Authorization => "token #{token_details['access_token']}",
+            'User-Agent' => 'Kaiyuanshe KCoin project'
         }
 
         user_lookup = HTTParty.get('https://api.github.com/user?', headers: headers)
@@ -94,47 +95,64 @@ module UserAppHelpers
       name = github_user['name']
     end
 
-    primary = email_list.select{|x| x['primary']}
+    primary = email_list.select {|x| x['primary']}
     email = github_user['email']
     if primary.any?
       email = primary[0]['email']
     end
 
     user_info = {
-      :login => login,
-      :name => name,
-      :oauth_provider => GITHUB,
-      :open_id => github_user['id'],
-      :email => email,
-      :avatar_url => github_user['avatar_url']
+        :login => login,
+        :name => name,
+        :oauth_provider => GITHUB,
+        :open_id => github_user['id'],
+        :email => email,
+        :avatar_url => github_user['avatar_url']
     }
 
     persist_user user_info
     true
   end
 
+  def binding_user(oauth)
+    user = User.first(email: oauth.email)
+    if user.eql? nil
+      User.insert(login: oauth.login,
+                         name: oauth.name,
+                         oauth_provider: KCOIN,
+                         open_id: oauth.open_id,
+                         email: oauth.email,
+                         avatar_url: oauth.avatar_url,
+                         created_at: Time.now,
+                         last_login_at: Time.now)
+      user = User.first(email: oauth.email)
+    end
+    oauth.update(user_id: user.id)
+  end
+
   def persist_user(user_info)
-    user = User.first(:oauth_provider => user_info[:oauth_provider], :open_id => user_info[:open_id])
-    if user
-      user.update(last_login_at: Time.now,
-                  login: user_info[:login],
-                  email: user_info[:email],
-                  avatar_url: user_info[:avatar_url],
-                  updated_at: Time.now)
+    oauth = Oauth.first(:oauth_provider => user_info[:oauth_provider], :open_id => user_info[:open_id])
+    if oauth
+      oauth.update(last_login_at: Time.now,
+                   login: user_info[:login],
+                   email: user_info[:email],
+                   avatar_url: user_info[:avatar_url],
+                   updated_at: Time.now)
     else
-      User.insert(login: user_info[:login],
-                  name: user_info[:name],
-                  oauth_provider: user_info[:oauth_provider],
-                  open_id: user_info[:open_id],
-                  email: user_info[:email],
-                  avatar_url: user_info[:avatar_url],
-                  created_at: Time.now,
-                  last_login_at: Time.now)
-      user = User.first(:oauth_provider => user_info[:oauth_provider], :open_id => user_info[:open_id])
+      Oauth.insert(login: user_info[:login],
+                   name: user_info[:name],
+                   oauth_provider: user_info[:oauth_provider],
+                   open_id: user_info[:open_id],
+                   email: user_info[:email],
+                   avatar_url: user_info[:avatar_url],
+                   created_at: Time.now,
+                   last_login_at: Time.now)
+      oauth = Oauth.first(:oauth_provider => user_info[:oauth_provider], :open_id => user_info[:open_id])
+      binding_user oauth
     end
 
-    user_info[:id] = user.id
-    user_info[:eth_account] = user.eth_account
+    user_info[:id] = oauth.id
+    user_info[:eth_account] = oauth.eth_account
     session[KCOIN_LOGIN_INFO] = user_info
   end
 

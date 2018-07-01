@@ -47,6 +47,20 @@
                   %span.invalid_feedback
                     密码格式不正确！密码应由 6- 10 位数字、字母、下划线组成。
                 .form-group
+                  %label 登录名
+                  %input{:type => "text",
+                         :name => 'login',
+                         :value => '',
+                         max_length: 120,
+                         :placeholder => '选填'}
+                .form-group
+                  %label 昵称
+                  %input{:type => "text",
+                         :name => 'name',
+                         :value => '',
+                         max_length: 120,
+                         :placeholder => '选填'}
+                .form-group
                   %input.button.info{:type=>'submit',:value=>'立即注册'}
                   .link= link_to('已有帐号登录', '/user/login')
           .row
