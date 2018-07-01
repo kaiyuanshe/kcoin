@@ -1,0 +1,46 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+
+	<!-- http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html -->
+    <id>dist</id>
+    
+    <!-- zip,tar.gz,tar.bz2,jar,dir,war -->
+    <formats>
+        <format>dir</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>src/main/resources/</directory>
+            <!-- 与 maven-jar-plugin 中的 Class-Path 值对应，否则 PathKit 无法工作 -->
+            <outputDirectory>resources/</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/webapp/</directory>
+            <outputDirectory>src/main/webapp/</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>bin/</directory>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+    </fileSets>
+
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <scope>runtime</scope>
+            <excludes>
+                <exclude>${project.groupId}:${project.artifactId}</exclude>
+            </excludes>
+        </dependencySet>
+        <dependencySet>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>${project.groupId}:${project.artifactId}</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</assembly>
