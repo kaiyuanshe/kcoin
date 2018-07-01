@@ -1,0 +1,71 @@
+!!!
+%html{:lang => 'en'}
+  %head
+    %title
+      KCoin
+    %meta{:charset => 'utf-8'}
+    %meta{:name => 'viewport', :content=>'width=device-width, initial-scale=1.0, maximum-scale=1.0 user-scalable=no shrink-to-fit=no'}
+
+    = include_stylesheet 'https://cdn.metroui.org.ua/v4/css/metro-all.min.css'
+    = content :stylesheets
+    = include_stylesheet 'login'
+
+    = include_javascript 'https://code.jquery.com/jquery-3.3.1.min.js'
+    = include_javascript 'https://cdn.metroui.org.ua/v4/js/metro.min.js'
+
+  %body
+    .container-fluid.kcoin-background
+      .text-center.login-title= link_to('<span class="kcoin-title">K</span>coin', '/')
+      .text-center.login-sub-title 注册新帐号
+      .form.login-form
+        .grid
+          .row
+            .cell-sm-8.offset-sm-2.cell-md-6.offset-md-3.cell-lg-4.offset-lg-4.cell-xl-4.offset-xl-4.cell-xxl-4.offset-xxl-4
+              %form{:action=>"/user/join", :method=>'post',"data-role"=>'validator', "data-interactive-check" => "true"}
+                .form-group
+                  %label 邮箱账号
+                  %span.kcoin-sub-text（将给您的邮箱发送激活邮件）
+                  %input{:type => 'email',
+                         :name => 'email',
+                         :value => '',
+                         maxlength: 120,
+                         autofocus: "autofocus",
+                         :placeholder => "you@example.com",
+                         "data-validate" => "required email custom=validateExistEmail"}
+                  %span.invalid_feedback
+                    邮箱格式不正确或该帐号已经注册！
+                .form-group
+                  %label 密码
+                  %input.border-radius-5.border{:type => 'password',
+                         :name => 'password',
+                         :value => '',
+                         maxlength: 10,
+                         :placeholder => "密码应由 6- 10 位数字、字母、下划线组成",
+                         "data-role" => "input",
+                         "data-clear-button" => "false",
+                         "data-validate" => "required pattern=^\\w{6,10}$"}
+                  %span.invalid_feedback
+                    密码格式不正确！密码应由 6- 10 位数字、字母、下划线组成。
+                .form-group
+                  %label 登录名
+                  %input{:type => "text",
+                         :name => 'login',
+                         :value => '',
+                         max_length: 120,
+                         :placeholder => '选填'}
+                .form-group
+                  %label 昵称
+                  %input{:type => "text",
+                         :name => 'name',
+                         :value => '',
+                         max_length: 120,
+                         :placeholder => '选填'}
+                .form-group
+                  %input.button.info{:type=>'submit',:value=>'立即注册'}
+                  .link= link_to('已有帐号登录', '/user/login')
+          .row
+            .cell-sm-8.offset-sm-2.cell-md-6.offset-md-3.cell-lg-4.offset-lg-4.cell-xl-4.offset-xl-4.cell-xxl-4.offset-xxl-4
+              %a.button.dark{:href => '/auth/github/login'}
+                %img{:src=>"icons/github-icon.png"}使用 GitHub 账号登录
+
+    = include_javascript 'join'
