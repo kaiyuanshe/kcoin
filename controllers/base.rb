@@ -22,6 +22,7 @@ class BaseController < Sinatra::Base
     disable :show_exceptions
 
     set :template_engine, :haml
+    set :haml, :format => :html5
     set :root,  Pathname(File.expand_path('../..', __FILE__))
     set :views, 'views'
     set :public_folder, 'public'

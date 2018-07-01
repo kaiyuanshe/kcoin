@@ -23,4 +23,5 @@ class User < Sequel::Model(:users)
 
   many_to_many :roles
   many_to_many :projects
+  one_to_many :oauth
 end

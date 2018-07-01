@@ -1,0 +1,56 @@
+!!!
+%html{:lang => 'en'}
+  %head
+    %title
+      KCoin
+    %meta{:charset => 'utf-8'}
+    %meta{:name => 'viewport', :content=>'width=device-width, initial-scale=1.0, maximum-scale=1.0 user-scalable=no shrink-to-fit=no'}
+
+    = include_stylesheet 'https://cdn.metroui.org.ua/v4/css/metro-all.min.css'
+    = content :stylesheets
+    = include_stylesheet 'login'
+
+    = include_javascript 'https://code.jquery.com/jquery-3.3.1.min.js'
+    = include_javascript 'https://cdn.metroui.org.ua/v4/js/metro.min.js'
+
+  %body
+    .container-fluid.kcoin-background
+      .text-center.login-title= link_to('<span class="kcoin-title">K</span>coin', '/')
+      .text-center.login-sub-title 登录
+      .form.login-form
+        .grid
+          .row
+            .cell-sm-8.offset-sm-2.cell-md-6.offset-md-3.cell-lg-4.offset-lg-4.cell-xl-4.offset-xl-4.cell-xxl-4.offset-xxl-4
+              %form{:action=>"/user/login", :method=>'post',"data-role"=>'validator',
+              "data-interactive-check" => "true"}
+                .form-group
+                  %label 邮箱/帐号
+                  %input{:type => 'text',
+                         :name => 'email',
+                         :value => '',
+                         maxlength: 120,
+                         autofocus: "autofocus",
+                         "data-validate" => "required"}
+                .form-group
+                  %label 密码
+                  .link= link_to('忘记密码', '/user/password_reset')
+                  %input.border-radius-5.border{:type => 'password',
+                         :name => 'password',
+                         :value => '',
+                         maxlength: 10,
+                         "data-role" => "input",
+                         "data-clear-button" => "false",
+                         "data-validate" => "required pattern=^\\w{6,10}$ custom=validateEmailAndPwd"}
+                  %span.invalid_feedback
+                    邮箱/帐号或密码不正确!
+                .form-group
+                  %input.button.info{:type=>'submit',:value=>'登录'}
+                  .link= link_to('注册账号', '/user/join')
+          .row
+            .cell-sm-8.offset-sm-2.cell-md-6.offset-md-3.cell-lg-4.offset-lg-4.cell-xl-4.offset-xl-4.cell-xxl-4.offset-xxl-4
+              %a.button.dark{:href => '/auth/github/login'}
+                %img{:src=>"icons/github-icon.png"}使用 GitHub 账号登录
+
+
+    = include_javascript 'join'
+    = include_javascript 'login'
