@@ -11,10 +11,10 @@ class UserController < BaseController
 
   before do
     set_current_user
-    # redirect '/' unless authenticated?
   end
 
   get '/' do
+    redirect '/' unless authenticated?
     haml :user
   end
 
