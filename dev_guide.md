@@ -2,12 +2,14 @@ KCoin Project
 ========
 
 # Contribute
-Pull request is welcome and appreciated. Quick steps to setup dev environment:
+Pull request is welcome and appreciated. KCoin consists of two components, web and a backend rest server
+to talk with Hyper Leger/Ethereum. For the backend, see [KCoin Server Guide](https://github.com/kaiyuanshe/kcoin/tree/master/src/server)
+. Below are quick steps to setup dev environment for the web:
 
 - Clone source code: `git clone https://github.com/kaiyuanshe/kcoin.git`
 - Initialize project:
 ```
-cd kcoin
+cd kcoin/src/web
 bundle install
 cp lib/config-sample.rb lib/config.rb
 ```

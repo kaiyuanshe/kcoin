@@ -48,9 +48,9 @@ git clone https://github.com/kaiyuanshe/kcoin.git
 run `yum update nss curl` if you met "Peer reports incompatible or unsupported protocol version" while pulling the source codes.
 That's because the version of nss/curl is too old.
 
-### Start KCoin
+### Start KCoin Web
 ```
-cd /var/www/kcoin
+cd /var/www/kcoin/src/web
 bundle install
 cp lib/config-sample.rb lib/config.rb # update config file if needed
 puma -C config/puma.rb -d
@@ -59,7 +59,7 @@ Run `pumactl -P /var/run/puma.pid stop` to stop puma. And run `puma -C config/pu
 
 ### Config Nginx
 ```
-cd /var/www/kcoin
+cd /var/www/kcoin/src/web
 cp config/nginx.conf /etc/nginx/nginx.conf
 service nginx start
 ```
