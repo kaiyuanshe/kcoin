@@ -14,7 +14,7 @@ bundle install
 cp lib/config-sample.rb lib/config.rb
 ```
 - Open config file `lib/config.rb` and update config values like github oauth secret.
-- Start the server: `puma config.ru`
+- Start the server: `puma -C config/puma_local.rb`
 - browse [http://127.0.0.1:9292/](http://127.0.0.1:9292/)
 
 # Documentation

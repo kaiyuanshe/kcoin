@@ -1,7 +1,7 @@
 GEM
   remote: https://anonymous:devcloud@mirrors.huaweicloud.com/repository/rubygems/
   specs:
-    backports (2.8.2)
+    backports (3.11.3)
     bcrypt (3.1.12)
     bcrypt (3.1.12-x64-mingw32)
     concurrent-ruby (1.0.5)
@@ -28,7 +28,7 @@ GEM
       rack-protection (= 2.0.2)
       tilt (~> 2.0)
     sinatra-contrib (2.0.2)
-      backports (~> 2.8.2)
+      backports (>= 3.6.4)
       multi_json
       mustermann (~> 1.0)
       rack-protection (= 2.0.2)
