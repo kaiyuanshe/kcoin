@@ -2,17 +2,19 @@ KCoin Project
 ========
 
 # Contribute
-Pull request is welcome and appreciated. Quick steps to setup dev environment:
+Pull request is welcome and appreciated. KCoin consists of two components, web and a backend rest server
+to talk with Hyper Leger/Ethereum. For the backend, see [KCoin Server Guide](https://github.com/kaiyuanshe/kcoin/tree/master/src/server)
+. Below are quick steps to setup dev environment for the web:
 
 - Clone source code: `git clone https://github.com/kaiyuanshe/kcoin.git`
 - Initialize project:
 ```
-cd kcoin
+cd kcoin/src/web
 bundle install
 cp lib/config-sample.rb lib/config.rb
 ```
 - Open config file `lib/config.rb` and update config values like github oauth secret.
-- Start the server: `puma config.ru`
+- Start the server: `puma -C config/puma_local.rb`
 - browse [http://127.0.0.1:9292/](http://127.0.0.1:9292/)
 
 # Documentation
