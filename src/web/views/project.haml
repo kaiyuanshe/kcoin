@@ -1,0 +1,54 @@
+!!!
+%html{:lang => 'en'}
+  %head
+    %meta{:charset => 'utf-8'}
+    %meta{:name => 'viewport', :content=>'width=device-width, initial-scale=1.0, maximum-scale=1.0 user-scalable=no shrink-to-fit=no'}
+
+    = include_stylesheet 'https://cdn.metroui.org.ua/v4/css/metro-all.min.css'
+    = content :stylesheets
+    = include_stylesheet 'kcoin'
+
+    = include_javascript 'https://code.jquery.com/jquery-3.3.1.min.js'
+    = include_javascript 'https://cdn.metroui.org.ua/v4/js/metro.min.js'
+
+    %title
+      KCoin
+
+  %body.h-vh-100
+    .pos-fixed.fixed-top.app-bar-wrapper.z-top
+      %header.container-fluid.pos-relative.app-bar-expand-md{"data-role"=>'appbar'}
+
+        %a.brand.no-hover.fg-white-hover.order-1
+          %img{:src=>"icons/kcoin-log.png"}
+
+        %ul.app-bar-menu.order-3.order-md-2.text-center.mx-auto
+          %li.divider.visible-fs.no-visible-ms.no-visible-md
+          %li
+            %a.fg-white-hover{:href => '#'} 我的项目
+          %li.divider.visible-fs.no-visible-ms.no-visible-md
+          %li
+            %a.fg-white-hover{:href => '#'} 个人中心
+          %li.divider.visible-fs.no-visible-ms.no-visible-md
+          %li
+            %a.fg-white-hover{:href => '#'} 兑换商城
+          %li.divider.visible-fs.no-visible-ms.no-visible-md
+          %li
+            %a.fg-white-hover{:href => '#'} 常见问题
+          %li.divider.visible-fs.no-visible-ms.no-visible-md
+          %li
+            %a.fg-white-hover.visible-fs.no-visible-ms.no-visible-md{:href=>'/auth/logout'} 退出登录
+
+        .app-bar-container.order-2.order-md-3.no-visible-fs.visible-ms.visible-md
+          %span.app-bar-item
+            = current_user.name
+          .app-bar-container
+            %a.app-bar-item.dropdown-toggle.marker-light.pl-1.pr-5{:href => '#'}
+              %img.kcoin-avater{:src=>"#{current_user.avatar_url}"}
+            %ul.v-menu.place-right{"data-role" => 'dropdown'}
+              %li
+                %a{:href=>'/auth/logout'}退出登录
+
+    .container-fluid.pt-13.bg-light.h-vh-100.px-0
+      .container.bg-white.px-2#container
+
+    = include_javascript 'project'

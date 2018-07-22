@@ -42,13 +42,13 @@ module UserAppHelpers
     @current_user = current_user
   end
 
-  def github_authorize
+  def github_authorize(callback_uri)
     return if authenticated?
 
     session['github_oauth_state'] = SecureRandom.hex
     auth_params = {
       :client_id => CONFIG[:login][:github][:client_id],
-      :redirect_uri => request.base_url + '/auth/github/callback',
+      :redirect_uri => request.base_url + '/auth/github/callback' + callback_uri,
       :scope => 'user',
       :state => session['github_oauth_state']
     }
@@ -159,7 +159,7 @@ module UserAppHelpers
       binding_user oauth
     end
 
-    user_info[:id] = oauth.id
+    user_info[:id] = oauth.user_id
     user_info[:eth_account] = oauth.eth_account
     session[KCOIN_LOGIN_INFO] = user_info
   end

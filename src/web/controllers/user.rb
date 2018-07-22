@@ -33,14 +33,15 @@ class UserController < BaseController
 
   post '/login' do
     param = params[:email].to_s
+    pwd = Base64.encode64(params[:password])
     @user = nil
     if param.include? '@'
-      @user = User.first(email: param, oauth_provider: KCOIN, password_digest: params[:password])
+      @user = User.first(email: param, oauth_provider: KCOIN, password_digest: pwd)
     else
-      @user = User.first(login: param, oauth_provider: KCOIN, password_digest: params[:password])
+      @user = User.first(login: param, oauth_provider: KCOIN, password_digest: pwd)
     end
     if @user
-      if @user.password_digest == params[:password]
+      if @user.password_digest == pwd
         session[:user_id] = @user.id
         redirect '/'
       end
@@ -57,7 +58,7 @@ class UserController < BaseController
                     name: params[:name],
                     oauth_provider: KCOIN,
                     open_id: nil,
-                    password_digest: params[:password],
+                    password_digest: Base64.encode64(params[:password]),
                     email: params[:email],
                     avatar_url: nil,
                     creawted_at: Time.now,
@@ -71,20 +72,21 @@ class UserController < BaseController
   end
 
   # Verify email is registered
-  get '/validate/email' do
+  post '/validate/email' do
     user = User.first(email: params[:email], oauth_provider: KCOIN)
     return user ? {flag: false}.to_json : {flag: true}.to_json
   end
 
 
   # Verify user is existed
-  get '/validate/user' do
+  post '/validate/user' do
     param = params[:email].to_s
     user = nil
+    pwd = Base64.encode64(params[:password])
     if param.include? '@'
-      user = User.first(email: param, oauth_provider: KCOIN, password_digest: params[:password])
+      user = User.first(email: param, oauth_provider: KCOIN, password_digest: pwd)
     else
-      user = User.first(login: param, oauth_provider: KCOIN, password_digest: params[:password])
+      user = User.first(login: param, oauth_provider: KCOIN, password_digest: pwd)
     end
     return user ? {flag: true}.to_json : {flag: false}.to_json
   end

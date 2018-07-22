@@ -40,6 +40,7 @@ GEM
     sinatra-sequel (0.9.0)
       sequel (>= 3.2.0)
       sinatra (>= 0.9.4)
+    spinying (0.9)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -65,8 +66,9 @@ DEPENDENCIES
   sinatra-initializers
   sinatra-reloader
   sinatra-sequel
+  spinying (~> 0.9)
   sprockets
   sqlite3
 
 BUNDLED WITH
-   1.16.1
+   1.16.2

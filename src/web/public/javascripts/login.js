@@ -1,8 +1,14 @@
+$(function () {
+    if (location.search.length > 0) {
+        $("#auth_login")[0].href = $("#auth_login")[0].href + location.search
+    }
+});
+
 // validate uesr
 function validateEmailAndPwd(el) {
     var flag = false;
     $.ajax({
-        type: "GET",
+        type: "post",
         url: "/user/validate/user",
         data: $("form").serialize(),
         async: false,
