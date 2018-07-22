@@ -8,5 +8,5 @@ class Project < Sequel::Model(:projects)
     validates_presence [:name]
   end
 
-  many_to_many :users
+  many_to_many :users, join_table: :user_projects
 end

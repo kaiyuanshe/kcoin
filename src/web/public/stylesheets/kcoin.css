@@ -1,0 +1,337 @@
+/*@font-face {*/
+/*font-family: "Microsoft YaHei";*/
+/*src: url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.eot");*/
+/*src: url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.eot?#iefix") format("embedded-opentype"),*/
+/*url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.woff2") format("woff2"),*/
+/*url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.woff") format("woff"),*/
+/*url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.ttf") format("truetype"),*/
+/*url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.svg#Microsoft YaHei") format("svg");*/
+/*}*/
+
+
+@media screen and (min-width: 0) and (max-width: 576px){
+    .kcoin-button-normal {
+        font-size: 13px !important;
+        width: 100% !important;
+        max-width: 340px;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 450px) {
+    .login-title {
+        top: 30px;
+        font-size: 5em;
+    }
+
+    .login-sub-title {
+        font-size: 1.25em;
+        margin-top: 0px;
+    }
+}
+
+@media screen and (min-width: 450px) {
+    .login-title {
+        top: 30px;
+        font-size: 5em;
+    }
+
+    .login-sub-title {
+        font-size: 1.25em;
+        margin-top: 0px;
+    }
+}
+
+.container {
+    width: auto;
+    max-width: 1030px;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-context {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.required {
+    border: 1px #1ba1e2 solid !important;
+}
+
+body {
+    font-family: "Microsoft YaHei", sans-serif;
+    font-size: 1em;
+    color: #ffffff;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+/* Kcoin title style */
+.kcoin-title {
+    color: #00a3d9;
+}
+
+/* container style */
+.kcoin-background {
+    background-color: #333333;
+    height: 100%
+}
+
+/* kcoin title style */
+.text-center.login-title > a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* kcoin input style */
+input {
+    height: 40px !important;
+}
+
+/* form style */
+.form {
+    position: absolute;
+    top: 200px;
+    padding-right: 24px;
+    width: 100%;
+    font-size: 0.8125em;
+}
+
+.kcoin-button-flex {
+    display: block;
+    width: 100% !important;
+}
+
+.kcoin-button-normal {
+    font-size: 13px !important;
+}
+
+/* login-btn style */
+.button.info {
+    background: #00a3d9;
+    border-radius: 5px;
+    font-size: 1.25em;
+    margin-bottom: 5px;
+    width: 150px;
+}
+
+/* link-btn style */
+.link {
+    float: right;
+    padding: 0px;
+}
+
+.button {
+    height: 40px;
+}
+
+.link > a {
+    color: #5fbbd9;
+}
+
+/* github btn style */
+.button.dark {
+    background: #666666;
+    border-radius: 5px;
+    top: 58px;
+}
+
+/* githbu icon style */
+.github-icon {
+    width: 25px !important;
+    height: 25px !important;
+    margin-right: 21px;
+}
+
+/* input style */
+input {
+    background: #ffffff;
+    border: 1px solid #979797 !important;
+    border-radius: 5px;
+}
+
+input.focused, input:focus, input:focus {
+    /*      border: 1px solid #00a3d9 !important; 
+     box-shadow: 0 0 0 0 rgba(0, 0, 0, .10) !important;  */
+}
+
+.border-radius-5.border {
+    height: 42px;
+}
+
+/* span style */
+span {
+    color: #939393;
+}
+
+/* app bar background  */
+.app-bar-wrapper, .app-bar {
+    background-color: #333333;
+    color: #9c9c9c;
+}
+
+/* figure style */
+.kcoin-figure {
+    /* max-width: 220px; */
+    /* max-height: 220px; */
+    /* width: 200px; */
+    /* height: 200px; */
+    width: 100%;
+    height: 100%;
+}
+
+.kcoin-figure-token-div {
+    display: inline-block;
+    width: 100px;
+    height: 40px;
+    font-size: 11px;
+    color: #ffffff;
+    bottom: 21px;
+    background: #89919c;
+    border-radius: 0px 25px 25px 0px;
+}
+
+.kcoin-figure-token-span {
+    color: #ffffff;
+    width: 75px;
+}
+
+.kcoin-figure-title-letter-div {
+    display: inline-block;
+    width: 72px;
+    height: 140px;
+    font-size: 11px;
+    color: #ffffff;
+    right: 20px;
+    top: 0px;
+}
+
+.kcoin-figure-title-letter-span {
+    font-size: 100px;
+    color: #89919c;
+}
+
+.kcoin_win_title {
+    background: #333333;
+}
+
+.kcoin_win {
+    width: 100%;
+    height: 100%;
+    max-width: 750px;
+    max-height: 600px;
+}
+
+.kcoin-stepper {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.kcoin-step span {
+    display: none !important;
+    /* width: max-content; */
+    /* top: 35px; */
+    /* position: relative; */
+    /* left: -16px; */
+}
+
+.kcoin-stepper-complete {
+    background: #333333 !important;
+    border: 4px solid #333333 !important;
+}
+
+.kcoin-step {
+    border: 4px solid #cfd2d6;
+    background-color: white;
+    /* width: 16px !important; */
+    /* height: 16px !important; */
+    /* border-radius: 100% !important; */
+}
+
+.kcoin-li {
+    background: #edf0f5;
+    width: 100%;
+    height:40px;
+    margin-bottom: 10px;
+    font-family: PingFangHK-Regular;
+    font-size: 16px;
+    color: #404b59;
+    padding-left: 10px;
+}
+
+.kcoin-img-org{
+    width: 40px;
+    height: 40px;
+}
+
+.kcoin-checkbox span.check {
+    /* display: none; */
+}
+
+.kcoin-win-panel{
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 466px;
+}
+.kcoin-win{
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 600px;
+    max-width: 750px;
+}
+
+#import_form .page {
+    padding: 10px 0px;
+}
+
+.import_title {
+    width: 100%;
+    height: 60px;
+    background: #edf0f5;
+}
+
+.kcoin-figure .img-container {
+    width: 220px;
+    height: 220px;
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -webkit-box-align: center !important;
+    -ms-flex-align: center !important;
+    align-items: center !important;
+    margin-left: auto;
+    margin-right: auto;
+    background: #f3f3f3; */
+}
+
+.kcoin-figure .painting-name {
+    width: 100%;
+    max-width: 220px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.kcoin-avater {
+    background: #d8d8d8;
+    border: 1px solid #979797;
+    width: 39px;
+    height: 39px;
+    border-radius: 100%;
+}
+
+
+.button.info.outline {
+    background: #ffffff !important;
+    color: #00a3d9 !important;
+}
+
+.kcoin-li:hover {
+    background: rgba(0,0,0,0.10);
+    border: 1px solid #cfd2d6;
+    cursor: pointer;
+}

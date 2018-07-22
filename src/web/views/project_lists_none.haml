@@ -1,0 +1,86 @@
+.text-center
+  %h5.pt-20
+    %span 您还没有项目，快导入吧！
+  %div.pt-8
+    %img{:src=>"icons/kcoin-project.png"}
+  %div.pt-10
+    %button#btn_import.button.info 导入项目
+
+.pt-2#win_import{"data-role"=>"window",
+"data-width"=>"100%",
+"data-height"=>"100%",
+"data-place"=>"top-center",
+-#"data-top"=>"0px",
+-#"data-left"=>"50%",
+"data-draggable"=>"true",
+"data-btn-min"=>"false",
+"data-btn-max"=>"false",
+"data-resizable"=>"false",
+"data-title"=>"导入项目",
+"data-close-action"=>"Metro.actions.HIDE",
+"data-cls-caption"=>"kcoin_win_title",
+"data-cls-master"=>"px-3",
+-#"data-cls-content"=>"kcoin_win",
+"data-cls-window"=>"no-visible kcoin-win",
+"data-on-close-click"=>"closeWin"}
+
+  #kcoin_stepper{"data-role"=>"stepper",
+  "data-steps"=>"2",
+  "data-cls-step"=>"kcoin-step",
+  "data-cls-stepper"=>"kcoin-stepper",
+  "data-cls-complete"=>"kcoin-stepper-complete",
+  "data-cls-current"=>"kcoin-stepper-complete",
+  "data-view"=>"cycle"}
+  %form#import_form{:onsubmit=>"return false;",
+  :enctype=>"multipart/form-data"}
+    #kcoin_master{"data-role"=>"master",
+    "data-effect"=>"fade",
+    "data-cls-controls"=>"d-none",
+    "data-cls-pages"=>"border-none",
+    "data-cls-control-title"=>"d-none"}
+      .page
+        .row.mx-0
+          .cell-12.form-group.px-0
+            .kcoin-win-panel#projectList{"data-role"=>"panel",
+            "data-width"=>"100%",
+            "data-height"=>"100%",
+            "data-cls-content"=>"px-5",
+            "data-cls-panel"=>"border-none"}
+            %template#projectListTemplate
+              <% for(let item of map.values()){ %>
+              %p.my-5
+                %img.kcoin-img-org{:src=>"<%item[0].owner.avatar_url%>"}
+                %label <%item[0].owner.login%>（<%item.length%> 个项目）
+              %ul.mx-0.my-0
+                <% for(var i = 0; i < item.length; i++) { %>
+                %li.kcoin-li.d-flex.flex-align-center{:name=>"project_id",
+                :onclick=>"showNextPage(<%list[i].id%>)",
+                :value=>"<%list[i].id%>"} <%list[i].name%>
+                <% } %>
+              <% } %>
+      .page
+        .row.mx-0
+          .cell-12.form-group.px-0
+            .import_title
+              %span#project_title.pos-absolute.pos-left-center.ml-5.mif-checkmark.mif-3x.fg-green
+          .cell-12.form-group.px-5
+            %label 1. 填写项目名称
+            %input#project_name{:type=>"text",
+            :name=>"name",
+            maxlength: 120,
+            "data-validate" => "required"}
+            %span.invalid_feedback
+              项目名称不能为空
+            %input#project_id{:type=>"hidden",
+            :name=>"project_id"}
+          .cell-12.form-group.px-5
+            %label 2. 上传项目封面（选填，但只能添加不大于 2M 的图片）
+            %input#img{:type=>"file","data-role"=>"file",:name=>"images","data-caption"=>"选择文件","data-validate"=>"custom=validateFileSize"}
+            %span.invalid_feedback
+              上传的图片不能超过 2 M
+        .row.mx-0
+          .cell-12.text-center.px-0.pos-fixed.pos-bottom-center.mb-5
+            %button#btn_prev.button.info.outline.mr-0-fs.mr-5-sm.kcoin-button-normal 上一步
+            %button#btn_submit.button.info.ml-0-fs.ml-5-sm.kcoin-button-normal 导入
+
+= include_javascript 'project_list_none'

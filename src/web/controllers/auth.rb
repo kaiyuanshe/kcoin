@@ -6,12 +6,19 @@ class AuthController < BaseController
   helpers WebsiteHelpers
 
   get '/github/login' do
-    github_authorize
-    redirect '/user/'
+    redirect_uri = request.params['redirect_uri'].to_s
+    if redirect_uri.eql?''
+      github_authorize(redirect_uri)
+      redirect '/user/'
+    else
+      github_authorize('?callback_uri=' + redirect_uri)
+      redirect redirect_uri
+    end
   end
 
   get '/github/callback' do
-    redirect '/user/' if handle_github_callback
+    redirect_uri = request.params['callback_uri'].to_s
+    redirect redirect_uri if handle_github_callback
     halt 401, 'Unable to Authenticate Via GitHub'
   end
 

@@ -4,7 +4,7 @@ $.ajaxSetup({cache:false});
 function validateExistEmail(val) {
     var flag = true;
     $.ajax({
-        type: "GET",
+        type: "post",
         url: "/user/validate/email",
         data: $("form").serialize(),
         async: false,
@@ -13,4 +13,5 @@ function validateExistEmail(val) {
         }
     });
     return flag;
+
 }

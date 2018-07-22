@@ -8,7 +8,7 @@
 
     = include_stylesheet 'https://cdn.metroui.org.ua/v4/css/metro-all.min.css'
     = content :stylesheets
-    = include_stylesheet 'login'
+    = include_stylesheet 'kcoin'
 
     = include_javascript 'https://code.jquery.com/jquery-3.3.1.min.js'
     = include_javascript 'https://cdn.metroui.org.ua/v4/js/metro.min.js'
@@ -20,7 +20,7 @@
       .form.login-form
         .grid
           .row
-            .cell-sm-8.offset-sm-2.cell-md-6.offset-md-3.cell-lg-4.offset-lg-4.cell-xl-4.offset-xl-4.cell-xxl-4.offset-xxl-4
+            .cell.login-context
               %form{:action=>"/user/join", :method=>'post',"data-role"=>'validator', "data-interactive-check" => "true"}
                 .form-group
                   %label 邮箱账号
@@ -61,11 +61,11 @@
                          max_length: 120,
                          :placeholder => '选填'}
                 .form-group
-                  %input.button.info{:type=>'submit',:value=>'立即注册'}
+                  %input.button.info.kcoin-button-flex{:type=>'submit',:value=>'立即注册'}
                   .link= link_to('已有帐号登录', '/user/login')
           .row
-            .cell-sm-8.offset-sm-2.cell-md-6.offset-md-3.cell-lg-4.offset-lg-4.cell-xl-4.offset-xl-4.cell-xxl-4.offset-xxl-4
-              %a.button.dark{:href => '/auth/github/login'}
-                %img{:src=>"icons/github-icon.png"}使用 GitHub 账号登录
+            .cell.login-context
+              %a.button.dark.kcoin-button-flex{:href => '/auth/github/login'}
+                %img.github-icon{:src=>"icons/github-icon.png"}使用 GitHub 账号登录
 
     = include_javascript 'join'
