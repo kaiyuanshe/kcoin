@@ -1,3 +1,17 @@
+# IDE
 .idea/
+src/**/*.iml
+
+# Mac OS
+**/.DS_Store
+
+# Java
+src/server/target/
+
+# Logs
+src/**/*.log
+
+# KCoin
 *.sqlite
 src/web/lib/config.rb
+src/server/src/main/resources/fabric/

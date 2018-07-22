@@ -74,6 +74,12 @@ public class UserController extends Controller {
 在数据库中新增/修改表后，运行 `com.kcoin.common._Generator` 类中的 `main` 方法，将会生成对应表的 Model 和 BaseModel 类。
 上面是新增一个业务模块的最简单的过程，实际开发过程需要要 Interceptor,Validator,Service等，请参考 [JFinal 官方文档](http://www.jfinal.com/doc)
 
+## 如何连接Huawei云超级账本
+默认只需从华为云上下载工程所需证书（每个节点只需下载一种）。将证书解压到resources/fabric目录即可。
+
+如需部署新的超级账本，还需要下载SDK配置文件，放到resources目录并相应修改config.properties中的配置。其中ip在下载的yaml文件里可以找到。
+
+新的链码暂不支持多个链码，开发中。目前只能使用一个，默认testchain:1.0, 如需修改，请修改yaml文件：channels/chaincodes下的第一个
 
 ## 参考资料
 
