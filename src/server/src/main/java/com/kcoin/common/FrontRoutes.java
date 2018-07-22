@@ -1,6 +1,7 @@
 package com.kcoin.common;
 
 import com.jfinal.config.Routes;
+import com.kcoin.user.FabricController;
 import com.kcoin.user.UserController;
 
 /**
@@ -10,5 +11,6 @@ public class FrontRoutes extends Routes {
 
     public void config() {
         add("/user", UserController.class);
+        add("/fabric", FabricController.class);
     }
 }

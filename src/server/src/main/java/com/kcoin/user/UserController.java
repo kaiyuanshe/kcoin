@@ -3,7 +3,7 @@ package com.kcoin.user;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Ret;
 
-public class UserController extends Controller {
+public class UserController extends BaseController {
 
     // 渲染文本
     public void index() {
@@ -16,5 +16,3 @@ public class UserController extends Controller {
         renderJson(ret);
     }
 }
-
-
