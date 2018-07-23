@@ -65,7 +65,8 @@ channels:
         eventSource: true
       
     chaincodes:
-      - testchain:1.0
+      # - testchain:1.0
+      - jtokena:1.0.1
   
 organizations:
   

@@ -6,6 +6,7 @@
 
 package com.kcoin.user;
 
+import com.alibaba.fastjson.JSONArray;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Record;
@@ -41,6 +42,28 @@ public class FabricController extends BaseController {
                 .set("to", to)
                 .set("amount", amount)
                 .set("status", result);
+        renderJson(ret);
+    }
+
+    public void proxy() {
+        Record r = getArgsRecord();
+        String finction = r.getStr("fn");
+        JSONArray array = r.get("args");
+
+
+        // {"fn":"initLedger", "args":["aaa", "aaa", 10000]}
+        // {"fn":"balance", "args":["aaa", "coinbase"]}
+        // {"fn":"balance", "args":["aaa", "user1"]}
+        // {"fn":"transfer", "args":["aaa", "coinbase", "user1", 5]}
+        // {"fn":"balance", "args":["aaa", "user1"]}
+
+        String[] args = new String[array.size()];
+        for (int i = 0; i < args.length; i++) {
+            args[i] = array.get(i).toString();
+        }
+
+        Boolean result = FabricManager.get().invoke(finction, args);
+        Ret ret = result ? Ret.ok() : Ret.fail();
         renderJson(ret);
     }
 }
