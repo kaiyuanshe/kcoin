@@ -103,6 +103,7 @@ orderers:
     grpcOptions:
       ssl-target-name-override: orderer-5c3781a4078acc48a3a80a004f5d3c7b38101afe-0.orderer-5c3781a4078acc48a3a80a004f5d3c7b38101afe.default.svc.cluster.local
       grpc-max-send-message-length: 15
+      hostnameOverride: orderer-5c3781a4078acc48a3a80a004f5d3c7b38101afe-0.orderer-5c3781a4078acc48a3a80a004f5d3c7b38101afe.default.svc.cluster.local
 
     tlsCACerts:
       path: ${fabricCertificatesPath}/5c3781a4078acc48a3a80a004f5d3c7b38101afe.orderer-5c3781a4078acc48a3a80a004f5d3c7b38101afe.default.svc.cluster.local/msp/tlscacerts/tlsca.5c3781a4078acc48a3a80a004f5d3c7b38101afe-cert.pem
@@ -120,6 +121,7 @@ peers:
       grpc.http2.keepalive_time: 15
       clientKeyFile: ${fabricCertificatesPath}/ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.peer-ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.default.svc.cluster.local/tls/server.key
       clientCertFile: ${fabricCertificatesPath}/ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.peer-ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.default.svc.cluster.local/tls/server.crt
+      hostnameOverride: peer-ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f-0.peer-ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.default.svc.cluster.local
 
     tlsCACerts:
       path: ${fabricCertificatesPath}/ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.peer-ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.default.svc.cluster.local/msp/tlscacerts/tlsca.ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f-cert.pem

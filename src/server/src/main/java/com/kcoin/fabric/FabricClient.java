@@ -46,7 +46,7 @@ public class FabricClient {
 
     // Configurations, typically from a yaml file
     private final String configFile;
-    private FabricConfig fabricConfig;
+    private NetworkConfig networkConfig;
 
     // HyperLedger Fabric Client, inner client that talks to HyperLedger
     private HFClient client = null;
@@ -201,7 +201,7 @@ public class FabricClient {
         Map<String, Object> map = yaml.load(json);
         JsonObjectBuilder builder = Json.createObjectBuilder(map);
         JsonObject jsonConfig = builder.build();
-        this.fabricConfig = FabricConfig.fromJsonObject(jsonConfig);
+        this.networkConfig = NetworkConfig.fromJsonObject(jsonConfig);
     }
 
     private void initClient() throws Exception {
@@ -218,14 +218,15 @@ public class FabricClient {
     }
 
     private void initChannel() throws Exception {
-        String channelName = fabricConfig.getChannelNames().iterator().next();
-        Channel ch = fabricConfig.loadChannel(client, channelName);
+        String channelName = networkConfig.getChannelNames().iterator().next();
+        //Channel ch = networkConfig.loadChannel(client, channelName);
+        Channel ch = client.loadChannelFromConfig(channelName, networkConfig);
         ch.initialize();
         this.channel = ch;
     }
 
     private void initUserContext() throws Exception {
-        FabricConfig.OrgInfo clientOrg = fabricConfig.getClientOrganization();
+        NetworkConfig.OrgInfo clientOrg = networkConfig.getClientOrganization();
         client.setUserContext(clientOrg.getPeerAdmin());
     }
 
