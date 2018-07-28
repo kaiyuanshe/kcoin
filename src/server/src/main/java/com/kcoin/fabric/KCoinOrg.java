@@ -4,8 +4,9 @@
  * license information.
  */
 
-package com.kcoin.fabric.model;
+package com.kcoin.fabric;
 
+import com.kcoin.fabric.model.KCoinUser;
 import org.hyperledger.fabric.sdk.Peer;
 import org.hyperledger.fabric.sdk.User;
 import org.hyperledger.fabric_ca.sdk.HFCAClient;

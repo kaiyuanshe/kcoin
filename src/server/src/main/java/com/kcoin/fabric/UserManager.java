@@ -4,8 +4,11 @@
  * license information.
  */
 
-package com.kcoin.fabric.model;
+package com.kcoin.fabric;
 
+import com.kcoin.fabric.model.KCoinUser;
+import com.kcoin.fabric.store.MemoryObjectStore;
+import com.kcoin.fabric.store.ObjectStore;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,96 +24,47 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
 /**
- * A local file-based key value store.
- * <p>
- * Created by juniwang on 22/07/2018.
+ * Created by juniwang on 27/07/2018.
  */
-public class KCoinStore {
-    private String file;
-    private Log logger = LogFactory.getLog(KCoinStore.class);
+public class UserManager {
+    private Log logger = LogFactory.getLog(UserManager.class);
+    private static final ObjectStore<KCoinUser> store = new MemoryObjectStore();
+    private static final UserManager userManager = new UserManager();
 
-    public KCoinStore(File file) {
+    private UserManager() {
+    }
 
-        this.file = file.getAbsolutePath();
+    public static UserManager get(){
+        return userManager;
+    }
+
+    private void addUser(KCoinUser user) {
+        String key = getUserStoreKey(user.getName(), user.getOrganization());
+        logger.info("save object with key: " + key);
+        store.saveObject(key, user);
     }
 
     /**
-     * Get the value associated with name.
-     *
-     * @param name
-     * @return value associated with the name
-     */
-    /*
-    public String getValue(String name) {
-        Properties properties = loadProperties();
-        return properties.getProperty(name);
-    }
-
-    private Properties loadProperties() {
-        Properties properties = new Properties();
-
-        try {
-            InputStream input = new FileInputStream(file);
-            properties.load(input);
-            input.close();
-        } catch (FileNotFoundException e) {
-            logger.warn(String.format("Could not find the file \"%s\"", file));
-        } catch (IOException e) {
-            logger.warn(String.format("Could not load keyvalue store from file \"%s\", reason:%s",
-                    file, e.getMessage()));
-        }
-
-        return properties;
-    }
-*/
-
-    /**
-     * Set the value associated with name.
-     *
-     * @param name  The name of the parameter
-     * @param value Value for the parameter
-     */
-    public void setValue(String name, String value) {
-        //Properties properties = loadProperties();
-        Properties properties = new Properties();
-        try {
-            OutputStream output = new FileOutputStream(file);
-            properties.setProperty(name, value);
-            properties.store(output, "");
-            output.close();
-
-        } catch (IOException e) {
-            logger.warn(String.format("Could not save the keyvalue store, reason:%s", e.getMessage()));
-        }
-    }
-
-    private final Map<String, KCoinUser> members = new HashMap<String, KCoinUser>();
-
-    /**
-     * Get the user with a given name
+     * Get or create User with a given name and organization
      *
      * @param name
      * @param org
      * @return user
      */
-    public KCoinUser getMember(String name, String org) {
+    public KCoinUser getEnrolledUser(String name, String org) {
 
         // Try to get the KCoinUser state from the cache
-        KCoinUser kcoinUser = members.get(KCoinUser.toKeyValStoreName(name, org));
+        KCoinUser kcoinUser = store.loadObject(getUserStoreKey(name, org));
         if (null != kcoinUser) {
             return kcoinUser;
         }
 
         // Create the KCoinUser and try to restore it's state from the key value store (if found).
-        kcoinUser = new KCoinUser(name, org, this);
-
+        kcoinUser = new KCoinUser(name, org);
+        addUser(kcoinUser);
         return kcoinUser;
-
     }
 
     /**
@@ -127,28 +81,25 @@ public class KCoinStore {
      * @throws NoSuchProviderException
      * @throws InvalidKeySpecException
      */
-    public KCoinUser getMember(String name, String org, String mspId, File privateKeyFile,
-                               File certificateFile) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+    public KCoinUser getEnrolledUser(String name, String org, String mspId, File privateKeyFile, File certificateFile)
+            throws IOException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
 
         try {
             // Try to get the KCoinUser state from the cache
-            KCoinUser kcoinUser = members.get(KCoinUser.toKeyValStoreName(name, org));
+            KCoinUser kcoinUser = store.loadObject(getUserStoreKey(name, org));
             if (null != kcoinUser) {
                 return kcoinUser;
             }
 
             // Create the KCoinUser and try to restore it's state from the key value store (if found).
-            kcoinUser = new KCoinUser(name, org, this);
+            kcoinUser = new KCoinUser(name, org);
             kcoinUser.setMspId(mspId);
 
             String certificate = new String(IOUtils.toByteArray(new FileInputStream(certificateFile)), "UTF-8");
-
             PrivateKey privateKey = getPrivateKeyFromBytes(IOUtils.toByteArray(new FileInputStream(privateKeyFile)));
+            kcoinUser.setEnrollment(new UserStoreEnrollment(privateKey, certificate));
 
-            kcoinUser.setEnrollment(new KCoinStoreEnrollement(privateKey, certificate));
-
-            kcoinUser.saveState();
-
+            addUser(kcoinUser);
             return kcoinUser;
         } catch (IOException e) {
             e.printStackTrace();
@@ -170,6 +121,18 @@ public class KCoinStore {
 
     }
 
+
+    /**
+     * Get cache key for user
+     *
+     * @param name
+     * @param org
+     * @return
+     */
+    private static String getUserStoreKey(String name, String org) {
+        return String.format("org.%s.user.%s", org, name);
+    }
+
     static {
         Security.addProvider(new BouncyCastleProvider());
     }
@@ -188,29 +151,22 @@ public class KCoinStore {
         return privateKey;
     }
 
-    static final class KCoinStoreEnrollement implements Enrollment, Serializable {
-
+    static final class UserStoreEnrollment implements Enrollment, Serializable {
         private static final long serialVersionUID = -2784835212445309006L;
         private final PrivateKey privateKey;
         private final String certificate;
 
-
-        KCoinStoreEnrollement(PrivateKey privateKey, String certificate) {
-
-
+        UserStoreEnrollment(PrivateKey privateKey, String certificate) {
             this.certificate = certificate;
-
             this.privateKey = privateKey;
         }
 
         public PrivateKey getKey() {
-
             return privateKey;
         }
 
         public String getCert() {
             return certificate;
         }
-
     }
 }

@@ -6,15 +6,14 @@
 
 package com.kcoin.fabric;
 
-import com.kcoin.fabric.model.*;
+import com.kcoin.fabric.model.KCoinUser;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.hyperledger.fabric.sdk.*;
-import org.hyperledger.fabric.sdk.exception.CryptoException;
-import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.security.CryptoSuite;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
+import java.security.Security;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +24,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Created by juniwang on 21/07/2018.
  */
 public class FabricManager {
-    private static FabricConfig fabricConfig = null;
+    private static FabricConfigV0 fabricConfigV0 = null;
     //private static InitConfig fabricConfig = InitConfig.getConfig("/src/main/resources/fixture/config/hdrNoDelete-sdk-config.sm.yaml");
     //private static TestConfig testConfig = TestConfig.getConfig();
 
@@ -35,6 +34,7 @@ public class FabricManager {
 
     private final static FabricManager me = new FabricManager();
     private static boolean isReady = false;
+
 
     public static FabricManager get() {
         if (!isReady) {
@@ -50,8 +50,8 @@ public class FabricManager {
         return me;
     }
 
-    private CryptoSuite initCryptoSuite() throws IllegalAccessException, InvocationTargetException, InvalidArgumentException, InstantiationException, NoSuchMethodException, CryptoException, ClassNotFoundException {
-        fabricConfig = FabricConfig.getConfig();
+    private CryptoSuite initCryptoSuite() throws Exception {
+        fabricConfigV0 = FabricConfigV0.getConfig();
         return CryptoSuite.Factory.getCryptoSuite();
     }
 
@@ -66,25 +66,22 @@ public class FabricManager {
             e.printStackTrace();
         }
         //Set up USERS
-        File kcoinStoreFile = new File(System.getProperty("java.io.tmpdir") + "/HFCSampletest.properties");
-        if (kcoinStoreFile.exists()) { //For testing start fresh
-            kcoinStoreFile.delete();
-        }
-        final KCoinStore kCoinStore = new KCoinStore(kcoinStoreFile);
+
+        final UserManager userManager = UserManager.get();
         // get users for all orgs
-        Collection<KCoinOrg> testKCoinOrgs = fabricConfig.getIntegrationKCoinOrgs();
+        Collection<KCoinOrg> testKCoinOrgs = fabricConfigV0.getIntegrationKCoinOrgs();
         for (KCoinOrg kcoinOrg : testKCoinOrgs) {
             final String orgName = kcoinOrg.getName();
-            KCoinUser admin = kCoinStore.getMember(fabricConfig.TEST_ADMIN_NAME, orgName);
+            KCoinUser admin = userManager.getEnrolledUser(fabricConfigV0.TEST_ADMIN_NAME, orgName);
             kcoinOrg.setAdmin(admin); // The admin of this org.
             // No need to enroll or register all done in End2endIt !
-            KCoinUser user = kCoinStore.getMember(fabricConfig.TESTUSER_1_NAME, orgName);
+            KCoinUser user = userManager.getEnrolledUser(fabricConfigV0.TESTUSER_1_NAME, orgName);
             kcoinOrg.addUser(user);  //Remember user belongs to this Org
 
             final String kcoinOrgName = kcoinOrg.getName();
             try {
                 System.out.println(Paths.get(kcoinOrg.getKeystorePath()).toFile());
-                KCoinUser peerOrgAdmin = kCoinStore.getMember(kcoinOrgName + "Admin", kcoinOrgName, kcoinOrg.getMSPID(),
+                KCoinUser peerOrgAdmin = userManager.getEnrolledUser(kcoinOrgName + "Admin", kcoinOrgName, kcoinOrg.getMSPID(),
                         findFileSk(Paths.get(kcoinOrg.getKeystorePath()).toFile()),
                         Paths.get(kcoinOrg.getSigncertsPath()).toFile());
                 kcoinOrg.setPeerAdmin(peerOrgAdmin); //A special user that can create channels, join peers and install chaincode
@@ -92,16 +89,16 @@ public class FabricManager {
                 e.printStackTrace();
             }
         }
-        chaincodeID = ChaincodeID.newBuilder().setName(fabricConfig.CHAIN_CODE_NAME).setVersion(fabricConfig.CHAIN_CODE_VERSION).build();
+        chaincodeID = ChaincodeID.newBuilder().setName(fabricConfigV0.getChainCodeName()).setVersion(fabricConfigV0.getChainCodeVersion()).build();
 
         newChannel();
     }
 
     public void newChannel() throws Exception {
-        KCoinOrg kcoinOrg = fabricConfig.getIntegrationKCoinOrg(fabricConfig.orgName);
+        KCoinOrg kcoinOrg = fabricConfigV0.getIntegrationKCoinOrg(fabricConfigV0.getOrgName());
         client.setUserContext(kcoinOrg.getPeerAdmin());
 
-        channel = client.newChannel(fabricConfig.CHANNEL_NAME);
+        channel = client.newChannel(fabricConfigV0.getChannelName());
         for (String orderName : kcoinOrg.getOrdererNames()) {
             channel.addOrderer(client.newOrderer(orderName, kcoinOrg.getOrdererLocation(orderName),
                     kcoinOrg.getOrdererProperties(orderName)));
@@ -113,8 +110,9 @@ public class FabricManager {
 
             //Query the actual peer for which channels it belongs to and check it belongs to this channel
             Set<String> channels = client.queryChannels(peer);
-            if (!channels.contains(fabricConfig.CHANNEL_NAME)) {
-                throw new AssertionError(format("Peer %s does not appear to belong to channel %s", peerName, fabricConfig.CHANNEL_NAME));
+            if (!channels.contains(fabricConfigV0.getChannelName())) {
+                throw new AssertionError(format("Peer %s does not appear to belong to channel %s",
+                        peerName, fabricConfigV0.getChannelName()));
             }
 
             channel.addPeer(peer);
@@ -181,7 +179,7 @@ public class FabricManager {
 
             // Send Transaction Transaction to orderer
             //BlockEvent.TransactionEvent transactionEvent = channel.sendTransaction(successful).get(testConfig.getTransactionWaitTime(), TimeUnit.SECONDS);
-            BlockEvent.TransactionEvent transactionEvent = channel.sendTransaction(successful).get(fabricConfig.getWaiteTime(), TimeUnit.SECONDS);
+            BlockEvent.TransactionEvent transactionEvent = channel.sendTransaction(successful).get(fabricConfigV0.getWaiteTime(), TimeUnit.SECONDS);
 
             if (transactionEvent.isValid()) {
                 //ut("Finished transaction with transaction id %s", transactionEvent.getTransactionID());

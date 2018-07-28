@@ -8,9 +8,22 @@ package com.kcoin.user;
 
 import com.alibaba.fastjson.JSONArray;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.PropKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Record;
+import com.kcoin.fabric.FabricClient;
 import com.kcoin.fabric.FabricManager;
+import com.kcoin.fabric.FabricResponse;
+import org.hyperledger.fabric.sdk.NetworkConfig;
+import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
+import org.hyperledger.fabric.sdk.exception.NetworkConfigurationException;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 /**
  * Created by juniwang on 22/07/2018.
@@ -50,7 +63,6 @@ public class FabricController extends BaseController {
         String finction = r.getStr("fn");
         JSONArray array = r.get("args");
 
-
         // {"fn":"initLedger", "args":["aaa", "aaa", 10000]}
         // {"fn":"balance", "args":["aaa", "coinbase"]}
         // {"fn":"balance", "args":["aaa", "user1"]}
@@ -62,8 +74,18 @@ public class FabricController extends BaseController {
             args[i] = array.get(i).toString();
         }
 
-        Boolean result = FabricManager.get().invoke(finction, args);
-        Ret ret = result ? Ret.ok() : Ret.fail();
-        renderJson(ret);
+//        Boolean result = FabricManager.get().invoke(finction, args);
+//        Ret ret = result ? Ret.ok() : Ret.fail();
+//        renderJson(ret);
+
+        FabricResponse response;
+        try {
+            FabricClient client = FabricClient.get();
+            response = client.invoke(finction, args);
+        } catch (Exception e) {
+            response = FabricResponse.failure().withMessage(e.getMessage());
+        }
+        renderJson(response);
     }
+
 }
