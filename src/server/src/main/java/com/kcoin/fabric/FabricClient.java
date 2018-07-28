@@ -155,6 +155,37 @@ public class FabricClient {
                 .withTransactionId(proposalResponse.getTransactionID());
     }
 
+    public FabricResponse query(final String finction, String[] args) {
+        try {
+            QueryByChaincodeRequest queryByChaincodeRequest = client.newQueryProposalRequest();
+            queryByChaincodeRequest.setArgs(args);
+            queryByChaincodeRequest.setFcn(finction);
+            queryByChaincodeRequest.setChaincodeID(chaincodeID);
+
+            Map<String, byte[]> tm2 = new HashMap<>();
+            tm2.put("HyperLedgerFabric", "QueryByChaincodeRequest:JavaSDK".getBytes(UTF_8));
+            tm2.put("method", "QueryByChaincodeRequest".getBytes(UTF_8));
+            queryByChaincodeRequest.setTransientMap(tm2);
+
+            Collection<ProposalResponse> queryProposals = channel.queryByChaincode(queryByChaincodeRequest, channel.getPeers());
+            ProposalResponse proposalResponse = queryProposals.iterator().next();
+            if (!proposalResponse.isVerified() || proposalResponse.getStatus() != ProposalResponse.Status.SUCCESS) {
+                logger.info("Failed query proposal from peer " + proposalResponse.getPeer().getName() + " status: " + proposalResponse.getStatus() +
+                        ". Messages: " + proposalResponse.getMessage()
+                        + ". Was verified : " + proposalResponse.isVerified());
+                return FabricResponse.failure().withMessage(proposalResponse.getMessage());
+            } else {
+                String payload = proposalResponse.getProposalResponse().getResponse().getPayload().toStringUtf8();
+                logger.info(format("Query payload from peer %s returned %s", proposalResponse.getPeer().getName(), payload));
+                return FabricResponse.sunccess().withMessage(payload);
+            }
+        } catch (Exception e) {
+            logger.error("Caught exception while running query", e);
+            e.printStackTrace();
+            return FabricResponse.failure().withMessage(e.getMessage());
+        }
+    }
+
     private void loadConfig() throws Exception {
         String content = readYamlAsString();
 

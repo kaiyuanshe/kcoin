@@ -12,19 +12,19 @@ package com.kcoin.fabric;
 public class FabricResponse {
     private String payload;
     private String message;
-    private int status;
+    private int code;
     private String transactionId;
 
     public static final FabricResponse sunccess() {
-        return new FabricResponse().withStatus(200);
+        return new FabricResponse().withCode(200);
     }
 
     public static final FabricResponse failure() {
-        return new FabricResponse().withStatus(500);
+        return new FabricResponse().withCode(500);
     }
 
     public static final FabricResponse undefined() {
-        return new FabricResponse().withStatus(0);
+        return new FabricResponse().withCode(0);
     }
 
     public String getPayload() {
@@ -41,8 +41,8 @@ public class FabricResponse {
      * SUCCESS(200),
      * FAILURE(500)
      */
-    public int getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 
     public String getTransactionId() {
@@ -59,8 +59,8 @@ public class FabricResponse {
         return this;
     }
 
-    public FabricResponse withStatus(int status) {
-        this.status = status;
+    public FabricResponse withCode(int code) {
+        this.code = code;
         return this;
     }
 

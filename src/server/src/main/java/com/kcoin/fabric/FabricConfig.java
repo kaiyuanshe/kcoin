@@ -508,6 +508,7 @@ public class FabricConfig {
                 }
 
                 FabricConfig.Node orderer = createNode(ordererName, jsonOrderer, "url");
+
                 if (orderer == null) {
                     throw new NetworkConfigurationException(format("Error loading config. Invalid orderer entry: %s", ordererName));
                 }
@@ -547,6 +548,7 @@ public class FabricConfig {
                 }
 
                 FabricConfig.Node peer = createNode(peerName, jsonPeer, "url");
+
                 if (peer == null) {
                     throw new NetworkConfigurationException(format("Error loading config. Invalid peer entry: %s", peerName));
                 }
@@ -745,6 +747,8 @@ public class FabricConfig {
         Properties props = extractProperties(jsonNode, "grpcOptions");
 
         if (null != props) {
+            props.setProperty("hostnameOverride", nodeName);
+
             String value = props.getProperty("grpc.keepalive_time_ms");
             if (null != value) {
                 props.remove("grpc.keepalive_time_ms");

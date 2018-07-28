@@ -1,4 +1,18 @@
-This document is about how to run the chaincode locally.
+## how to setup local dev env for hyperLedger
+
+- Login into Huawei cloud, go to blockchain service
+- Follow the [official document](https://support.huaweicloud.com/bestpractice-bcs/bcs_bestpractice1_0004.html) to download 
+certificates. Copy and unzip the certificates in `resources/fabric` folder
+- Edit you hosts file(`/etc/hosts` on linux/MacOS, `C:\Windows\system32\drivers\etc\hosts` on windows),
+to add(update IP and host if changed):
+```
+117.78.39.82 peer-ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f-0.peer-ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.default.svc.cluster.local
+117.78.39.82 orderer-5c3781a4078acc48a3a80a004f5d3c7b38101afe-0.orderer-5c3781a4078acc48a3a80a004f5d3c7b38101afe.default.svc.cluster.local
+```
+- start JFinal
+
+
+## how to run the chaincode locally.
 
 
 Basically, follow:
