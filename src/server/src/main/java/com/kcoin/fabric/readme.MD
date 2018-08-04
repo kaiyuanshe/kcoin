@@ -3,6 +3,8 @@
 - Login into Huawei cloud, go to blockchain service
 - Follow the [official document](https://support.huaweicloud.com/bestpractice-bcs/bcs_bestpractice1_0004.html) to download 
 certificates. Copy and unzip the certificates in `resources/fabric` folder
+- Set the file name of admin private key:`fabricAdminPrivateKeyFileName` in `config.proterties`.The file
+ admin private key file is in `fabric/fabric.ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.peer-ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.default.svc.cluster.local/msp/keystore`
 - Edit you hosts file(`/etc/hosts` on linux/MacOS, `C:\Windows\system32\drivers\etc\hosts` on windows),
 to add(update IP and host if changed):
 ```
