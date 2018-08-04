@@ -7,7 +7,7 @@
 #listContainer
 %template#listTemplate
   %ul#lists{"data-role"=>"list",
-  "data-cls-list"=>"unstyled-list row d-flex flex-justify-center mt-4 mx-0",
+  "data-cls-list"=>"unstyled-list row d-flex mt-4 mx-0",
   "data-cls-list-item"=>"cell-sm-6 cell-md-3",
   "data-show-pagination"=>"true",
   "data-items"=>"8",
@@ -16,13 +16,13 @@
   "data-pagination-prev-title"=>"<",
   "data-pagination-next-title"=>">"}
     <% for(var i = 0; i < list.length; i++) { %>
-    %li
+    %li{:onclick=>"loadProjectDetail(<%list[i].project_code%>)"}
       %figure.kcoin-figure
         .img-container.thumbnail.px-0.py-0
           <%if(list[i].img) {%>
           %img{:src=>"<%list[i].img%>"}
           <%} else {%>
-          %img{:src=>"icons/kcoin-project-list-ico.png"}
+          %img.kcoin-figure-default-img{:src=>"icons/kcoin-project-list-icon.png"}
           <%}%>
           %div.kcoin-figure-token-div.pos-absolute
             %div.kcoin-figure-token-span
@@ -107,7 +107,12 @@
             :name=>"project_id"}
           .cell-12.form-group.px-5
             %label 2. 上传项目封面（选填，但只能添加不大于 2M 的图片）
-            %input#img{:type=>"file","data-role"=>"file",:name=>"images","data-caption"=>"选择文件","data-validate"=>"custom=validateFileSize"}
+            %input#img{:type=>"file",
+            "data-role"=>"file",
+            :name=>"images",
+            "data-caption"=>"选择文件",
+            "dir"=>"rtl",
+            "data-validate"=>"custom=validateFileSize"}
         .row.mx-0
           .cell-12.text-center.px-0.pos-fixed.pos-bottom-center.mb-5
             %button#btn_prev.button.info.outline.mr-0-fs.mr-5-sm.kcoin-button-normal 上一步

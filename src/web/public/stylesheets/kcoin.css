@@ -8,12 +8,23 @@
 /*url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.svg#Microsoft YaHei") format("svg");*/
 /*}*/
 
-
-@media screen and (min-width: 0) and (max-width: 576px){
+@media screen and (min-width: 0) and (max-width: 576px) {
     .kcoin-button-normal {
         font-size: 13px !important;
         width: 100% !important;
         max-width: 340px;
+    }
+    div#project-detail-menu {
+        height: 172px !important;
+    }
+    #project-detail-menu .container .project-name{
+        height: 124px !important;
+    }
+    #project-detail-menu .container .row.tab-menu{
+        height: auto !important;
+        padding-left: 0px !important;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
@@ -21,11 +32,13 @@
     .login-title {
         top: 30px;
         font-size: 5em;
+        color: #ffffff;
     }
 
     .login-sub-title {
         font-size: 1.25em;
         margin-top: 0px;
+        color: #ffffff;
     }
 }
 
@@ -33,11 +46,13 @@
     .login-title {
         top: 30px;
         font-size: 5em;
+        color: #ffffff;
     }
 
     .login-sub-title {
         font-size: 1.25em;
         margin-top: 0px;
+        color: #ffffff;
     }
 }
 
@@ -53,6 +68,7 @@
     max-width: 400px;
     margin-left: auto;
     margin-right: auto;
+    color: #ffffff;
 }
 
 .required {
@@ -62,7 +78,7 @@
 body {
     font-family: "Microsoft YaHei", sans-serif;
     font-size: 1em;
-    color: #ffffff;
+    /* color: #ffffff; */
 }
 
 html, body {
@@ -202,8 +218,8 @@ span {
 
 .kcoin-figure-title-letter-div {
     display: inline-block;
-    width: 72px;
-    height: 140px;
+    /* width: 72px; */
+    /* height: 140px; */
     font-size: 11px;
     color: #ffffff;
     right: 20px;
@@ -256,7 +272,7 @@ span {
 .kcoin-li {
     background: #edf0f5;
     width: 100%;
-    height:40px;
+    height: 40px;
     margin-bottom: 10px;
     font-family: PingFangHK-Regular;
     font-size: 16px;
@@ -264,7 +280,7 @@ span {
     padding-left: 10px;
 }
 
-.kcoin-img-org{
+.kcoin-img-org {
     width: 40px;
     height: 40px;
 }
@@ -273,12 +289,13 @@ span {
     /* display: none; */
 }
 
-.kcoin-win-panel{
+.kcoin-win-panel {
     width: 100% !important;
     height: 100% !important;
     max-height: 466px;
 }
-.kcoin-win{
+
+.kcoin-win {
     width: 100% !important;
     height: 100% !important;
     max-height: 600px;
@@ -306,7 +323,7 @@ span {
     align-items: center !important;
     margin-left: auto;
     margin-right: auto;
-    background: #f3f3f3; */
+    background: #f3f3f3;
 }
 
 .kcoin-figure .painting-name {
@@ -324,14 +341,222 @@ span {
     border-radius: 100%;
 }
 
-
 .button.info.outline {
     background: #ffffff !important;
     color: #00a3d9 !important;
 }
 
 .kcoin-li:hover {
-    background: rgba(0,0,0,0.10);
+    background: rgba(0, 0, 0, 0.10);
     border: 1px solid #cfd2d6;
     cursor: pointer;
 }
+
+div#project-detail-menu {
+    background: #edf0f5;
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    left: 0px;
+}
+
+#project-detail-menu .container .porject-name {
+    height: 50%;
+}
+
+#project-detail-menu .row > figure {
+    position: absolute;
+    top: 20px;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #cfd2d6;
+}
+
+#project-detail-menu .row > span {
+    margin-left: 130px;
+    top: 20px;
+    position: absolute;
+    font-family: PingFangHK-Semibold;
+    font-size: 18px;
+    color: #323a45;
+}
+
+#project-detail-menu .kcoin-figure-title-letter-span {
+    font-size: 20px;
+}
+
+#project-detail-menu .kcoin-figure-title-letter-div {
+    width: auto;
+    height: auto;
+    right: 5px;
+    top: 5px;
+}
+
+#project-detail-menu .container .row.tab-menu {
+    padding-left: 146px;
+}
+
+#project-detail-menu .tabs {
+    background-color: #edf0f5;
+}
+
+#project-detail-menu .tabs > ul {
+    border-bottom: 0px;
+}
+
+#project-detail-menu .tabs > ul > li {
+    border-bottom: 0px;
+    background-color: #edf0f5;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#project-detail-menu .tabs > ul > li.active {
+    border: 0px;
+    font-family: PingFangHK-Semibold;
+    font-size: 16px;
+    color: #00a3d9;
+    border-bottom: 8px solid #00a3d9;
+    background-color: #edf0f5;
+}
+
+#project-detail-menu .tabs > ul > li > a {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.project-detail {
+}
+
+project-detail {
+}
+
+.project-detail .card-header {
+    max-width: 498px;
+    max-height: 82px;
+    width: 100%;
+    height: 100%;
+    min-width: 358px;
+    min-height: 82px;
+    background: #edf0f5;
+}
+
+.project-detail .card-content {
+    max-width: 498px;
+    max-height: 227px;
+    width: 100%;
+    height: 100%;
+    min-width: 324px;
+    min-height: 227px;
+}
+
+.project-detail .card {
+    background: #fdfeff;
+    border: 1px solid #cfd2d6;
+    border-radius: 5px;
+    max-width: 498px;
+    min-width: 360px;
+    box-shadow: 0 0 6px 2px #edf0f5;
+}
+
+.project-detail .left-title > span {
+    font-family: PingFangHK-Semibold;
+    font-size: 20px;
+    color: #404b59;
+}
+
+.project-detail .right-title > span {
+    font-family: PingFangHK-Semibold;
+    font-size: 35px;
+    color: #ff7827;
+}
+
+.project-detail .content-title {
+    position: relative;
+    background: #ffffff;
+    border-radius: 100px;
+    width: 103px;
+    height: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    top: -15px;
+}
+
+.project-detail .content-title > span {
+    font-family: PingFangHK-Semibold;
+    font-size: 16px;
+    color: #89919c;
+}
+
+.project-detail .card-content {
+    font-family: PingFangHK-Regular;
+    font-size: 16px;
+}
+
+.project-detail .content-item > span {
+    color: #323a45;
+}
+
+.project-detail .content-item-num > span {
+    color: #ff7827;
+}
+
+.koin-card-link {
+    color: #00a3d9;
+}
+
+.form-group > label {
+    color: #89919c;
+}
+
+.member-img > img {
+    border: 1px solid #b6c1cf;
+    width: 81px;
+    height: 81px;
+    border-radius: 100%;
+}
+
+.member-msg .member-name > span {
+    color: #323a45;
+}
+
+.member-flag {
+    background: #ffffff;
+    width: 80px;
+    height: 25px;
+    position: absolute;
+    bottom: 0px;
+}
+
+.member-flag > span {
+    font-family: PingFangHK-Semibold;
+    font-size:13px;
+}
+
+.member-flag-creator {
+    border: 1px solid #ff7827;
+}
+
+.memeber-flag-creator > span {
+    color: #ff7827;
+}
+
+.member-flag-manager > span {color: #86cad7;}
+
+.member-flag-manager {
+    border: 1px solid #86cad7;
+}
+
+
+.kcoin-figure-default-img {
+    width: 164px !important;
+    height: 164px !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#project-detail-menu .project-name {
+    height: 50%;
+}
+
+dl {}

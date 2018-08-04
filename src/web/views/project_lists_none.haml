@@ -75,7 +75,12 @@
             :name=>"project_id"}
           .cell-12.form-group.px-5
             %label 2. 上传项目封面（选填，但只能添加不大于 2M 的图片）
-            %input#img{:type=>"file","data-role"=>"file",:name=>"images","data-caption"=>"选择文件","data-validate"=>"custom=validateFileSize"}
+            %input#img{:type=>"file",
+            "data-role"=>"file",
+            :name=>"images",
+            "data-caption"=>"选择文件",
+            "dir"=>"rtl",
+            "data-validate"=>"custom=validateFileSize"}
             %span.invalid_feedback
               上传的图片不能超过 2 M
         .row.mx-0

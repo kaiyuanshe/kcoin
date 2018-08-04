@@ -1,0 +1,283 @@
+= include_stylesheet 'time_line'
+#project-detail-menu
+  .container
+    .row.project-name.px-6
+      %figure.d-flex.flex-align-center
+        .img-container.thumbnail.px-0.py-0.no-border
+          - if @project.img.equal? nil
+            %img{:src=>"icons/kcoin-project-list-icon.png",:style=>"background: #f3f3f3;"}
+            %div.kcoin-figure-title-letter-div.pos-absolute
+              %div.kcoin-figure-title-letter-span
+                %p.mx-0
+                  =@project.first_word
+          - else
+            %img{:src=>"#{@project.img}",:style=>"background: #f3f3f3;"}
+      %span
+        =@project.name
+    .row.tab-menu
+      %ul.tabs-expand-fs{"data-role"=>"tabs"}
+        %li
+          %a{:href=>"#_target_info"} 帐号信息
+        %li
+          %a{:href=>"#_target_time_line"} 项目动态
+        %li
+          %a{:href=>"#_target_members"} 成员列表
+        %li
+          %a{:href=>"#_target_settings"} 项目设置
+
+  .container.bd-default.pt-15-md.pt-10-fs.px-0
+    #_target_info
+      .row.project-detail
+        .cell-fs-12.cell-md-6.mx-auto
+          .card
+            .card-header.px-6
+              .row
+                .cell.text-left.left-title.left-title.d-flex.flex-align-center
+                  %span Kcoin总值
+                .cell.text-right.right-title
+                  %span 5000
+            .card-content.px-6.pb-4
+              .content-title.text-center.py-1
+                %span 发放记录
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span 提交一次Pull Request
+                .cell.text-right.content-item-num
+                  %span +10
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span 提交一次Pull Request
+                .cell.text-right.content-item-num
+                  %span +10
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span 提交一次Pull Request
+                .cell.text-right.content-item-num
+                  %span +10
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span 提交一次Pull Request
+                .cell.text-right.content-item-num
+                  %span +10
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span 提交一次Pull Request
+                .cell.text-right.content-item-num
+                  %span +10
+              .row
+                .cell.text-right.koin-card-link
+                  %a{:href=>"#"} 查看更多 >
+        .cell-fs-12.cell-md-6.mx-auto
+          .card
+            .card-header.px-6
+              .row
+                .cell.text-left.left-title.left-title.d-flex.flex-align-center
+                  %span Tcoin总值
+                .cell.text-right.right-title
+                  %span 300
+            .card-content.px-6.pb-4
+              .content-title.text-center.py-1
+                %span 发放记录
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span 提交一次Pull Request
+                .cell.text-right.content-item-num
+                  %span +10
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span 提交一次Pull Request
+                .cell.text-right.content-item-num
+                  %span +10
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span 提交一次Pull Request
+                .cell.text-right.content-item-num
+                  %span +10
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span 提交一次Pull Request
+                .cell.text-right.content-item-num
+                  %span +10
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span 提交一次Pull Request
+                .cell.text-right.content-item-num
+                  %span +10
+              .row
+                .cell.text-right.koin-card-link
+                  %a{:href=>"#"} 查看更多 >
+    #_target_time_line
+      .history.mr-4.ml-4-md.ml-0-fs
+        .history-date
+          %ul.mx-0.my-0
+            %h2.first.d-flex.flex-align-center
+              %span 2012
+            %li.green.d-flex.flex-align-center
+              %h3.no-visible-fs.visible-md 08.08
+              %dl.mt-7-fs.mt-0-md
+                %h3.visible-fs.no-visible-md.pos-relative 08.08
+                %dt
+                  %span 贡献规则发生变更：每次提交可以获得100 token
+            %li.green.d-flex.flex-align-center
+              %h3.no-visible-fs.visible-md 05.08
+              %dl.mt-7-fs.mt-0-md
+                %h3.visible-fs.no-visible-md.pos-relative 05.08
+                %dt
+                  %span 贡献规则发生变更：每次提交可以获得100 token
+            %li.green.d-flex.flex-align-center
+              %h3.no-visible-fs.visible-md 02.08
+              %dl.mt-7-fs.mt-0-md
+                %h3.visible-fs.no-visible-md.pos-relative 02.08
+                %dt
+                  %span 贡献规则发生变更：每次提交可以获得100 token
+        .history-date
+          %ul.mx-0.my-0
+            %h2.first.d-flex.flex-align-center
+              %span 2010
+            %li.green.d-flex.flex-align-center
+              %h3.no-visible-fs.visible-md 11.24
+              %dl.mt-7-fs.mt-0-md
+                %dt
+                  %p 贡献规则发生变更：每次提交可以获得100 token
+                  %p 更长的文字的样式
+                  %p 可能又多段，填充文案填充文案
+        .end.my-0
+
+    #_target_members
+      #listContainer
+      #listTemplate
+        %ul#lists{"data-role"=>"list",
+        "data-cls-list"=>"unstyled-list row d-flex mt-4 mx-0",
+        "data-cls-list-item"=>"cell-sm-6 cell-md-4",
+        "data-show-pagination"=>"true",
+        "data-activity-type"=>"square",
+        "data-cls-pagination"=>"flex-justify-center",
+        "data-pagination-prev-title"=>"<",
+        "data-pagination-next-title"=>">"}
+          %li.d-flex.flex-align-center.py-5
+            .member-img.d-inline-block
+              %img{:src=>"icons/member-icon.png"}
+            .member-msg.d-inline-block.pl-4
+              .row
+                .cell.member-name
+                  %span 用户名
+              .row
+                .cell-12-fs.cell-6-sm.pl-3
+                  %span 贡献度：560
+                .cell-12-fs.cell-6-sm.pl-3
+                  %span 收益：2345
+          %li.d-flex.flex-align-center.py-5
+            .member-img.d-inline-block
+              %img{:src=>"icons/member-icon.png"}
+              .member-flag.member-flag-creator.d-flex.flex-align-center
+                %img.p-2{:src=>"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAelJREFUOBGFUz1oFEEYfW9dXVCwjoUWKcxJFFHBNo0pLC2EiFgpBLERK3MxuE3uLCzULiGNRMiRgHVIekFRD0S5wyaYJmJhd8Eze/v5Zn8mx+Uk08z3897bed/MEgPLqufOI8U90CbVOlO0t2HcRIAl1lpf+yksE4vHj6GbvFA+DRN02KKkgQVE4UPG3/46SAa0V9cjdHsbIt7/L9mhnbDDCJtxSgHsbL2E2YTDDKwWyI8DNQkJ6zhatLnxi0iSz0O/TD4F0UFqzw+IODtheDlA0rs7lJwzGmC4qtAOCDg74obquWnni3yrYKNIdllvfXexPa7c1klO5nVMyMKtPLZJDYWni4bzdkPxBUQnlkVeLut81l5BNPJa+Vlhpsq64waaQs8XNBMBHqDbadrClaNl3eI4wJ+fH9R7pJq/esd1J/hRAv1u+M3pT3u2evOIE2IcpwL/8v0yEFfvgOtl7vfAGvZkbAzNL++w1XmfvU4GDd/3AdclECxKZM/X3MSNI0jQVHRV6SWkqd6CjQrTZ9dxgsXMj81U5uWv2idyeEjWWG/PZk8Z0dScGGuHszxireDsT9TMiGplVnZmdJrjHtofkLuyUketPU8ye1z7V1IANbBT8n5HwGva89+Z2NYtbMrzG/3OO/2a/wATWLao3lKvdAAAAABJRU5ErkJggg=="}
+                %span 创始人
+            .member-msg.d-inline-block.pl-4
+              .row
+                .cell.member-name
+                  %span 用户名
+              .row
+                .cell-12-fs.cell-6-sm.pl-3
+                  %span 贡献度：560
+                .cell-12-fs.cell-6-sm.pl-3
+                  %span 收益：2345
+          %li.d-flex.flex-align-center.py-5
+            .member-img.d-inline-block
+              %img{:src=>"icons/member-icon.png"}
+              .member-flag.member-flag-manager.d-flex.flex-align-center
+                %img.p-2{:src=>"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAhdJREFUOBGNkz1oFFEQx2fe7t2BqFiqEDk1m0ZFFAlWBvESaztFlJhILEQIgoWG4DVR0BSKlRc/ohGUCNaaBEVLOUyjiLdCooWChRaHgbvbfZP/bHjnep6QLXbn6/ffefPeY2p5Bl993hnH9jQJ9QrJFk0z8Ve8Zj3P3Ll7sPN9GmHnFD9IduFbeIOFzgA0Lp7+QsgK0+2tm4Ph4g6uay4ROBeGueqivBCRnjTwP5uZX6/L8+FbQVBL/lRdkJttYeaP+EW5VUhrldE4D7z8tNtG/K592+Yykf2NuvFWEV2O8WWvsTEPtoeJssY8MTlvmhiTaXmUUdYnkV6Xw9qeMdOM+mJ5aaKwvaL2qZnKcTK8Xm0r1APmmNrKGkh3JI76REfEyq7MhrVTk33BlIvf7+t6LF7mAXJdiB11cWUxRI5dAIra69nar+r8UFkyLl4UbGtUf4vcea1xcWUNlvflT2DFwoB+lvZxY1rEU6Eis0Xmxz91YLl/tnIN23IhnYTAsPH953EUPcQ2ZnzfnLQN2W/JTvxVx3zdeL4pYXCNZkInzrIxjqN5TKUbLe+JG7aMFrall6tMwirYPxeOibWXmiKrMNiYK5OFYCQ5iflDnaNo++kquKREa5VRpzlRzIEH5sIREbqIQ7KmnRjAJbR+9V4hGMOZwaakBBww9GZxU61eP4G5FzCL5DqTrFznbC77qHQg/93V6ncZI7za+4Nf2AkAAAAASUVORK5CYII="}
+                %span 管理员
+            .member-msg.d-inline-block.pl-4
+              .row
+                .cell.member-name
+                  %span 用户名
+              .row
+                .cell
+                  %span 贡献度：560  收益：2345
+          %li.d-flex.flex-align-center.py-5
+            .member-img.d-inline-block
+              %img{:src=>"icons/member-icon.png"}
+            .member-msg.d-inline-block.pl-4
+              .row
+                .cell.member-name
+                  %span 用户名
+              .row
+                .cell
+                  %span 贡献度：560  收益：2345
+          %li.d-flex.flex-align-center.py-5
+            .member-img.d-inline-block
+              %img{:src=>"icons/member-icon.png"}
+            .member-msg.d-inline-block.pl-4
+              .row
+                .cell.member-name
+                  %span 用户名
+              .row
+                .cell
+                  %span 贡献度：560  收益：2345
+    #_target_settings
+      %form#form{:onsubmit=>"return false;",
+      :enctype=>"multipart/form-data"}
+        .row.mx-0
+          .cell-12.form-group.px-3-fs.px-0-sm
+            %input{:type=>"hidden",:name=>"project_code",:value=>"#{@project.project_code}"}
+            %label 1. 填写项目名称
+            %input#project_name{:type=>"text",
+                :name=>"name",
+                maxlength: 120,
+                "data-validate" => "required"}
+            %span.invalid_feedback
+              项目名称不能为空
+            %input#project_id{:type=>"hidden",
+                :dir=>"rtl",
+                :name=>"project_id"}
+          .cell-12.form-group.px-3-fs.px-0-sm
+            %label 2. 上传项目封面（选填，但只能添加不大于 2M 的图片）
+            %input#img{:type=>"file",
+              "data-role"=>"file",
+              :name=>"images",
+              "data-caption"=>"选择文件",
+              "dir"=>"rtl",
+              "data-validate"=>"custom=validateFileSize"}
+        .row.mx-0
+          .cell-12.text-left.mt-20.px-3-fs.px-0-sm
+            %button#btn_submit.button.info.kcoin-button-normal 保存
+
+:javascript
+  $(document).ready(function() {
+    $("#btn_submit").on("click", function () {
+        saveForm();
+    });
+  });
+  function saveForm() {
+    if (!Metro.validator.validate($("#project_name"))) {
+        return;
+    }
+    if (!Metro.validator.validate($("#img"))) {
+        Metro.toast.create("上传的图片不能超过 2 M", null, 3000, "alert");
+        return;
+    }
+    debugger
+    var formData = new FormData($("#form")[0]);
+    $.ajax({
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        url: "/project/updateProject",
+        success: function (res) {
+            res = JSON.parse(res);
+            if (res.code === 601) {
+                $("#container").load("/project/projectListsView");
+            } else if (res.code === 602) {
+                Metro.toast.create(res.msg, null, 3000, "alert");
+            }
+        }
+    });
+  }
+  function validateFileSize() {
+    if ($("#img")[0].files[0].size < (1024 * 1024 * 2)) {
+        return true;
+    } else {
+        return false;
+    }
+  }

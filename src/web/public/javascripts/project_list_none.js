@@ -91,7 +91,6 @@ function saveForm() {
     var index = findElem(list, "id", project_id);
     var formData = new FormData($("#import_form")[0]);
     formData.append("project", list[index]);
-    debugger
     $.ajax({
         type: "POST",
         data: formData,

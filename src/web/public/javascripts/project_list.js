@@ -22,3 +22,7 @@ function initProjectList() {
         }
     });
 }
+
+function loadProjectDetail(id) {
+    $("#container").load("/project/projectDetailView", {project_code: id});
+}

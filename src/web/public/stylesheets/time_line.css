@@ -1,0 +1,201 @@
+.history {
+    background: url("/icons/line04.png") repeat-y 63px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.history-date {
+    overflow: hidden;
+}
+
+.history-date h2 {
+    font-family: PingFangHK-Semibold;
+    font-size: 20px;
+    color: #ffffff;
+    margin-bottom: 41px;
+}
+
+.history-date h2.first {
+    background: #00a3d9;
+    border-radius: 100px;
+    width: 70px;
+    height: 30px;
+    margin-left: 30px;
+}
+
+.history-date h2 a {
+    color: #00bbff;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    background: url(/icons/icon08.gif) no-repeat right 50%;
+    padding-right: 17px;
+    margin: 21px 97px 0 0;
+}
+
+.history-date h2 a:hover {
+    text-decoration: none;
+}
+
+.history-date h2 img {
+    vertical-align: -5px;
+}
+
+.history-date h2.date02 {
+    /* background: none; */
+}
+
+.history-date ul {
+    list-style-type: none;
+}
+
+.history-date ul li {
+    background: url(/icons/icon07.png) no-repeat 52px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    zoom: 1;
+}
+
+.history-date ul li.last {
+    padding-bottom: 0;
+}
+
+.history-date ul li:after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.history-date ul li h3 {
+    float: left;
+    width: 64px;
+    text-align: right;
+    padding-right: 19px;
+    color: #c3c3c3;
+    font: normal 18px/16px Arial;
+}
+
+.history-date ul li h3 span {
+    display: block;
+    color: #d0d0d0;
+    font-size: 12px;
+}
+
+.history-date ul li dl {
+    float: left;
+    padding-left: 30px;
+    margin-top: -5px;
+    max-width: 940px;
+    min-width: 272px;
+    margin-left: 0px;
+    width: 100%;
+}
+
+.history-date ul li dl dt {
+    position: relative;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background: #fdfeff;
+    border: 1px solid #cfd2d6;
+    box-shadow: 0 0 6px 2px #edf0f5;
+    padding: 20px;
+    max-width: 975px;
+    width: 100%;
+    font-family: PingFangHK-Semibold;
+    font-size: 16px;
+    color: #404b59;
+}
+
+.history-date ul li dl dt span {
+    font-family: PingFangHK-Semibold;
+    font-size: 16px;
+    color: #404b59;
+}
+
+.history-date ul li.green h3 {
+    font-family: PingFangHK-Semibold;
+    font-size:16px;
+    color:#00a3d9;
+    display: inline-block;
+    margin-bottom: 0px;
+}
+
+.history-date ul li.green h3 span {
+    color: #a8dda3;
+}
+
+.history-date ul li.green dl {
+    margin-top: 48px;
+    display: inline-block;
+}
+
+.history-date ul li.green dl dt {
+}
+
+.history-date ul li.green dl dd {
+    padding-top: 20px;
+    display: none;
+}
+
+.history-date ul li.green dl dd img {
+    float: left;
+}
+
+.history-date ul li.green dl dd p {
+    overflow: hidden;
+    zoom: 1;
+    line-height: 21px;
+    color: #787878;
+}
+
+.history-date h2.first .more-history {
+    font-size: 16px;
+    background: transparent;
+    margin-left: 30px;
+}
+
+.history-date h2.first .more-history:hover {
+    text-decoration: underline;
+}
+
+.history-date h2 > span {
+    font-family: PingFangHK-Semibold;
+    font-size: 20px;
+    color: #ffffff;
+    width: 45px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.history-date > dt {
+}
+
+.history-date ul li dl dt:before {
+    content: "";
+    position: absolute;
+    left: -11px;
+    /* top: 50%; */
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 1px solid #cfd2d6;
+    border-right: none;
+    border-top: none;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.history .end {
+    background: url(/icons/icon06.png) 44px 0px no-repeat rgb(255, 255, 255);
+    height: 66px;
+}
+
+.history-date ul li.green dl > h3 {
+    top: -24px;
+}
