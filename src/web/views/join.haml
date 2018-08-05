@@ -15,9 +15,11 @@
 
   %body
     .container-fluid.kcoin-background
-      .text-center.login-title= link_to('<span class="kcoin-title">K</span>coin', '/')
-      .text-center.login-sub-title 注册新帐号
-      .form.login-form
+      -#.text-center.login-title= link_to('<span class="kcoin-title">K</span>coin', '/')
+      .text-center.login-title
+        %img{:src=>"icons/kcoin-log-big.png"}
+      .form.join-form
+        .text-center.login-sub-title 注册新帐号
         .grid
           .row
             .cell.login-context
@@ -65,7 +67,7 @@
                   .link= link_to('已有帐号登录', '/user/login')
           .row
             .cell.login-context
-              %a.button.dark.kcoin-button-flex{:href => '/auth/github/login'}
+              %a.button.dark.kcoin-button-flex.mt-10{:href => '/auth/github/login'}
                 %img.github-icon{:src=>"icons/github-icon.png"}使用 GitHub 账号登录
 
     = include_javascript 'join'

@@ -23,7 +23,7 @@
 
         %ul.app-bar-menu.order-3.order-md-2.text-center.mx-auto
           %li.divider.visible-fs.no-visible-ms.no-visible-md
-          %li
+          %li{:style=>'color: #fff!important;'}
             %a.fg-white-hover{:href => '/project'} 我的项目
           %li.divider.visible-fs.no-visible-ms.no-visible-md
           %li
@@ -38,7 +38,7 @@
           %li
             %a.fg-white-hover.visible-fs.no-visible-ms.no-visible-md{:href=>'/auth/logout'} 退出登录
 
-        .app-bar-container.order-2.order-md-3.no-visible-fs.visible-ms.visible-md
+        .app-bar-container.order-2.order-md-3.d-none-fs.d-flex-md
           %span.app-bar-item
             = current_user.name
           .app-bar-container

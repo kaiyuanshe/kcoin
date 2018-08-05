@@ -1,3 +1,9 @@
+@media screen and (min-width: 0) and (max-width: 576px) {
+    .history-date ul li {
+        background: url(/icons/icon07.png) no-repeat 52px calc(50% + 16px) !important;
+    }
+}
+
 .history {
     background: url("/icons/line04.png") repeat-y 63px 0;
     overflow: hidden;
@@ -16,7 +22,7 @@
 }
 
 .history-date h2.first {
-    background: #00a3d9;
+    background: #ff5c5d;
     border-radius: 100px;
     width: 70px;
     height: 30px;
@@ -60,14 +66,6 @@
     padding-bottom: 0;
 }
 
-.history-date ul li:after {
-    content: " ";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-}
-
 .history-date ul li h3 {
     float: left;
     width: 64px;
@@ -85,7 +83,7 @@
 
 .history-date ul li dl {
     float: left;
-    padding-left: 30px;
+    padding-left: 40px;
     margin-top: -5px;
     max-width: 940px;
     min-width: 272px;
@@ -107,6 +105,7 @@
     font-family: PingFangHK-Semibold;
     font-size: 16px;
     color: #404b59;
+    margin-left: 0px;
 }
 
 .history-date ul li dl dt span {
@@ -117,8 +116,8 @@
 
 .history-date ul li.green h3 {
     font-family: PingFangHK-Semibold;
-    font-size:16px;
-    color:#00a3d9;
+    font-size: 16px;
+    color: #ff5c5d;
     display: inline-block;
     margin-bottom: 0px;
 }
@@ -177,7 +176,9 @@
     content: "";
     position: absolute;
     left: -11px;
-    /* top: 50%; */
+    top: calc(50% - 10px);
+    top: -moz-calc(50% - 10px);
+    top: -webkit-calc(50% - 10px);
     width: 20px;
     height: 20px;
     background: white;
@@ -199,3 +200,5 @@
 .history-date ul li.green dl > h3 {
     top: -24px;
 }
+
+.history .end > span {position: absolute;top: 7px;left: 100px;font-family: PingFangHK-Semibold;font-size:20px;color:#89919c;}

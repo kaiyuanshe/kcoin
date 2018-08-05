@@ -11,6 +11,7 @@ function initProjectList() {
             var res = JSON.parse(res);
             var list = res.projectList;
             console.log(list);
+            $("#list-num").text($("#list-num").text() + "（ "+list.length+" ）")
             if (res.projectList.length > 0) {
                 let template = $("#listTemplate").html();
                 while (template.match(/\&gt;/) || template.match(/\&lt;/)) {

@@ -1,12 +1,146 @@
-/*@font-face {*/
-/*font-family: "Microsoft YaHei";*/
-/*src: url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.eot");*/
-/*src: url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.eot?#iefix") format("embedded-opentype"),*/
-/*url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.woff2") format("woff2"),*/
-/*url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.woff") format("woff"),*/
-/*url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.ttf") format("truetype"),*/
-/*url("//db.onlinewebfonts.com/t/e63653407669814f5b0eb9bbdc175f77.svg#Microsoft YaHei") format("svg");*/
+@font-face {
+    font-family: PingFangHK-Semibold;
+    src: url(/icons/53faa9276001397f57e3dec8cafa2205.ttf) format("truetype");
+}
+
+@media screen and (min-width: 992px) {
+    /*@media screen and (min-width: 577px) {*/
+    .login-form {
+        position: absolute;
+        right: 290px;
+        background: #ffffff;
+        border-radius: 5px;
+        width: 360px;
+        height: 400px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .login-index-log {
+        position: absolute;
+        padding-top: 30px;
+        width: auto;
+        height: inherit;
+        right: 690px;
+    }
+
+    .login-form .login-sub-title {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-family: PingFangHK-Semibold;
+        font-size: 28px;
+        color: #323a45;
+        text-align: center;
+    }
+
+    .login-form .login-context .form-group > label {
+        font-family: PingFangHK-Semibold;
+        font-size: 13px;
+        color: #323a45 !important;
+    }
+
+    .login-form .login-context .form-group .link > a {
+        font-family: PingFangHK-Semibold;
+        font-size: 13px;
+    }
+}
+
+/*@media screen and (min-width: 577px) and (max-width: 767px) {*/
+/*.login-form {*/
+/*right: 30px;*/
 /*}*/
+
+/*.login-index-log {*/
+/*right: 420px;*/
+/*width: 356px;*/
+/*height: auto;*/
+/*padding-top: 0px;*/
+/*}*/
+
+/*}*/
+
+/*@media screen and (min-width: 768px) and (max-width: 992px) {*/
+/*.login-form {*/
+/*right: 20px;*/
+/*}*/
+
+/*.login-index-log {*/
+/*right: 410px;*/
+/*width: 408px;*/
+/*height: auto;*/
+/*padding-top: 0px;*/
+/*top: 30px;*/
+/*}*/
+
+/*}*/
+
+@media screen and (min-width: 992px) and (max-width: 1200px) {
+    .login-form {
+        right: 88px;
+    }
+
+    .login-index-log {
+        right: 478px;
+        width: 551px;
+        height: auto;
+        padding-top: 0px;
+        top: 30px;
+    }
+
+}
+
+@media screen and (min-width: 1201px) and (max-width: 1260px) {
+    .login-form {
+        right: 138px;
+    }
+
+    .login-index-log {
+        right: 528px;
+        width: 607px;
+        height: auto;
+        padding-top: 0px;
+    }
+
+}
+
+@media screen and (min-width: 1261px) and (max-width: 1452px) {
+    .login-form {
+        right: 168px;
+    }
+
+    .login-index-log {
+        right: 558px;
+        width: 607px;
+        height: auto;
+        padding-top: 0px;
+    }
+
+}
+
+@media screen and (min-width: 0) and (max-width: 991px) {
+
+    .login-form {
+        position: absolute;
+        top: 142px;
+        padding-right: 24px;
+        width: 100%;
+        font-size: 13px;
+    }
+
+    .login-context {
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        color: #ffffff;
+    }
+
+    .login-sub-title {
+        font-size: 20px;
+        margin-top: 0px;
+        margin-bottom: 38px;
+        color: #ffffff;
+    }
+}
 
 @media screen and (min-width: 0) and (max-width: 576px) {
     .kcoin-button-normal {
@@ -14,46 +148,32 @@
         width: 100% !important;
         max-width: 340px;
     }
+
     div#project-detail-menu {
         height: 172px !important;
     }
-    #project-detail-menu .container .project-name{
+
+    #project-detail-menu .container .project-name {
         height: 124px !important;
     }
-    #project-detail-menu .container .row.tab-menu{
+
+    #project-detail-menu .container .row.tab-menu {
         height: auto !important;
         padding-left: 0px !important;
         margin-left: auto;
         margin-right: auto;
     }
-}
 
-@media screen and (min-width: 320px) and (max-width: 450px) {
-    .login-title {
-        top: 30px;
-        font-size: 5em;
-        color: #ffffff;
+    .kcoin-win {
+        position: fixed !important;
+        max-height: 100vh !important;
+        z-index: 9999 !important;
     }
 
-    .login-sub-title {
-        font-size: 1.25em;
-        margin-top: 0px;
-        color: #ffffff;
-    }
-}
-
-@media screen and (min-width: 450px) {
-    .login-title {
-        top: 30px;
-        font-size: 5em;
-        color: #ffffff;
+    .project-detail-container {
+        padding-top: 212px !important;
     }
 
-    .login-sub-title {
-        font-size: 1.25em;
-        margin-top: 0px;
-        color: #ffffff;
-    }
 }
 
 .container {
@@ -62,6 +182,21 @@
     height: 100%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.login-sub-title {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font-family: PingFangHK-Semibold;
+    font-size: 20px;
+    color: #ffffff;
+}
+
+.login-title {
+    position: absolute;
+    top: 46px;
+    left: 0px;
+    right: 0px;
 }
 
 .login-context {
@@ -76,7 +211,7 @@
 }
 
 body {
-    font-family: "Microsoft YaHei", sans-serif;
+    font-family: PingFangHK-Semibold;
     font-size: 1em;
     /* color: #ffffff; */
 }
@@ -94,7 +229,7 @@ html, body {
 /* container style */
 .kcoin-background {
     background-color: #333333;
-    height: 100%
+    height: 100%;
 }
 
 /* kcoin title style */
@@ -109,9 +244,9 @@ input {
 }
 
 /* form style */
-.form {
+.join-form {
     position: absolute;
-    top: 200px;
+    top: 142px;
     padding-right: 24px;
     width: 100%;
     font-size: 0.8125em;
@@ -128,9 +263,9 @@ input {
 
 /* login-btn style */
 .button.info {
-    background: #00a3d9;
+    background: #60A8F0;
     border-radius: 5px;
-    font-size: 1.25em;
+    font-size: 16px;
     margin-bottom: 5px;
     width: 150px;
 }
@@ -153,7 +288,6 @@ input {
 .button.dark {
     background: #666666;
     border-radius: 5px;
-    top: 58px;
 }
 
 /* githbu icon style */
@@ -231,21 +365,17 @@ span {
     color: #89919c;
 }
 
-.kcoin_win_title {
+.kcoin-win-title {
     background: #333333;
-}
-
-.kcoin_win {
-    width: 100%;
-    height: 100%;
-    max-width: 750px;
-    max-height: 600px;
+    height: 40px;
 }
 
 .kcoin-stepper {
-    width: 50%;
+    width: 234px;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .kcoin-step span {
@@ -256,13 +386,15 @@ span {
     /* left: -16px; */
 }
 
-.kcoin-stepper-complete {
-    background: #333333 !important;
-    border: 4px solid #333333 !important;
+span.step.kcoin-step.current.kcoin-stepper-complete {
+    width: 24px;
+    height: 24px;
+    background: #FF5C5D !important;
+    border: 4px solid #FF5C5D !important;
 }
 
 .kcoin-step {
-    border: 4px solid #cfd2d6;
+    border: 4px solid #FFD7D8;
     background-color: white;
     /* width: 16px !important; */
     /* height: 16px !important; */
@@ -298,8 +430,11 @@ span {
 .kcoin-win {
     width: 100% !important;
     height: 100% !important;
-    max-height: 600px;
+    max-height: 604px;
     max-width: 750px;
+    background: #ffffff;
+    border: 1px solid #cfd2d6;
+    box-shadow: 0 0 4px 0 #9c9c9c;
 }
 
 #import_form .page {
@@ -358,6 +493,7 @@ div#project-detail-menu {
     height: 100px;
     position: fixed;
     left: 0px;
+    z-index: 1;
 }
 
 #project-detail-menu .container .porject-name {
@@ -368,6 +504,7 @@ div#project-detail-menu {
     position: absolute;
     top: 20px;
     width: 100px;
+    background-color: #edf0f5;
     height: 100px;
     border: 1px solid #cfd2d6;
 }
@@ -409,14 +546,15 @@ div#project-detail-menu {
     background-color: #edf0f5;
     margin-right: 10px;
     margin-left: 10px;
+    color: #89919c;
 }
 
 #project-detail-menu .tabs > ul > li.active {
     border: 0px;
     font-family: PingFangHK-Semibold;
     font-size: 16px;
-    color: #00a3d9;
-    border-bottom: 8px solid #00a3d9;
+    color: #60a8f0;
+    border-bottom: 8px solid #60a8f0;
     background-color: #edf0f5;
 }
 
@@ -436,7 +574,7 @@ project-detail {
     max-height: 82px;
     width: 100%;
     height: 100%;
-    min-width: 358px;
+    min-width: 342px;
     min-height: 82px;
     background: #edf0f5;
 }
@@ -455,7 +593,7 @@ project-detail {
     border: 1px solid #cfd2d6;
     border-radius: 5px;
     max-width: 498px;
-    min-width: 360px;
+    min-width: 344px;
     box-shadow: 0 0 6px 2px #edf0f5;
 }
 
@@ -468,7 +606,7 @@ project-detail {
 .project-detail .right-title > span {
     font-family: PingFangHK-Semibold;
     font-size: 35px;
-    color: #ff7827;
+    color: #f27370;
 }
 
 .project-detail .content-title {
@@ -498,7 +636,7 @@ project-detail {
 }
 
 .project-detail .content-item-num > span {
-    color: #ff7827;
+    color: #f27370;
 }
 
 .koin-card-link {
@@ -530,7 +668,7 @@ project-detail {
 
 .member-flag > span {
     font-family: PingFangHK-Semibold;
-    font-size:13px;
+    font-size: 13px;
 }
 
 .member-flag-creator {
@@ -541,12 +679,13 @@ project-detail {
     color: #ff7827;
 }
 
-.member-flag-manager > span {color: #86cad7;}
+.member-flag-manager > span {
+    color: #86cad7;
+}
 
 .member-flag-manager {
     border: 1px solid #86cad7;
 }
-
 
 .kcoin-figure-default-img {
     width: 164px !important;
@@ -559,4 +698,66 @@ project-detail {
     height: 50%;
 }
 
-dl {}
+dl {
+}
+
+.stepper::before {
+    content: "";
+    display: block;
+    width: 97%;
+    position: absolute;
+    background-color: white;
+    top: calc(50% - 2px);
+    left: 2px;
+    z-index: 0;
+    border: 2px dashed #FFD7D8;
+    height: 0px;
+}
+
+span.step.kcoin-step {
+    width: 24px;
+    height: 24px;
+    background-color: white;
+}
+
+span.step.kcoin-step.complete.kcoin-stepper-complete {
+    background-color: #FF5C5D;
+    border: none;
+}
+
+.kcoin-win-title .title {
+    color: #f3f3f3;
+}
+
+.import_title > span {
+    color: #404b59;
+}
+
+.pagination .page-item.active {
+    background: #00a3d9;
+}
+
+.pagination .page-item.active > a {
+    color: #ffffff;
+}
+
+.member-flag-creator > span {
+    color: #ff5c5d;
+}
+
+.login-context .form-group > label {
+    font-size: 13px;
+    color: #ffffff !important;
+}
+
+.login-context .form-group .link > a {
+    color: #60a8f0;
+}
+
+.project-detail-container {
+    padding-top: 180px;
+    z-index: 0;
+}
+
+span {
+}

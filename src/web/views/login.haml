@@ -14,10 +14,14 @@
     = include_javascript 'https://cdn.metroui.org.ua/v4/js/metro.min.js'
 
   %body
-    .container-fluid.kcoin-background
-      .text-center.login-title= link_to('<span class="kcoin-title">K</span>coin', '/')
-      .text-center.login-sub-title 登录
+    .container-fluid.kcoin-background.d-flex.flex-align-center
+      -#.text-center.login-title= link_to('<span class="kcoin-title">K</span>coin', '/')
+      .text-center.login-title.d-none-lg.d-block-fs
+        %img{:src=>"icons/kcoin-log-big.png"}
+
+      %img.d-none-fs.d-block-lg.login-index-log{:src=>"icons/login-index.png"}
       .form.login-form
+        .text-center.login-sub-title 登录
         .grid
           .row
             .cell
@@ -48,7 +52,7 @@
                   .link= link_to('注册账号', '/user/join')
           .row
             .cell
-              %a.login-context#auth_login.button.dark.kcoin-button-flex{:href => '/auth/github/login'}
+              %a.login-context#auth_login.button.dark.kcoin-button-flex.mt-3{:href => '/auth/github/login'}
                 %img.github-icon{:src=>"icons/github-icon.png"}使用 GitHub 账号登录
 
 

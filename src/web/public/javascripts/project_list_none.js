@@ -64,9 +64,11 @@ function showNextPage(project_id) {
     $("#project_title").html(list[index].name);
     $("#project_name").val(list[index].name);
     $("#project_id").val(project_id);
+    $('.kcoin-step.complete').append("<style>.stepper::before{border: 2px solid #FF5C5D;}</style>");
 }
 
 function showPrevPage() {
+    $('.kcoin-step.complete').append("<style>.stepper::before{border: 2px dashed #FFD7D8;}</style>");
     $("#kcoin_stepper").data('stepper').prev();
     $("#kcoin_master").data('master').prev();
 }
