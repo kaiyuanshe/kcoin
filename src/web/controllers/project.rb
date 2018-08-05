@@ -8,7 +8,7 @@ class ProjectController < BaseController
     set_current_user
     # if people login return explorer page, else redirect login page
     auth_params = {
-      redirect_uri: request.base_url + '/project'
+        redirect_uri: request.base_url + '/project'
     }
     redirect_url = '/user/login?' + URI.encode_www_form(auth_params)
     redirect redirect_url unless authenticated?
@@ -26,7 +26,7 @@ class ProjectController < BaseController
     user_id = current_user.id
     dataset = User[user_id].projects
     {
-      projectList: dataset
+        projectList: dataset
     }.to_json
   end
 
@@ -44,7 +44,7 @@ class ProjectController < BaseController
 
     count = User[current_user.id].projects_dataset.where(project_code: project_id).count
 
-    return { code: 602, msg: '您已经导入了该项目，请重新选择' }.to_json if count > 0
+    return {code: 602, msg: '您已经导入了该项目，请重新选择'}.to_json if count > 0
 
     if tmpfile
       img = 'data:' + tmpfile[:type] + ';base64,' + Sequel.blob(Base64.encode64(File.read(tmpfile[:tempfile])))
@@ -55,7 +55,20 @@ class ProjectController < BaseController
                              first_word: first_word,
                              project_code: project_id)
     result = User[current_user.id].add_project(project)
-    { code: 601, msg: '您已经导入了该项目，请重新选择'}.to_json
+    {code: 601, msg: '您已经导入了该项目，请重新选择'}.to_json
+  end
+
+  post '/updateProject' do
+    project = User[current_user.id].projects_dataset.where(project_code: params[:project_code]).first
+    # project.name = params[:name]
+    tmpfile = params[:images]
+    if tmpfile
+      img = 'data:' + tmpfile[:type] + ';base64,' + Sequel.blob(Base64.encode64(File.read(tmpfile[:tempfile])))
+      # project.img = img
+    end
+    # User[current_user.id].update_project(project)
+    project.update(name: params[:name], img: img)
+    {code: 601, msg: '项目信息修改完成'}.to_json
   end
 
   get '/projectListsView' do
@@ -68,4 +81,11 @@ class ProjectController < BaseController
       haml :project_lists_none, layout: false
     end
   end
+
+  post '/projectDetailView' do
+    project_code = params[:project_code]
+    @project = User[current_user.id].projects_dataset.where(project_code: project_code).first
+    haml :project_detail, layout: false
+  end
+
 end
