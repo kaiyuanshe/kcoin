@@ -1,28 +1,28 @@
 .pt-5
   .row
     .cell-sm-6.cell-fs-12.text-left.d-flex.flex-align-center
-      %span.pl-2 我的项目列表
+      %span#list-num.pl-2 我的项目列表
     .cell-sm-6.cell-fs-12.text-right.mt-3-fs.mt-0-sm.text-center-fs.text-right-sm
       %button#btn_import.button.info.my-0.kcoin-button-normal 导入项目
 #listContainer
 %template#listTemplate
   %ul#lists{"data-role"=>"list",
-  "data-cls-list"=>"unstyled-list row d-flex flex-justify-center mt-4 mx-0",
+  "data-cls-list"=>"unstyled-list row d-flex mt-4 mx-0",
   "data-cls-list-item"=>"cell-sm-6 cell-md-3",
   "data-show-pagination"=>"true",
   "data-items"=>"8",
   "data-activity-type"=>"square",
   "data-cls-pagination"=>"flex-justify-center",
-  "data-pagination-prev-title"=>"<",
-  "data-pagination-next-title"=>">"}
+  "data-pagination-prev-title"=>"◂",
+  "data-pagination-next-title"=>"▸"}
     <% for(var i = 0; i < list.length; i++) { %>
-    %li
+    %li{:onclick=>"loadProjectDetail(<%list[i].project_code%>)"}
       %figure.kcoin-figure
         .img-container.thumbnail.px-0.py-0
           <%if(list[i].img) {%>
           %img{:src=>"<%list[i].img%>"}
           <%} else {%>
-          %img{:src=>"icons/kcoin-project-list-ico.png"}
+          %img.kcoin-figure-default-img{:src=>"icons/kcoin-project-list-icon.png"}
           <%}%>
           %div.kcoin-figure-token-div.pos-absolute
             %div.kcoin-figure-token-span
@@ -40,8 +40,8 @@
 .pt-2#win_import{"data-role"=>"window",
 "data-width"=>"100%",
 "data-height"=>"100%",
-"data-place"=>"top-center",
--#"data-top"=>"0px",
+"data-place"=>"center",
+-#"data-top"=>"30px",
 -#"data-left"=>"50%",
 "data-draggable"=>"true",
 "data-btn-min"=>"false",
@@ -49,9 +49,8 @@
 "data-resizable"=>"false",
 "data-title"=>"导入项目",
 "data-close-action"=>"Metro.actions.HIDE",
-"data-cls-caption"=>"kcoin_win_title",
+"data-cls-caption"=>"kcoin-win-title",
 "data-cls-master"=>"px-3",
--#"data-cls-content"=>"kcoin_win",
 "data-cls-window"=>"no-visible kcoin-win",
 "data-on-close-click"=>"closeWin"}
 
@@ -81,7 +80,8 @@
               <% for(let item of map.values()){ %>
               %p.my-5
                 %img.kcoin-img-org{:src=>"<%item[0].owner.avatar_url%>"}
-                %label <%item[0].owner.login%>（<%item.length%> 个项目）
+                %label <%item[0].owner.login%>
+                %label.fg-gray（<%item.length%> 个项目）
               %ul.mx-0.my-0
                 <% for(var i = 0; i < item.length; i++) { %>
                 %li.kcoin-li.d-flex.flex-align-center{:name=>"project_id",
@@ -93,7 +93,8 @@
         .row.mx-0
           .cell-12.form-group.px-0
             .import_title
-              %span#project_title.pos-absolute.pos-left-center.ml-5.mif-checkmark.mif-3x.fg-green
+              %img.pos-absolute.pos-left-center.ml-5{:src=>"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAABTRJREFUSA3FV0tsVWUQnvnP87ZgW0tcVMFXjGlEYUGswSi5BcRWXRkaoILRyitRTEzYSIAGgiQsQI0JKiFE6MNIYGEoiIVeysKIcYHGhASCiQ8gMZDyaO95n3HmwGlPT4q8VP7FPTP/P/N9/3NmLsJNtq96a6pCy5kKhC8SYTPE8aOJq1KnEWk/IH2je4XjLbMHLt0MJN7IqOtQ5VNoxG1s9zIRPGKYwJys0TVPRlAKIPABEOFX7t1Hgdq+YNbQz9csxvxcl3jnwXH3aVa0SiG0mRZUircQ+h64LJ5n5msrwyrWJ7CNLROQxjZDMcH2yNM2LJoz+NfV3tG/YxJ3lArP6Dpt0w2cLCvzPAiA6BAo2KPF+rFLofGHFwzIBMAyauwqPZgYQdjA6qu87FmWBQYwchjQL2GIi18rOt+PpuXdyXd8ebjyBTLiLl2HWuIVhhEdRMB182c43+Vtx9K7+wvTCWiNruEc5B0IQ7iAgVowb+bQt1n7UcTdfYUG0KFHSKOQOWNaW0fupmIRwqzTjeRSCfRzaK9UCtdpOuhCzggvzW90jqW+w8RdpfETAKOjhkn1UQRBFNLy1qK7PTW8nW9nyW7TdNyqaWAEPp4A0p5fULzC94MvZApIFK62bKqX7Y0Car9TUsEVjICxBDPBZo6ULyHu6DWfVBq8xc8F2LC3Dt1NqcGdfk8zlmAKtnAIl2AmxMrQFvNzqAh98Ahwza2eaTq5z34EgwmGj0/62/l+KMLVgi0cwiX9uKNUXW2Cd9wuwIOugwdai+VmGbid1lGq2KoU3RuE8N7rM50zWQwe218oUJPrwG8+WFN1i9wpqOEkCQ6I8e6s8a3InX32Ik2jZQUONUOX6TL7JitLMRTi7jimJg4yk6zIncK7gE06P3cOeQ6Hph9Sw1v5fsFhVWlqMz8dGBqEc2EYb8776yo4JhzCJZyKT6QpjpLQe+FK5P+Zd9jZO66+o78yuRD5MdE79sM9hkaf6wbVMk5IUfT2otn+ibztgFd5hs//QhLnmVNBTFezDNGlmjpedaZ1lyqmGWbUo0Hc09VnPpEZGhHtwkbTpga5UUEQb2lt9PeODI5INXUDjM3xXZILcw6/4xGTESkmmm6a8DBvz0Sla3s6+63HRkYBOg/bCzlbLZM+TgxHTNtbmx3/J1mBwtOJAWLVwFkoZI1PHXU+8RzcKG+Qz+9xPpy9O0r2Q2LT0c9v38DNfFmU78M5UvGSlumjdyyLNXC2hrE5k8nWMKfipR/ghy167XjNfCBr3N4O8fxieVXgwRbZItPEySbg7l19xhSMta2GDhPkXDnEvtM6wzuV9c3LNdbQ/Zyva5PUKZxIdCDkpMdbVuCM/nTegY3JOO+s9H36VI6HVz5NoX6EM8+zood+/OHCRmdP3i+vh7HRIBzCJZzKQ/snvmm/y0yI1Ny8g+gtLRANnnRXcKDfwZlLKo5qw5Bzpf7B8s2dK9+XucIhXMKp3ihevMir+loINEWNUgSInG9Ll0JQXS4v50vUbfFpBQGc1XRasvQVKOdt87qkW52xpV+4hDO51XEQbWPAsm6CxTu7TvJp3ln05mYuRsh503VpYRCopnnPeSfHssv2tTNWjLResIVDuGR8OKB39hU+sitgBRcAXLjRqtZG94MswO3Ku/rs9y0TN0hUc8vwcWuj865gJSsWAVFf77l4QsoVzcB2SeLSfydtJ2MYjCWYCTZzpHjDK5aOu1L6pDO5K8VeSn7d8ha4vIX/qLxNye9KQZ+Sy/d//wuTJRf53/7T9jfsGK6Qj03SVQAAAABJRU5ErkJggg=="}
+              %span#project_title.pos-absolute.pos-left-center.ml-15
           .cell-12.form-group.px-5
             %label 1. 填写项目名称
             %input#project_name{:type=>"text",
@@ -107,11 +108,16 @@
             :name=>"project_id"}
           .cell-12.form-group.px-5
             %label 2. 上传项目封面（选填，但只能添加不大于 2M 的图片）
-            %input#img{:type=>"file","data-role"=>"file",:name=>"images","data-caption"=>"选择文件","data-validate"=>"custom=validateFileSize"}
+            %input#img{:type=>"file",
+            "data-role"=>"file",
+            :name=>"images",
+            "data-caption"=>"选择文件",
+            "dir"=>"rtl",
+            "data-validate"=>"custom=validateFileSize"}
         .row.mx-0
           .cell-12.text-center.px-0.pos-fixed.pos-bottom-center.mb-5
-            %button#btn_prev.button.info.outline.mr-0-fs.mr-5-sm.kcoin-button-normal 上一步
-            %button#btn_submit.button.info.ml-0-fs.ml-5-sm.kcoin-button-normal 导入
+            %button#btn_prev.button.info.outline.mr-0-fs.mr-5-md.kcoin-button-normal 上一步
+            %button#btn_submit.button.info.ml-0-fs.ml-5-md.kcoin-button-normal 导入
 
 = include_javascript 'project_list_none'
 
