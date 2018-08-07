@@ -125,7 +125,7 @@ public class FabricClient {
         // where all the proposals above are consistent.
         Collection<Set<ProposalResponse>> proposalConsistencySets = SDKUtils.getProposalConsistencySets(transactionPropResp);
         if (proposalConsistencySets.size() != 1) {
-            logger.info(format("Expected only one set of consistent proposal responses but got %d",
+            logger.warn(format("Expected only one set of consistent proposal responses but got %d",
                     proposalConsistencySets.size()));
             return FabricResponse.failure().withMessage("proposals are not consistent with each other");
         }
@@ -251,6 +251,7 @@ public class FabricClient {
         replacements.put("fabricCertificatesPath", certPath);
         replacements.put("ordererEIP", PropKit.get("fabricOrdererEIP"));
         replacements.put("peerEIP", PropKit.get("fabricPeerEIP"));
+        replacements.put("adminPrivateKeyFile", PropKit.get("fabricAdminPrivateKeyFileName"));
 
         final String ccName = PropKit.get("fabricChainCodeName");
         final String ccVersion = PropKit.get("fabricChainCodeVersion");
