@@ -9,7 +9,7 @@ class AuthController < BaseController
     redirect_uri = request.params['redirect_uri'].to_s
     if redirect_uri.eql?''
       github_authorize(redirect_uri)
-      redirect '/user/'
+      redirect '/project/'
     else
       github_authorize('?callback_uri=' + redirect_uri)
       redirect redirect_uri
