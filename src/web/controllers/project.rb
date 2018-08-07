@@ -32,7 +32,7 @@ class ProjectController < BaseController
 
   get '/fetchList' do
     github_account = Oauth.where(user_id: current_user.id, oauth_provider: 'github').first
-    user_projects = HTTParty.get("https://api.github.com/users/#{github_account.login}/repos?type=all")
+    user_projects = HTTParty.get("https://api.github.com/users/#{github_account.login}/repos?type=all&page=1&per_page=100")
     user_projects.body
   end
 
