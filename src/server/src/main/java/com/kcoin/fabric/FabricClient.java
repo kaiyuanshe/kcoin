@@ -90,7 +90,8 @@ public class FabricClient {
     }
 
     public FabricResponse invoke(final String finction, final String[] args) throws Exception {
-        throwIfChannelNotReady();
+        ensureChannelReady();
+
         logger.info(format("begin invoking `%s` with args: ", finction, Arrays.toString(args)));
 
         Collection<ProposalResponse> successful = new LinkedList<>();
@@ -155,7 +156,9 @@ public class FabricClient {
                 .withTransactionId(proposalResponse.getTransactionID());
     }
 
-    public FabricResponse query(final String finction, String[] args) {
+    public FabricResponse query(final String finction, String[] args) throws Exception {
+        ensureChannelReady();
+
         try {
             QueryByChaincodeRequest queryByChaincodeRequest = client.newQueryProposalRequest();
             queryByChaincodeRequest.setArgs(args);
@@ -233,6 +236,14 @@ public class FabricClient {
     private void throwIfChannelNotReady() throws Exception {
         if (!channel.isInitialized())
             throw new Exception("channel is not initialized yet.");
+    }
+
+    private void ensureChannelReady() throws Exception {
+        if (this.channel == null || this.channel.isShutdown()) {
+            initChannel();
+        }
+
+        throwIfChannelNotReady();
     }
 
     /**
