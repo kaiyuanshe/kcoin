@@ -3,7 +3,6 @@ require 'openssl'
 require './controllers/base'
 
 class AuthController < BaseController
-  helpers WebsiteHelpers
 
   get '/github/login' do
     redirect_uri = request.params['redirect_uri'].to_s

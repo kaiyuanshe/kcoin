@@ -1,0 +1,38 @@
+cn:
+  # index page
+  index_home: "首页"
+  index_project: "项目"
+
+  # join page
+  join_new_account: "注册新帐号"
+  join_email: "邮箱账号"
+  join_email_tip: "（将给您的邮箱发送激活邮件）"
+  join_email_invalid: "邮箱格式不正确或该帐号已经注册！"
+  join_password: "密码"
+  join_password_placeholder: "密码应由 6- 10 位数字、字母、下划线组成"
+  join_password_invalid: "密码格式不正确！密码应由 6- 10 位数字、字母、下划线组成。"
+  join_login: "登录名"
+  join_login_placeholder: "选填"
+  join_nickname: "昵称"
+  join_nickname_placeholder: "选填"
+  join_submit: "立即注册"
+  join_signin: "已有帐号登录"
+  join_signin_github: "使用 GitHub 账号登录"
+
+  # login page
+  login_title: "登录"
+  login_login: "邮箱/帐号"
+  login_password: "密码"
+  login_forget_password: "忘记密码"
+  login_invalid_login_info: "邮箱/帐号或密码不正确!"
+  login_submit: "登录"
+  login_signup: "注册账号"
+  login_signin_github: "使用 GitHub 账号登录"
+
+  # project pages
+  project_header_my_projects: "我的项目"
+  project_header_user_center: "个人中心"
+  project_header_exchange: "兑换商城"
+  project_header_faq: "常见问题"
+  project_logout: "退出登录"
+
