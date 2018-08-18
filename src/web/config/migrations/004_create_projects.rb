@@ -3,6 +3,7 @@ migration 'create the projects table' do
     primary_key :id
     String :project_code, :null => false
     String :name, :null => false
+    String :owner, :null => false
     String :first_word, :null => false
     String :description, :null => true
     File :img, :null=>true
