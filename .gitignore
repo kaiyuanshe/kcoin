@@ -8,6 +8,7 @@ src/**/*.iml
 # Java
 src/server/target/
 src/server/out/
+src/server/classes/
 
 
 # Logs
