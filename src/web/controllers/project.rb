@@ -89,12 +89,12 @@ class ProjectController < BaseController
     @project = User[current_user.id].projects_dataset.where(project_code: project_code).first
 
     # fetch data from chaincode
-    # amount = HTTParty.post('http://localhost:8080/kcoin/fabric/proxy',
-    #                     {
-    #                         headers: {:Accept => 'application/json', 'Content-Type' => 'text/json'},
-    #                         body: {fn: 'balance', args: ['symbol', 'owner1']}.to_json
-    #                     })
-    # @kcoin = JSON.parse(amount.body)
+    amount = HTTParty.post('http://localhost:8080/kcoin/fabric/proxy',
+                        {
+                            headers: {:Accept => 'application/json', 'Content-Type' => 'text/json'},
+                            body: {fn: 'balance', args: ['symbol', 'owner']}.to_json
+                        })
+    @kcoin = JSON.parse(amount.body)
 
     # fetch member data form github
     @collaborators = JSON.parse(HTTParty.get("https://api.github.com/repos/#{@project.owner}/#{@project.name}/contributors").body)

@@ -172,8 +172,6 @@ func (s *SmartContract) getBalance(stub shim.ChaincodeStubInterface, args []stri
 	amount := token.balance(args[1])
 	value := strconv.Itoa(amount)
 	fmt.Printf("%s balance is %s \n", args[1], value)
-	fmt.Printf("this is a test")
-	//jsonVal, _ := json.Marshal(string(value))
 
 	return shim.Success([]byte(value))
 }
@@ -209,8 +207,9 @@ func getHistoryListResult(resultsIterator shim.HistoryQueryIteratorInterface) ([
 		if bArrayMemberAlreadyWritten == true {
 			buffer.WriteString(",")
 		}
-		item, _ := json.Marshal(queryResponse)
+		item, _ := json.Marshal(queryResponse.Value)
 		buffer.Write(item)
+
 		bArrayMemberAlreadyWritten = true
 	}
 	buffer.WriteString("]")
