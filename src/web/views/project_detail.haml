@@ -27,6 +27,8 @@
           %a{:href=>"#_target_settings"} 项目设置
 
 .container.bd-default.px-0.project-detail-container
+  %input#repo_name{:type=>"hidden",:value=>"#{@project.name}"}
+  %input#repo_owner{:type=>"hidden",:value=>"#{@project.owner}"}
   #_target_info
     .row.project-detail
       .cell-fs-12.cell-md-6.mx-auto
@@ -36,7 +38,8 @@
               .cell.text-left.left-title.left-title.d-flex.flex-align-center
                 %span Kcoin总值
               .cell.text-right.right-title
-                %span 5000
+                %span
+                  =@kcoin["payload"]
           .card-content.px-6.pb-4
             .content-title.text-center.py-1
               %span 发放记录
@@ -156,71 +159,27 @@
       %ul#lists{"data-role"=>"list",
       "data-cls-list"=>"unstyled-list row d-flex mt-4 mx-0",
       "data-cls-list-item"=>"cell-sm-6 cell-md-4",
+      "data-items"=>"9",
       "data-show-pagination"=>"true",
       "data-activity-type"=>"square",
       "data-cls-pagination"=>"flex-justify-center",
       "data-pagination-prev-title"=>"<",
       "data-pagination-next-title"=>">"}
-        %li.d-flex.flex-align-center.py-5
-          .member-img.d-inline-block
-            %img{:src=>"icons/member-icon.png"}
-          .member-msg.d-inline-block.pl-4
-            .row
-              .cell.member-name
-                %span 用户名
-            .row
-              .cell-12-fs.cell-6-sm.pl-3
-                %span 贡献度：560
-              .cell-12-fs.cell-6-sm.pl-3
-                %span 收益：2345
-        %li.d-flex.flex-align-center.py-5
-          .member-img.d-inline-block
-            %img{:src=>"icons/member-icon.png"}
-            .member-flag.member-flag-creator.d-flex.flex-align-center
-              %img.p-2{:src=>"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAelJREFUOBGFUz1oFEEYfW9dXVCwjoUWKcxJFFHBNo0pLC2EiFgpBLERK3MxuE3uLCzULiGNRMiRgHVIekFRD0S5wyaYJmJhd8Eze/v5Zn8mx+Uk08z3897bed/MEgPLqufOI8U90CbVOlO0t2HcRIAl1lpf+yksE4vHj6GbvFA+DRN02KKkgQVE4UPG3/46SAa0V9cjdHsbIt7/L9mhnbDDCJtxSgHsbL2E2YTDDKwWyI8DNQkJ6zhatLnxi0iSz0O/TD4F0UFqzw+IODtheDlA0rs7lJwzGmC4qtAOCDg74obquWnni3yrYKNIdllvfXexPa7c1klO5nVMyMKtPLZJDYWni4bzdkPxBUQnlkVeLut81l5BNPJa+Vlhpsq64waaQs8XNBMBHqDbadrClaNl3eI4wJ+fH9R7pJq/esd1J/hRAv1u+M3pT3u2evOIE2IcpwL/8v0yEFfvgOtl7vfAGvZkbAzNL++w1XmfvU4GDd/3AdclECxKZM/X3MSNI0jQVHRV6SWkqd6CjQrTZ9dxgsXMj81U5uWv2idyeEjWWG/PZk8Z0dScGGuHszxireDsT9TMiGplVnZmdJrjHtofkLuyUketPU8ye1z7V1IANbBT8n5HwGva89+Z2NYtbMrzG/3OO/2a/wATWLao3lKvdAAAAABJRU5ErkJggg=="}
-              %span 创始人
-          .member-msg.d-inline-block.pl-4
-            .row
-              .cell.member-name
-                %span 用户名
-            .row
-              .cell-12-fs.cell-6-sm.pl-3
-                %span 贡献度：560
-              .cell-12-fs.cell-6-sm.pl-3
-                %span 收益：2345
-        %li.d-flex.flex-align-center.py-5
-          .member-img.d-inline-block
-            %img{:src=>"icons/member-icon.png"}
-            .member-flag.member-flag-manager.d-flex.flex-align-center
-              %img.p-2{:src=>"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAhdJREFUOBGNkz1oFFEQx2fe7t2BqFiqEDk1m0ZFFAlWBvESaztFlJhILEQIgoWG4DVR0BSKlRc/ohGUCNaaBEVLOUyjiLdCooWChRaHgbvbfZP/bHjnep6QLXbn6/ffefPeY2p5Bl993hnH9jQJ9QrJFk0z8Ve8Zj3P3Ll7sPN9GmHnFD9IduFbeIOFzgA0Lp7+QsgK0+2tm4Ph4g6uay4ROBeGueqivBCRnjTwP5uZX6/L8+FbQVBL/lRdkJttYeaP+EW5VUhrldE4D7z8tNtG/K592+Yykf2NuvFWEV2O8WWvsTEPtoeJssY8MTlvmhiTaXmUUdYnkV6Xw9qeMdOM+mJ5aaKwvaL2qZnKcTK8Xm0r1APmmNrKGkh3JI76REfEyq7MhrVTk33BlIvf7+t6LF7mAXJdiB11cWUxRI5dAIra69nar+r8UFkyLl4UbGtUf4vcea1xcWUNlvflT2DFwoB+lvZxY1rEU6Eis0Xmxz91YLl/tnIN23IhnYTAsPH953EUPcQ2ZnzfnLQN2W/JTvxVx3zdeL4pYXCNZkInzrIxjqN5TKUbLe+JG7aMFrall6tMwirYPxeOibWXmiKrMNiYK5OFYCQ5iflDnaNo++kquKREa5VRpzlRzIEH5sIREbqIQ7KmnRjAJbR+9V4hGMOZwaakBBww9GZxU61eP4G5FzCL5DqTrFznbC77qHQg/93V6ncZI7za+4Nf2AkAAAAASUVORK5CYII="}
-              %span 管理员
-          .member-msg.d-inline-block.pl-4
-            .row
-              .cell.member-name
-                %span 用户名
-            .row
-              .cell
-                %span 贡献度：560  收益：2345
-        %li.d-flex.flex-align-center.py-5
-          .member-img.d-inline-block
-            %img{:src=>"icons/member-icon.png"}
-          .member-msg.d-inline-block.pl-4
-            .row
-              .cell.member-name
-                %span 用户名
-            .row
-              .cell
-                %span 贡献度：560  收益：2345
-        %li.d-flex.flex-align-center.py-5
-          .member-img.d-inline-block
-            %img{:src=>"icons/member-icon.png"}
-          .member-msg.d-inline-block.pl-4
-            .row
-              .cell.member-name
-                %span 用户名
-            .row
-              .cell
-                %span 贡献度：560  收益：2345
+        - @collaborators.each do |item|
+          %li.d-flex.flex-align-center.py-5
+            .member-img.d-inline-block
+              %img{:src=>"#{item["avatar_url"]}"}
+            .member-msg.d-inline-block.pl-4
+              .row
+                .cell.member-name
+                  %span
+                    = item["login"]
+              .row
+                .cell-12-fs.cell-6-sm.pl-3
+                  %span 贡献度：560
+                .cell-12-fs.cell-6-sm.pl-3
+                  %span 收益：2345
+
   #_target_settings
     %form#form{:onsubmit=>"return false;",
     :enctype=>"multipart/form-data"}
@@ -253,120 +212,4 @@
 %script{:src=>'javascripts/echarts.min.js'}
 %script{:src=>'javascripts/macarons.js'}
 
-:javascript
-  $(document).ready(function() {
-    $("#btn_submit").on("click", function () {
-        saveForm();
-    });
-
-    initCharts();
-  });
-  function initCharts() {
-      var kcoinChart = echarts.init($('#kcoin-chart')[0], 'macarons');
-      var tokenChart = echarts.init($('#token-chart')[0], 'macarons');
-
-      var option = genOption('KCoin 分配情况', genData(10))
-      kcoinChart.setOption(option);
-      var option2 = genOption('Token 贡献分布', genData(10))
-      tokenChart.setOption(option2);
-      window.onresize = function (){
-          kcoinChart.resize();
-          tokenChart.resize();
-      }
-  }
-  function genOption(title, data){
-      return {
-          title : {
-              text: title,
-              x:'center'
-          },
-          tooltip: {
-              trigger: 'item',
-              formatter: "{a} <br/>{b} : {c} ({d}%)"
-          },
-          legend: {
-              type: 'scroll',
-              orient: 'horizontal',
-              bottom: 20
-          },
-          series: [{
-              type: 'pie',
-              radius : '55%',
-              center: ['50%', '50%'],
-              data: data.seriesData,
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-          }]
-      };
-  }
-  function genData(count) {
-      var nameList = [
-          '赵', '钱', '孙', '李', '周', '吴', '郑', '王', '冯', '陈', '褚', '卫', '蒋', '沈', '韩', '杨', '朱', '秦', '尤', '许', '何', '吕', '施', '张', '孔', '曹', '严', '华', '金', '魏', '陶', '姜', '戚', '谢', '邹', '喻', '柏', '水', '窦', '章', '云', '苏', '潘', '葛', '奚', '范', '彭', '郎', '鲁', '韦', '昌', '马', '苗', '凤', '花', '方', '俞', '任', '袁', '柳', '酆', '鲍', '史', '唐', '费', '廉', '岑', '薛', '雷', '贺', '倪', '汤', '滕', '殷', '罗', '毕', '郝', '邬', '安', '常', '乐', '于', '时', '傅', '皮', '卞', '齐', '康', '伍', '余', '元', '卜', '顾', '孟', '平', '黄', '和', '穆', '萧', '尹', '姚', '邵', '湛', '汪', '祁', '毛', '禹', '狄', '米', '贝', '明', '臧', '计', '伏', '成', '戴', '谈', '宋', '茅', '庞', '熊', '纪', '舒', '屈', '项', '祝', '董', '梁', '杜', '阮', '蓝', '闵', '席', '季', '麻', '强', '贾', '路', '娄', '危'
-      ];
-      var legendData = [];
-      var seriesData = [];
-      var selected = {};
-      for (var i = 0; i < count; i++) {
-          name = Math.random() > 0.65
-              ? makeWord(4, 1) + '·' + makeWord(3, 0)
-              : makeWord(2, 1);
-          legendData.push(name);
-          seriesData.push({
-              name: name,
-              value: Math.round(Math.random() * 100000)
-          });
-          selected[name] = i < 6;
-      }
-
-      return {
-          legendData: legendData,
-          seriesData: seriesData,
-          selected: selected
-      };
-
-      function makeWord(max, min) {
-          var nameLen = Math.ceil(Math.random() * max + min);
-          var name = [];
-          for (var i = 0; i < nameLen; i++) {
-              name.push(nameList[Math.round(Math.random() * nameList.length - 1)]);
-          }
-          return name.join('');
-      }
-  }
-  function saveForm() {
-    if (!Metro.validator.validate($("#project_name"))) {
-        return;
-    }
-    if (!Metro.validator.validate($("#img"))) {
-        Metro.toast.create("上传的图片不能超过 2 M", null, 3000, "alert");
-        return;
-    }
-    var formData = new FormData($("#form")[0]);
-    $.ajax({
-        type: "POST",
-        data: formData,
-        processData: false,
-        contentType: false,
-        url: "/project/updateProject",
-        success: function (res) {
-            res = JSON.parse(res);
-            if (res.code === 601) {
-                $("#container").load("/project/projectListsView");
-            } else if (res.code === 602) {
-                Metro.toast.create(res.msg, null, 3000, "alert");
-            }
-        }
-    });
-  }
-  function validateFileSize() {
-    if ($("#img")[0].files[0].size < (1024 * 1024 * 2)) {
-        return true;
-    } else {
-        return false;
-    }
-  }
+= include_javascript 'project_detail'
