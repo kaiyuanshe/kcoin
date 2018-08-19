@@ -92,7 +92,7 @@ function saveForm() {
     var project_id = $("#project_id").val();
     var index = findElem(list, "id", project_id);
     var formData = new FormData($("#import_form")[0]);
-    formData.append("project", list[index]);
+    formData.append("owner", list[index].owner.login);
     $.ajax({
         type: "POST",
         data: formData,
