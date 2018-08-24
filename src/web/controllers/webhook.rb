@@ -57,7 +57,8 @@ class WebhookController < BaseController
                             repository_owner_id: @repository_owner_id.to_s,
                             repository_owner_node_id: @repository_owner_node_id.to_s,
                             received_at: Time.now,
-                            full_detail: @full_detail.to_s)
+                            full_detail: @full_detail.to_s,
+                            processing_state: 0)
       webhook.save
     end
   end

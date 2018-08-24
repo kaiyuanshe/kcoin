@@ -16,5 +16,7 @@ migration 'create the webhooks table' do
     String :repository_owner_node_id
     Timestamp :received_at
     String :full_detail
+    Integer :processing_state
+    Timestamp :processing_time, :null => true
   end
 end
