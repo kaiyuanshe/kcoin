@@ -1,9 +1,6 @@
 require './controllers/base'
-require './helpers/website_helpers'
 
 class WebsiteController < BaseController
-
-  helpers WebsiteHelpers
 
   get '/' do
     haml :index, :layout => false
@@ -13,4 +10,8 @@ class WebsiteController < BaseController
     haml :explorer
   end
 
+  get '/locale/:locale' do
+    session[:locale] = params[:locale]
+    redirect request.referrer
+  end
 end

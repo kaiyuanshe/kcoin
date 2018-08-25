@@ -21,14 +21,16 @@
 
       %img.d-none-fs.d-block-lg.login-index-log{:src=>"icons/login-index.png"}
       .form.login-form
-        .text-center.login-sub-title 登录
+        .text-center.login-sub-title
+          = t('login_title')
         .grid
           .row
             .cell
               %form.login-context{:action=>"/user/login", :method=>'post',"data-role"=>'validator',
               "data-interactive-check" => "true"}
                 .form-group
-                  %label 邮箱/帐号
+                  %label
+                    = t('login_login')
                   %input{:type => 'text',
                          :name => 'email',
                          :value => '',
@@ -36,8 +38,9 @@
                          autofocus: "autofocus",
                          "data-validate" => "required"}
                 .form-group
-                  %label 密码
-                  .link= link_to('忘记密码', '/user/password_reset')
+                  %label
+                    =t('login_password')
+                  .link= link_to("#{ t('login_forget_password') }", '/user/password_reset')
                   %input.border-radius-5.border{:type => 'password',
                          :name => 'password',
                          :value => '',
@@ -46,14 +49,15 @@
                          "data-clear-button" => "false",
                          "data-validate" => "required pattern=^\\w{6,10}$ custom=validateEmailAndPwd"}
                   %span.invalid_feedback
-                    邮箱/帐号或密码不正确!
+                    =t('login_invalid_login_info')
                 .form-group
-                  %input.button.info.kcoin-button-flex{:type=>'submit',:value=>'登录'}
-                  .link= link_to('注册账号', '/user/join')
+                  %input.button.info.kcoin-button-flex{:type=>'submit',:value=> "#{ t('login_submit') }"}
+                  .link= link_to("#{ t('login_signup')}", '/user/join')
           .row
             .cell
               %a.login-context#auth_login.button.dark.kcoin-button-flex.mt-3{:href => '/auth/github/login'}
-                %img.github-icon{:src=>"icons/github-icon.png"}使用 GitHub 账号登录
+                %img.github-icon{:src=>"icons/github-icon.png"}
+                  =t('login_signin_github')
 
 
     = include_javascript 'join'

@@ -24,6 +24,8 @@ GEM
     mustermann (1.0.3)
     puma (3.12.0)
     rack (2.0.5)
+    rack-contrib (2.0.1)
+      rack (~> 2.0)
     rack-protection (2.0.3)
       rack
     sequel (5.11.0)
@@ -68,9 +70,11 @@ PLATFORMS
 DEPENDENCIES
   haml
   httparty
+  i18n
   jwt
   multi_json
   puma
+  rack-contrib
   sequel
   sequel_secure_password
   sinatra

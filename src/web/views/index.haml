@@ -6,8 +6,8 @@
         %meta{:charset=>"utf-8"}
         %meta{:name=>"viewport",:content=>"width=device-width, initial-scale=1, shrink-to-fit=no"}
         %link{:rel=>"stylesheet",:href=>"https://cdn.metroui.org.ua/v4/css/metro-all.min.css"}
-        %script{:src=>"https://code.jquery.com/jquery-3.3.1.min.js"}
-        %script{:src=>"https://cdn.metroui.org.ua/v4/js/metro.min.js"}
+        = include_javascript 'https://code.jquery.com/jquery-3.3.1.min.js'
+        = include_javascript 'https://cdn.metroui.org.ua/v4/js/metro.min.js'
     %body
         .container-fluid{:style=>"padding:0px;"}
             %img{:src=>"big.jpg",:width=>"100%"}
@@ -36,7 +36,7 @@
                     .cell-12
                         &nbsp;
                         %a{:href=>'/'}
-                            Home
+                            = t('index_home')
                         &nbsp;
                         %a{:href=>'/user'}
                             Dashboard
@@ -51,7 +51,7 @@
                             Explorer
                         &nbsp;
                         %a{:href=>'/project'}
-                            Project
+                            =t('index_project')
                         &nbsp;
                         %a{:href=>'/club'}
                             Club

@@ -4,12 +4,12 @@
 - Follow the [official document](https://support.huaweicloud.com/bestpractice-bcs/bcs_bestpractice1_0004.html) to download 
 certificates. Copy and unzip the certificates in `resources/fabric` folder
 - Set the file name of admin private key:`fabricAdminPrivateKeyFileName` in `config.proterties`.The file
- admin private key file is in `fabric/fabric.ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.peer-ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.default.svc.cluster.local/msp/keystore`
+ admin private key file is in `fabric/peer/msp/keystore`
 - Edit you hosts file(`/etc/hosts` on linux/MacOS, `C:\Windows\system32\drivers\etc\hosts` on windows),
 to add(update IP and host if changed):
 ```
-117.78.39.82 peer-ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f-0.peer-ff0791646e9d838b08fc0d8a628a7c6f8d8a0a5f.default.svc.cluster.local
-117.78.39.82 orderer-5c3781a4078acc48a3a80a004f5d3c7b38101afe-0.orderer-5c3781a4078acc48a3a80a004f5d3c7b38101afe.default.svc.cluster.local
+117.78.39.82 peer-4428b63567b14b99db5ebb50d254b06e895c7aeb-0.peer-4428b63567b14b99db5ebb50d254b06e895c7aeb.default.svc.cluster.local
+117.78.39.82 orderer-3c0590126a6d4cb3aff24f854f92329b265c36cd-0.orderer-3c0590126a6d4cb3aff24f854f92329b265c36cd.default.svc.cluster.local
 ```
 - start JFinal
 
@@ -17,7 +17,7 @@ to add(update IP and host if changed):
 ## how to run the chaincode locally.
 
 
-Basically, follow:
+To run chaincode locally outside kcoin, just follow:
 - Setup $GOPATH, `$HOME/go`
 - Follow official document to download and build Fabric locally
 - Follow https://hyperledger-fabric.readthedocs.io/en/release-1.2/chaincode4ade.html to setup dev mode

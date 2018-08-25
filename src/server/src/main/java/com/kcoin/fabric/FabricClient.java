@@ -54,7 +54,7 @@ public class FabricClient {
     private ChaincodeID chaincodeID = null;
 
     // configurables
-    private long waitSecond = 1000000;
+    private long waitSecond = 300;
 
 
     static {
@@ -92,7 +92,7 @@ public class FabricClient {
     public FabricResponse invoke(final String finction, final String[] args) throws Exception {
         ensureChannelReady();
 
-        logger.info(format("begin invoking `%s` with args: ", finction, Arrays.toString(args)));
+        logger.info(format("begin invoking `%s` with args: %s", finction, Arrays.toString(args)));
 
         Collection<ProposalResponse> successful = new LinkedList<>();
         Collection<ProposalResponse> failed = new LinkedList<>();

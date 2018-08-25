@@ -24,19 +24,24 @@
         %ul.app-bar-menu.order-3.order-md-2.text-center.mx-auto
           %li.divider.visible-fs.no-visible-ms.no-visible-md
           %li{:style=>'color: #fff!important;'}
-            %a.fg-white-hover{:href => '/project'} 我的项目
+            %a.fg-white-hover{:href => '/project'}
+              = t('project_header_my_projects')
           %li.divider.visible-fs.no-visible-ms.no-visible-md
           %li
-            %a.fg-white-hover{:href => '#'} 个人中心
+            %a.fg-white-hover{:href => '#'}
+              =t('project_header_user_center')
           %li.divider.visible-fs.no-visible-ms.no-visible-md
           %li
-            %a.fg-white-hover{:href => '#'} 兑换商城
+            %a.fg-white-hover{:href => '#'}
+              =t('project_header_exchange')
           %li.divider.visible-fs.no-visible-ms.no-visible-md
           %li
-            %a.fg-white-hover{:href => '#'} 常见问题
+            %a.fg-white-hover{:href => '#'}
+              =t('project_header_faq')
           %li.divider.visible-fs.no-visible-ms.no-visible-md
           %li
-            %a.fg-white-hover.visible-fs.no-visible-ms.no-visible-md{:href=>'/auth/logout'} 退出登录
+            %a.fg-white-hover.visible-fs.no-visible-ms.no-visible-md{:href=>'/auth/logout'}
+              =t('project_logout')
 
         .app-bar-container.order-2.order-md-3.d-none-fs.d-flex-md
           %span.app-bar-item
@@ -46,7 +51,8 @@
               %img.kcoin-avater{:src=>"#{current_user.avatar_url}"}
             %ul.v-menu.place-right{"data-role" => 'dropdown'}
               %li
-                %a{:href=>'/auth/logout'}退出登录
+                %a{:href=>'/auth/logout'}
+                  =t('project_logout')
 
     .container-fluid.pt-13.bg-white.h-vh-100.px-0
       .container.bg-white.px-2#container

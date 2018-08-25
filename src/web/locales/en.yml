@@ -1,0 +1,37 @@
+en:
+  # index page
+  index_home: "Home"
+  index_project: "Project"
+
+  # join page
+  join_new_account: "Sign Up"
+  join_email: "Email"
+  join_email_tip: "(will send activation email to this address)"
+  join_email_invalid: "Bad email format or it's already taken"
+  join_password: "Password"
+  join_password_placeholder: "6-10 digits, consists f number, alphabet and underscore"
+  join_password_invalid: "Bad password. 6-10 digits, consists f number, alphabet and underscore"
+  join_login: "Login"
+  join_login_placeholder: "Optional"
+  join_nickname: "Nickname"
+  join_nickname_placeholder: "Optional"
+  join_submit: "Sign up"
+  join_signin: "Sign in"
+  join_signin_github: "Sign in using Github"
+
+  # login page
+  login_title: "Sign in"
+  login_login: "Email/Login"
+  login_password: "Password"
+  login_forget_password: "Forget your password?"
+  login_invalid_login_info: "Invalid email/login or password!"
+  login_submit: "Sign in"
+  login_signup: "Sign up"
+  login_signin_github: "Sign in using Github"
+
+  # project pages
+  project_header_my_projects: "My projects"
+  project_header_user_center: "User center"
+  project_header_exchange: "Exchange"
+  project_header_faq: "FAQ"
+  project_logout: "Logout"
