@@ -217,17 +217,35 @@ func getHistoryListResult(resultsIterator shim.HistoryQueryIteratorInterface) ([
     return buffer.Bytes(), nil
 }
 
+func (s *SmartContract) Query(stub shim.ChaincodeStubInterface) sc.Response {
+
+    // Retrieve the requested Smart Contract function and arguments
+    function, args := stub.GetFunctionAndParameters()
+    fmt.Printf("Query request received, function: %s\n", function)
+
+    // Route to the appropriate handler function to interact with the ledger appropriately
+    if function == "balance" {
+        return s.getBalance(stub, args)
+    } else if function == "historyQuery" {
+        return s.historyQuery(stub, args)
+    }
+
+    return shim.Error("Invalid Smart Contract function name.")
+}
+
 func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 
     // Retrieve the requested Smart Contract function and arguments
     function, args := stub.GetFunctionAndParameters()
+    fmt.Printf("Invoke request received, function: %s\n", function)
+
     // Route to the appropriate handler function to interact with the ledger appropriately
-    if function == "balance" {
-        return s.getBalance(stub, args)
-    } else if function == "initLedger" {
+    if function == "initLedger" {
         return s.initLedger(stub, args)
     } else if function == "transfer" {
         return s.transfer(stub, args)
+    } else if function == "balance" {
+        return s.getBalance(stub, args)
     } else if function == "historyQuery" {
         return s.historyQuery(stub, args)
     }
