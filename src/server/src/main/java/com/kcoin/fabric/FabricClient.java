@@ -122,13 +122,19 @@ public class FabricClient {
             }
         }
 
+        Collection<String> messages = new LinkedList<>();
+        for (ProposalResponse response : failed) {
+            messages.add(response.getMessage());
+        }
+        String failMessage = Arrays.toString(messages.toArray());
+
         // Check that all the proposals are consistent with each other. We should have only one set
         // where all the proposals above are consistent.
         Collection<Set<ProposalResponse>> proposalConsistencySets = SDKUtils.getProposalConsistencySets(transactionPropResp);
         if (proposalConsistencySets.size() != 1) {
             logger.warn(format("Expected only one set of consistent proposal responses but got %d",
                     proposalConsistencySets.size()));
-            return FabricResponse.failure().withMessage("proposals are not consistent with each other");
+            return FabricResponse.failure().withMessage(failMessage);
         }
 
         logger.info(format("Received %d transaction proposal responses. Successful+verified: %d . Failed: %d",
@@ -137,17 +143,14 @@ public class FabricClient {
                 failed.size()));
         if (failed.size() > 0) {
             logger.error(format("Invoke finction `%s` failed", finction));
-            Collection<String> messages = new LinkedList<>();
-            for (ProposalResponse response : failed) {
-                messages.add(response.getMessage());
-            }
-            logger.error(format("Failure messages: %s", Arrays.toString(messages.toArray())));
-            return FabricResponse.failure().withMessage(Arrays.toString(messages.toArray()));
+
+            logger.error(format("Failure messages: %s", failMessage));
+            return FabricResponse.failure().withMessage(failMessage);
         }
 
         // Send Transaction Transaction to orderer and wait for the result
         logger.info("Successfully received transaction proposal responses.");
-        BlockEvent.TransactionEvent transactionEvent = channel.sendTransaction(successful)
+        channel.sendTransaction(successful)
                 .get(getWaitSecond(), TimeUnit.SECONDS);
 
         ProposalResponse proposalResponse = successful.iterator().next();

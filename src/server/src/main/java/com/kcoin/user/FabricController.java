@@ -30,13 +30,10 @@ public class FabricController extends BaseController {
         return args;
     }
 
-    public void proxy() {
+    public void invoke() {
 
         // {"fn":"initLedger", "args":["symbol", "name", "owner", "10000"]}
-        // {"fn":"balance", "args":["symbol", "owner"]}
-        // {"fn":"balance", "args":["symbol", "user1"]}
         // {"fn":"transfer", "args":["symbol", "owner", "user1", "5"]}
-        // {"fn":"balance", "args":["symbol", "user1"]}
 
         Record r = getArgsRecord();
         String finction = r.getStr("fn");
@@ -52,4 +49,22 @@ public class FabricController extends BaseController {
         renderJson(response);
     }
 
+    public void query() {
+
+        // {"fn":"balance", "args":["symbol", "owner"]}
+        // {"fn":"balance", "args":["symbol", "user1"]}
+        // {"fn":"historyQuery", "args":["symbol"]}
+
+        Record r = getArgsRecord();
+        String finction = r.getStr("fn");
+        String[] args = getArgsAsArray(r);
+
+        try {
+            FabricClient client = FabricClient.get();
+            renderJson(client.query(finction, args));
+        } catch (Exception e) {
+            FabricResponse response = FabricResponse.failure().withMessage(e.getMessage());
+            renderJson(response);
+        }
+    }
 }
