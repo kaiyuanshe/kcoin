@@ -3,7 +3,7 @@ class KCoinApp
   require './controllers/auth'
   require './controllers/user'
   require './controllers/project'
-  require './controllers/webhook'
+  require './controllers/api'
   require './lib/config'
   require './lib/email_params'
 
@@ -15,7 +15,7 @@ class KCoinApp
       map('/auth') {run AuthController}
       map('/user') {run UserController}
       map('/project') {run ProjectController}
-      map('/webhook') {run WebhookController}
+      map('/api') {run ApiController}
     end
   end
 
