@@ -169,6 +169,8 @@ public class FabricClient {
             queryByChaincodeRequest.setChaincodeID(chaincodeID);
 
             Map<String, byte[]> tm2 = new HashMap<>();
+
+            // ChaincodeManager?
             tm2.put("HyperLedgerFabric", "QueryByChaincodeRequest:JavaSDK".getBytes(UTF_8));
             tm2.put("method", "QueryByChaincodeRequest".getBytes(UTF_8));
             queryByChaincodeRequest.setTransientMap(tm2);

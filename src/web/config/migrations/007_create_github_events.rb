@@ -1,9 +1,10 @@
-migration 'create the webhooks table' do
-  database.create_table :webhooks do
+migration 'create the github webhook events table' do
+  database.create_table :github_events do
     primary_key :id
     String :github_delivery_id, :unique => true
-    String :user_agent
+    String :user_agent, :null => true
     String :github_event
+    String :action, :null => true
     String :sender_login
     String :sender_id
     String :sender_node_id
@@ -15,7 +16,7 @@ migration 'create the webhooks table' do
     String :repository_owner_id
     String :repository_owner_node_id
     Timestamp :received_at
-    String :full_detail
+    String :payload
     Integer :processing_state
     Timestamp :processing_time, :null => true
   end
