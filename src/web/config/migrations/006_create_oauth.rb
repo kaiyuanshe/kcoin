@@ -12,6 +12,5 @@ migration 'create the oauth table' do
     Timestamp :created_at, null: false
     Timestamp :updated_at, :null => true
     Timestamp :last_login_at, :null => true
-    String :eth_account, :null => true
   end
 end

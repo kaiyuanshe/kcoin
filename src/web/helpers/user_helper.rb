@@ -127,13 +127,15 @@ module UserAppHelpers
     if user.eql? nil
       User.insert(login: oauth.login,
                   name: oauth.name,
-                  oauth_provider: KCOIN,
-                  open_id: oauth.open_id,
                   email: oauth.email,
                   avatar_url: oauth.avatar_url,
+                  activated: true,
                   created_at: Time.now,
                   last_login_at: Time.now)
       user = User.first(email: oauth.email)
+
+      eth_account = Digest::SHA1.hexdigest(user.id.to_s)
+      user.update(eth_account: eth_account)
     end
     oauth.update(user_id: user.id)
   end
@@ -160,7 +162,6 @@ module UserAppHelpers
     end
 
     user_info[:id] = oauth.user_id
-    user_info[:eth_account] = oauth.eth_account
     session[KCOIN_LOGIN_INFO] = user_info
   end
 
