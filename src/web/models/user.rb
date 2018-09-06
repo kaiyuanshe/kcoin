@@ -5,7 +5,7 @@ class User < Sequel::Model(:users)
 
   def validate
     super
-    validates_presence [:login, :email, :oauth_provider]
+    validates_presence [:login, :email]
     validates_format RegexPattern::Email, :email, {:allow_nil => true}
     validates_format RegexPattern::Username, :login
   end

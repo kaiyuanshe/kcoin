@@ -3,6 +3,7 @@ require './controllers/base'
 require './helpers/website_helpers'
 require './helpers/email_helper'
 require 'net/smtp'
+require 'digest/sha1'
 
 class UserController < BaseController
   helpers WebsiteHelpers
@@ -33,12 +34,12 @@ class UserController < BaseController
 
   post '/login' do
     param = params[:email].to_s
-    pwd = Base64.encode64(params[:password])
+    pwd = Digest::SHA1.hexdigest(params[:password])
     @user = nil
     if param.include? '@'
-      @user = User.first(email: param, oauth_provider: KCOIN, password_digest: pwd)
+      @user = User.first(email: param, password_digest: pwd)
     else
-      @user = User.first(login: param, oauth_provider: KCOIN, password_digest: pwd)
+      @user = User.first(login: param, password_digest: pwd)
     end
     if @user
       if @user.password_digest == pwd
@@ -50,31 +51,33 @@ class UserController < BaseController
 
   # Registered user
   post '/join' do
-    login_value = nil
-    if params[:login].eql? ''
+    login_value = params[:login]
+    if login_value.empty?
       login_value = params[:email].split('@')[0]
     end
     user = User.new(login: login_value,
                     name: params[:name],
-                    oauth_provider: KCOIN,
-                    open_id: nil,
-                    password_digest: Base64.encode64(params[:password]),
+                    password_digest: Digest::SHA1.hexdigest(params[:password]),
                     email: params[:email],
                     avatar_url: nil,
+                    activated: true,
                     creawted_at: Time.now,
                     updateed_at: Time.now,
                     last_login_at: Time.now)
 
     user.save
     session[:user_id] = user.id
+
+    eth_account = Digest::SHA1.hexdigest(user.id.to_s)
+    user.update(eth_account: eth_account)
     send_email(user)
     redirect '/'
   end
 
   # Verify email is registered
   post '/validate/email' do
-    user = User.first(email: params[:email], oauth_provider: KCOIN)
-    return user ? {flag: false}.to_json : {flag: true}.to_json
+    user = User.first(email: params[:email])
+    user ? {flag: false}.to_json : {flag: true}.to_json
   end
 
 
@@ -82,12 +85,12 @@ class UserController < BaseController
   post '/validate/user' do
     param = params[:email].to_s
     user = nil
-    pwd = Base64.encode64(params[:password])
+    pwd = Digest::SHA1.hexdigest(params[:password])
     if param.include? '@'
-      user = User.first(email: param, oauth_provider: KCOIN, password_digest: pwd)
+      user = User.first(email: param, password_digest: pwd)
     else
-      user = User.first(login: param, oauth_provider: KCOIN, password_digest: pwd)
+      user = User.first(login: param, password_digest: pwd)
     end
-    return user ? {flag: true}.to_json : {flag: false}.to_json
+    user ? {flag: true}.to_json : {flag: false}.to_json
   end
 end
