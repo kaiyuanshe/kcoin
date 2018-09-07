@@ -1,15 +1,15 @@
 module GithubHelpers
 
   # all supported events: https://developer.github.com/webhooks/#events
-  SupportedEvents = %w(fork milestone pull_request push watch)
+  SUPPORTED_EVENTS = %w(fork milestone pull_request push watch)
 
   def event_supported?(event_type)
-    SupportedEvents.include? event_type
+    SUPPORTED_EVENTS.include? event_type
   end
 
   def on_event_received(params, user_agent, github_delivery, github_event, action)
     payload = params.to_s
-    puts 'payload:' + payload
+    puts 'event payload:' + payload
 
     sender_login = params[:sender][:login]
     sender_id = params[:sender][:id]
@@ -23,6 +23,7 @@ module GithubHelpers
     repository_owner_node_id = params[:repository][:owner][:node_id]
 
     unless webhook_event_have_received? github_delivery
+      puts "persist event #{github_delivery} of type #{github_event}"
       webhook = GithubEvent.new(github_delivery_id: github_delivery,
                                 user_agent: user_agent,
                                 github_event: github_event,
@@ -42,6 +43,8 @@ module GithubHelpers
                                 processing_state: 0)
       webhook.save
     end
+
+    # create oauth if not exists
   end
 
   def webhook_event_have_received?(github_delivery_id)

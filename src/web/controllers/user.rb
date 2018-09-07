@@ -55,9 +55,11 @@ class UserController < BaseController
     if login_value.empty?
       login_value = params[:email].split('@')[0]
     end
+
     user = User.new(login: login_value,
                     name: params[:name],
                     password_digest: Digest::SHA1.hexdigest(params[:password]),
+                    eth_account: Digest::SHA1.hexdigest(params[:email]),
                     email: params[:email],
                     avatar_url: nil,
                     activated: true,
@@ -67,9 +69,6 @@ class UserController < BaseController
 
     user.save
     session[:user_id] = user.id
-
-    eth_account = Digest::SHA1.hexdigest(user.id.to_s)
-    user.update(eth_account: eth_account)
     send_email(user)
     redirect '/'
   end
