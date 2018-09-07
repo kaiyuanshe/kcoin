@@ -66,7 +66,7 @@ module UserAppHelpers
         :code => github_code,
         :client_secret => CONFIG[:login][:github][:client_secret]
       },
-      :headers =>{
+      :headers => {
         :Accept => 'application/json'
       }
     }
@@ -127,6 +127,7 @@ module UserAppHelpers
     if user.eql? nil
       User.insert(login: oauth.login,
                   name: oauth.name,
+                  eth_account: oauth.eth_account,
                   email: oauth.email,
                   avatar_url: oauth.avatar_url,
                   activated: true,
@@ -152,7 +153,8 @@ module UserAppHelpers
       Oauth.insert(login: user_info[:login],
                    name: user_info[:name],
                    oauth_provider: user_info[:oauth_provider],
-                   open_id: user_info[:open_id],
+                   open_id: user_info[:open_id].to_s,
+                   eth_account: Digest::SHA1.hexdigest(user_info[:oauth_provider] + user_info[:open_id].to_s),
                    email: user_info[:email],
                    avatar_url: user_info[:avatar_url],
                    created_at: Time.now,

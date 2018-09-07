@@ -5,7 +5,9 @@ migration 'create the oauth table' do
     String :login
     String :name, :null => true
     String :oauth_provider, :null => false
-    String :open_id, :null => true
+    String :open_id, :null => false
+    index  [:oauth_provider, :open_id], :unique => true
+    String :eth_account, :null => false
     String :password_digest, :null => true
     String :email, :unique => true, :null => true
     String :avatar_url, :null => true

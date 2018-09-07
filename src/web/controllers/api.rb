@@ -18,6 +18,7 @@ class ApiController < BaseController
 
     puts "received webhook events #{github_event}, action #{action} from github, delivery: #{github_delivery}, user agent: #{user_agent}"
     unless event_supported? github_event
+      puts "event #{github_event} is not supported"
       halt 200
     end
 
