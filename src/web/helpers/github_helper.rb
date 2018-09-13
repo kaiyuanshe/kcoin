@@ -1,10 +1,19 @@
 module GithubHelpers
 
+  include UserAppHelpers
+
   # all supported events: https://developer.github.com/webhooks/#events
   SUPPORTED_EVENTS = %w(fork milestone pull_request push watch)
+  WEBHOOK_NAME = 'web'
+  WEBHOOK_EVENTS = ['*']
 
   def event_supported?(event_type)
     SUPPORTED_EVENTS.include? event_type
+  end
+
+  def verify_signature(payload_body)
+    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV['SECRET_TOKEN'], payload_body)
+    halt 500, "Signatures didn't match!" unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
   end
 
   def on_event_received(params, user_agent, github_delivery, github_event, action)
@@ -12,8 +21,9 @@ module GithubHelpers
     puts 'event payload:' + payload
 
     sender_login = params[:sender][:login]
-    sender_id = params[:sender][:id]
+    sender_id = params[:sender][:id].to_s
     sender_node_id = params[:sender][:node_id]
+    sender_avatar_url = params[:sender][:avatar_url]
     repository_name = params[:repository][:name]
     repository_id = params[:repository][:id]
     repository_node_id = params[:repository][:node_id]
@@ -45,10 +55,75 @@ module GithubHelpers
     end
 
     # create oauth if not exists
+    oauth = Oauth.first(:oauth_provider => UserAppHelpers::GITHUB, :open_id => sender_id)
+    unless oauth
+      Oauth.insert(login: sender_login,
+                   name: sender_login,
+                   oauth_provider: UserAppHelpers::GITHUB,
+                   open_id: sender_id,
+                   eth_account: Digest::SHA1.hexdigest(UserAppHelpers::GITHUB + sender_id),
+                   avatar_url: sender_avatar_url,
+                   created_at: Time.now,
+                   last_login_at: Time.now)
+    end
   end
 
   def webhook_event_have_received?(github_delivery_id)
     # Search role, if no exist return false
-    GithubEvent.first(:github_delivery_id => github_delivery_id).kind_of?(GithubEvent)? true : false
+    GithubEvent.first(:github_delivery_id => github_delivery_id).kind_of?(GithubEvent) ? true : false
   end
+
+  def github_v3_api(path)
+    "https://api.github.com/#{path.sub(/^\//, '')}"
+  end
+
+  def authorize_github_v3_api(headers=nil)
+    headers ||= {}
+    # append auth header
+    access_token = current_user.access_token
+    headers[:Authorization] = "token #{access_token}"
+    headers['User-Agent'] = 'Kaiyuanshe KCoin project'
+    headers
+  end
+
+  def list_projects(user_id)
+    github_account = Oauth.where(user_id: user_id, oauth_provider: GITHUB).first
+    unless github_account
+      return redirect '/github/login?redirect_uri=/project'
+    end
+
+    # TODO improve the repo list
+    repo_path = github_v3_api "users/#{github_account.login}/repos?type=all&page=1&per_page=100";
+    user_projects = HTTParty.get(repo_path)
+    if user_projects.code/100 != 2
+      halt user_projects.code '[]'
+    end
+    user_projects.body
+  end
+
+  def register_webhook(import_context)
+    webhook_uri = github_v3_api "/repos/#{import_context[:owner]}/#{import_context[:name]}/hooks"
+    options = {
+      :body => {
+        :name => WEBHOOK_NAME,
+        :active => true,
+        :events => WEBHOOK_EVENTS,
+        :config => {
+          :secret => import_context[:secret],
+          :url => "#{request.scheme}://#{request.host_with_port}/api/github/webhook",
+          :content_type => 'json'
+        }
+      }.to_json,
+      :headers => {
+        :Accept => 'application/json',
+        'Content-Type' => 'application/json'
+      }
+    }
+    authorize_github_v3_api options[:headers]
+    # TODO might return 422: Hook already exists on this repository
+    resp = HTTParty.post(webhook_uri, options)
+    puts "register webhook: #{resp.code}, #{resp.body}"
+    true
+  end
+
 end

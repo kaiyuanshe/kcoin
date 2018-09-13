@@ -1,8 +1,12 @@
 require './controllers/base'
 require './helpers/website_helpers'
+require './helpers/github_helper'
+require './helpers/project_helper'
 
 class ProjectController < BaseController
   helpers WebsiteHelpers
+  helpers GithubHelpers
+  helpers ProjectHelpers
 
   before do
     set_current_user
@@ -31,31 +35,27 @@ class ProjectController < BaseController
   end
 
   get '/fetchList' do
-    github_account = Oauth.where(user_id: current_user.id, oauth_provider: 'github').first
-    user_projects = HTTParty.get("https://api.github.com/users/#{github_account.login}/repos?type=all&page=1&per_page=100")
-    user_projects.body
+    list_projects current_user.id
   end
 
   post '/saveProject' do
-    name = params[:name]
-    first_word = Spinying.parse(word: name)[0].upcase
-    tmpfile = params[:images]
-    project_id = params[:project_id].to_s
+    import_context={
+      :user_id => current_user.id,
+      :name => params[:name],
+      :first_word => Spinying.parse(word: params[:name])[0].upcase,
+      :tmpfile => params[:images],
+      :project_id => params[:project_id].to_s,
+      :owner => params[:owner]
+    }
 
-    count = User[current_user.id].projects_dataset.where(project_code: project_id).count
-
-    return {code: 602, msg: '您已经导入了该项目，请重新选择'}.to_json if count > 0
-
-    if tmpfile
-      img = 'data:' + tmpfile[:type] + ';base64,' + Sequel.blob(Base64.encode64(File.read(tmpfile[:tempfile])))
+    if import_context[:tmpfile]
+      f = import_context[:tmpfile]
+      img_type = f[:type]
+      image_content = Sequel.blob(Base64.encode64(File.read(f[:tempfile])))
+      import_context[:img] = "data:#{img_type};base64,#{image_content}"
     end
-    project = Project.create(name: name.to_s,
-                             created_at: Time.now,
-                             owner: params[:owner],
-                             img: img,
-                             first_word: first_word,
-                             project_code: project_id)
-    result = User[current_user.id].add_project(project)
+
+    import_project import_context
     {code: 601, msg: '您已经导入了该项目，请重新选择'}.to_json
   end
 
@@ -90,10 +90,10 @@ class ProjectController < BaseController
 
     # fetch data from chaincode
     amount = HTTParty.post('http://localhost:8080/kcoin/fabric/proxy',
-                        {
-                            headers: {:Accept => 'application/json', 'Content-Type' => 'text/json'},
-                            body: {fn: 'balance', args: ['symbol', 'owner']}.to_json
-                        })
+                           {
+                             headers: {:Accept => 'application/json', 'Content-Type' => 'text/json'},
+                             body: {fn: 'balance', args: ['symbol', 'owner']}.to_json
+                           })
     @kcoin = JSON.parse(amount.body)
 
     # fetch member data form github

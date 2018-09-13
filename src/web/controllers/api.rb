@@ -9,6 +9,11 @@ class ApiController < BaseController
     # webhooks doc: https://developer.github.com/webhooks/
     # events and payloads: https://developer.github.com/v3/activity/events/types/
 
+    # verify signature first: https://developer.github.com/webhooks/#delivery-headers
+    request.body.rewind
+    payload_body = request.body.read
+    verify_signature(payload_body)
+
     # Read payload of the event from params
     # Read headers of the event from env
     user_agent = env['HTTP_USER_AGENT']
