@@ -12,8 +12,11 @@ module GithubHelpers
   end
 
   def verify_signature(payload_body)
-    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV['SECRET_TOKEN'], payload_body)
-    halt 500, "Signatures didn't match!" unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
+    json = JSON.parse(payload_body)
+    project = Project.get_by_project_id json['repository']['id'].to_i
+    halt 404, 'Project not imported' unless project
+    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), project.secret, payload_body)
+    halt 403, "Signatures didn't match!" unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
   end
 
   def on_event_received(params, user_agent, github_delivery, github_event, action)
@@ -32,45 +35,37 @@ module GithubHelpers
     repository_owner_id = params[:repository][:owner][:id]
     repository_owner_node_id = params[:repository][:owner][:node_id]
 
-    unless webhook_event_have_received? github_delivery
+    unless GithubEvent.has_received? github_delivery
       puts "persist event #{github_delivery} of type #{github_event}"
-      webhook = GithubEvent.new(github_delivery_id: github_delivery,
-                                user_agent: user_agent,
-                                github_event: github_event,
-                                action: action,
-                                sender_login: sender_login,
-                                sender_id: sender_id,
-                                sender_node_id: sender_node_id,
-                                repository_name: repository_name,
-                                repository_id: repository_id,
-                                repository_node_id: repository_node_id,
-                                repository_full_name: repository_full_name,
-                                repository_owner_login: repository_owner_login,
-                                repository_owner_id: repository_owner_id,
-                                repository_owner_node_id: repository_owner_node_id,
-                                received_at: Time.now,
-                                payload: payload,
-                                processing_state: 0)
-      webhook.save
+      webhook = GithubEvent.insert(github_delivery_id: github_delivery,
+                                   user_agent: user_agent,
+                                   github_event: github_event,
+                                   action: action,
+                                   sender_login: sender_login,
+                                   sender_id: sender_id,
+                                   sender_node_id: sender_node_id,
+                                   repository_name: repository_name,
+                                   repository_id: repository_id,
+                                   repository_node_id: repository_node_id,
+                                   repository_full_name: repository_full_name,
+                                   repository_owner_login: repository_owner_login,
+                                   repository_owner_id: repository_owner_id,
+                                   repository_owner_node_id: repository_owner_node_id,
+                                   received_at: Time.now,
+                                   payload: payload,
+                                   processing_state: 0)
     end
 
     # create oauth if not exists
     oauth = Oauth.first(:oauth_provider => UserAppHelpers::GITHUB, :open_id => sender_id)
-    unless oauth
-      Oauth.insert(login: sender_login,
-                   name: sender_login,
-                   oauth_provider: UserAppHelpers::GITHUB,
-                   open_id: sender_id,
-                   eth_account: Digest::SHA1.hexdigest(UserAppHelpers::GITHUB + sender_id),
-                   avatar_url: sender_avatar_url,
-                   created_at: Time.now,
-                   last_login_at: Time.now)
-    end
-  end
-
-  def webhook_event_have_received?(github_delivery_id)
-    # Search role, if no exist return false
-    GithubEvent.first(:github_delivery_id => github_delivery_id).kind_of?(GithubEvent) ? true : false
+    Oauth.insert(login: sender_login,
+                 name: sender_login,
+                 oauth_provider: UserAppHelpers::GITHUB,
+                 open_id: sender_id,
+                 eth_account: Digest::SHA1.hexdigest(UserAppHelpers::GITHUB + sender_id),
+                 avatar_url: sender_avatar_url,
+                 created_at: Time.now,
+                 last_login_at: Time.now) unless oauth
   end
 
   def github_v3_api(path)

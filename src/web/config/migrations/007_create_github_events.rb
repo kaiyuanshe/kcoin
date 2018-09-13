@@ -1,7 +1,8 @@
 migration 'create the github webhook events table' do
   database.create_table :github_events do
     primary_key :id
-    String :github_delivery_id, :unique => true
+    String :github_delivery_id, :null => false
+    index :github_delivery_id, :unique => true
     String :user_agent, :null => true
     String :github_event
     String :action, :null => true
