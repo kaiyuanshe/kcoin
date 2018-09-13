@@ -12,7 +12,10 @@ class ApiController < BaseController
     # verify signature first: https://developer.github.com/webhooks/#delivery-headers
     request.body.rewind
     payload_body = request.body.read
-    verify_signature(payload_body)
+    if CONFIG[:github][:sign_event]
+      halt 403, 'access denied. is missing header HTTP_X_HUB_SIGNATURE' unless request.env['HTTP_X_HUB_SIGNATURE']
+      verify_signature(payload_body)
+    end
 
     # Read payload of the event from params
     # Read headers of the event from env
