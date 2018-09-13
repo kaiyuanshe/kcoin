@@ -36,3 +36,6 @@ cn:
   project_header_faq: "常见问题"
   project_logout: "退出登录"
 
+  # project import
+  project_import_dup: "您已经导入了该项目，请重新选择"
+

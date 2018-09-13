@@ -8,8 +8,7 @@ migration 'create the oauth table' do
     String :open_id, :null => false
     index  [:oauth_provider, :open_id], :unique => true
     String :eth_account, :null => false
-    String :password_digest, :null => true
-    String :email, :unique => true, :null => true
+    String :email, :null => true
     String :avatar_url, :null => true
     Timestamp :created_at, null: false
     Timestamp :updated_at, :null => true

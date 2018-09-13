@@ -34,7 +34,8 @@ module UserAppHelpers
                  user[:email],
                  user[:avatar_url],
                  user[:oauth_provider],
-                 user[:eth_account])
+                 user[:eth_account],
+                 user[:access_token])
   end
 
   def set_current_user
@@ -49,7 +50,7 @@ module UserAppHelpers
     auth_params = {
       :client_id => CONFIG[:login][:github][:client_id],
       :redirect_uri => request.base_url + '/auth/github/callback' + callback_uri,
-      :scope => 'user',
+      :scope => 'user,admin:repo_hook',
       :state => session['github_oauth_state']
     }
     redirect 'https://github.com/login/oauth/authorize?' + URI.encode_www_form(auth_params)
@@ -88,6 +89,9 @@ module UserAppHelpers
         return set_current_github_user JSON.parse(user_lookup.body),
                                        JSON.parse(email_lookup.body),
                                        token_details['access_token']
+      else
+        puts "something is wrong, cannot get the access token: #{token_details.to_s}"
+        false
       end
     end
     false
@@ -115,7 +119,8 @@ module UserAppHelpers
       :oauth_provider => GITHUB,
       :open_id => github_user['id'],
       :email => email,
-      :avatar_url => github_user['avatar_url']
+      :avatar_url => github_user['avatar_url'],
+      :access_token => auth_token
     }
 
     persist_user user_info
@@ -134,11 +139,9 @@ module UserAppHelpers
                   created_at: Time.now,
                   last_login_at: Time.now)
       user = User.first(email: oauth.email)
-
-      eth_account = Digest::SHA1.hexdigest(user.id.to_s)
-      user.update(eth_account: eth_account)
+      oauth.update(user_id: user.id)
     end
-    oauth.update(user_id: user.id)
+    user
   end
 
   def persist_user(user_info)
@@ -146,6 +149,7 @@ module UserAppHelpers
     if oauth
       oauth.update(last_login_at: Time.now,
                    login: user_info[:login],
+                   name: user_info[:name],
                    email: user_info[:email],
                    avatar_url: user_info[:avatar_url],
                    updated_at: Time.now)
@@ -160,18 +164,12 @@ module UserAppHelpers
                    created_at: Time.now,
                    last_login_at: Time.now)
       oauth = Oauth.first(:oauth_provider => user_info[:oauth_provider], :open_id => user_info[:open_id])
-      binding_user oauth
     end
 
-    user_info[:id] = oauth.user_id
+    user = binding_user oauth
+    user_info[:id] = user.id
+    user_info[:eth_account] = user.eth_account
     session[KCOIN_LOGIN_INFO] = user_info
-  end
-
-  def save_address(eth_account)
-    user = User[current_user.id]
-    user.update(eth_account: eth_account, updated_at: Time.now)
-    session[KCOIN_LOGIN_INFO][:eth_account] = eth_account
-    true
   end
 
 end
@@ -195,9 +193,9 @@ class GuestUser
 end
 
 class AuthUser
-  attr_reader :id, :login, :name, :email, :avatar_url, :oauth, :eth_account
+  attr_reader :id, :login, :name, :email, :avatar_url, :oauth, :eth_account, :access_token
 
-  def initialize(id, login, name, email, avatar_url, oauth, eth_account)
+  def initialize(id, login, name, email, avatar_url, oauth, eth_account, access_token)
     @login = login
     @name = name
     @email = email
@@ -205,6 +203,7 @@ class AuthUser
     @id = id
     @oauth = oauth
     @eth_account = eth_account
+    @access_token = access_token
   end
 
   def is_authenticated?

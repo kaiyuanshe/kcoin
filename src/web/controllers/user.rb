@@ -19,11 +19,6 @@ class UserController < BaseController
     haml :user
   end
 
-  post '/address' do
-    save_address params[:address]
-    redirect '/user'
-  end
-
   get '/login' do
     haml :login, layout: false
   end
