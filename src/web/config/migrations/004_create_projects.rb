@@ -9,12 +9,8 @@ migration 'create the projects table' do
     String :description, :null => true
     String :secret, :null => false
     File :img, :null => true
-    String :source, :null => true
-    String :website, :null => true
-    String :contract_name, :null => true
-    String :contract_symbol, :null => true
-    String :contract_address, :null => true
-    String :contract_abi, :null => true
+    String :symbol, :null => false # symbol of ledger
+    String :eth_account, :null => false # address of project
     Timestamp :created_at, :null => false
   end
 end

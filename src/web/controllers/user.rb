@@ -1,12 +1,10 @@
 require 'jwt'
 require './controllers/base'
-require './helpers/website_helpers'
-require './helpers/email_helper'
+require './helpers/email_helpers'
 require 'net/smtp'
 require 'digest/sha1'
 
 class UserController < BaseController
-  helpers WebsiteHelpers
   helpers EmailAppHelpers
   KCOIN = 'kcoin'
 

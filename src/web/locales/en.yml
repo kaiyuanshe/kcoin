@@ -38,3 +38,4 @@ en:
 
   # project import
   project_import_dup: "You imported this project already. Please select another project"
+  project_import_fail: "Failed in importing project："

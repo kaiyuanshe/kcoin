@@ -1,5 +1,5 @@
 require './models/github_event'
-require './helpers/github_helper'
+require './helpers/github_helpers'
 
 class ApiController < BaseController
 

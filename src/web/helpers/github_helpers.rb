@@ -4,8 +4,12 @@ module GithubHelpers
 
   # all supported events: https://developer.github.com/webhooks/#events
   SUPPORTED_EVENTS = %w(fork milestone pull_request push watch)
+  PROJECT_IMPORT_EVENT = 'project_import' # special event while importing a new project in kcoin
   WEBHOOK_NAME = 'web'
   WEBHOOK_EVENTS = ['*']
+
+  WEBHOOK_EVENT_STATUS_INIT = 0
+  WEBHOOK_EVENT_STATUS_PERSISTED = 1 # persisted in block chain
 
   def event_supported?(event_type)
     SUPPORTED_EVENTS.include? event_type
@@ -37,23 +41,23 @@ module GithubHelpers
 
     unless GithubEvent.has_received? github_delivery
       puts "persist event #{github_delivery} of type #{github_event}"
-      webhook = GithubEvent.insert(github_delivery_id: github_delivery,
-                                   user_agent: user_agent,
-                                   github_event: github_event,
-                                   action: action,
-                                   sender_login: sender_login,
-                                   sender_id: sender_id,
-                                   sender_node_id: sender_node_id,
-                                   repository_name: repository_name,
-                                   repository_id: repository_id,
-                                   repository_node_id: repository_node_id,
-                                   repository_full_name: repository_full_name,
-                                   repository_owner_login: repository_owner_login,
-                                   repository_owner_id: repository_owner_id,
-                                   repository_owner_node_id: repository_owner_node_id,
-                                   received_at: Time.now,
-                                   payload: payload,
-                                   processing_state: 0)
+      GithubEvent.insert(github_delivery_id: github_delivery,
+                         user_agent: user_agent,
+                         github_event: github_event,
+                         action: action,
+                         sender_login: sender_login,
+                         sender_id: sender_id,
+                         sender_node_id: sender_node_id,
+                         repository_name: repository_name,
+                         repository_id: repository_id,
+                         repository_node_id: repository_node_id,
+                         repository_full_name: repository_full_name,
+                         repository_owner_login: repository_owner_login,
+                         repository_owner_id: repository_owner_id,
+                         repository_owner_node_id: repository_owner_node_id,
+                         received_at: Time.now,
+                         payload: payload,
+                         processing_state: WEBHOOK_EVENT_STATUS_INIT)
     end
 
     # create oauth if not exists
@@ -118,6 +122,7 @@ module GithubHelpers
     # TODO might return 422: Hook already exists on this repository
     resp = HTTParty.post(webhook_uri, options)
     puts "register webhook: #{resp.code}, #{resp.body}"
+    raise 'Failed to register webhook' unless resp.code==422 or resp.code/100==2
     true
   end
 
