@@ -57,13 +57,13 @@ function initPager() {
     $("#import_form")[0].reset()
 }
 
-function showNextPage(project_id) {
+function showNextPage(github_project_id) {
     $("#kcoin_stepper").data('stepper')['next']();
     $("#kcoin_master").data('master').next();
-    let index = findElem(list, "id", project_id);
+    let index = findElem(list, "id", github_project_id);
     $("#project_title").html(list[index].name);
     $("#project_name").val(list[index].name);
-    $("#project_id").val(project_id);
+    $("#github_project_id").val(github_project_id);
     $('.kcoin-step.complete').append("<style>.stepper::before{border: 2px solid #FF5C5D;}</style>");
 }
 
@@ -89,8 +89,8 @@ function saveForm() {
         Metro.toast.create("上传的图片不能超过 2 M", null, 3000, "alert");
         return;
     }
-    var project_id = $("#project_id").val();
-    var index = findElem(list, "id", project_id);
+    var github_project_id = $("#github_project_id").val();
+    var index = findElem(list, "id", github_project_id);
     var formData = new FormData($("#import_form")[0]);
     formData.append("owner", list[index].owner.login);
     $.ajax({

@@ -16,7 +16,7 @@
   "data-pagination-prev-title"=>"◂",
   "data-pagination-next-title"=>"▸"}
     <% for(var i = 0; i < list.length; i++) { %>
-    %li{:onclick=>"loadProjectDetail(<%list[i].project_code%>)"}
+    %li{:onclick=>"loadProjectDetail(<%list[i].github_project_id%>)"}
       %figure.kcoin-figure
         .img-container.thumbnail.px-0.py-0
           <%if(list[i].img) {%>
@@ -84,7 +84,7 @@
                 %label.fg-gray（<%item.length%> 个项目）
               %ul.mx-0.my-0
                 <% for(var i = 0; i < item.length; i++) { %>
-                %li.kcoin-li.d-flex.flex-align-center{:name=>"project_id",
+                %li.kcoin-li.d-flex.flex-align-center{:name=>"github_project_id",
                 :onclick=>"showNextPage(<%list[i].id%>)",
                 :value=>"<%list[i].id%>"} <%list[i].name%>
                 <% } %>
@@ -103,9 +103,9 @@
             "data-validate" => "required"}
             %span.invalid_feedback
               项目名称不能为空
-            %input#project_id{:type=>"hidden",
+            %input#github_project_id{:type=>"hidden",
             :dir=>"rtl",
-            :name=>"project_id"}
+            :name=>"github_project_id"}
           .cell-12.form-group.px-5
             %label 2. 上传项目封面（选填，但只能添加不大于 2M 的图片）
             %input#img{:type=>"file",
