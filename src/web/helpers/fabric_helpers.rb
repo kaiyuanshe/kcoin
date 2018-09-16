@@ -52,4 +52,7 @@ module FabricHelpers
     query_server(FINCTION_BALANCE, [symbol, eth_account])
   end
 
+  def transfer(symbol, from, to, amount)
+    invoke_server(FINCTION_TRANSFER, [symbol, from, to, amount.to_s])
+  end
 end

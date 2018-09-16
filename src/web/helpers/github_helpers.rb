@@ -1,6 +1,7 @@
 module GithubHelpers
 
   include UserAppHelpers
+  include FabricHelpers
 
   # all supported events: https://developer.github.com/webhooks/#events
   SUPPORTED_EVENTS = %w(fork milestone pull_request push watch)
@@ -17,7 +18,7 @@ module GithubHelpers
 
   def verify_signature(payload_body)
     json = JSON.parse(payload_body)
-    project = Project.get_by_project_id json['repository']['id'].to_i
+    project = Project.get_by_github_project_id json['repository']['id'].to_i
     halt 404, 'Project not imported' unless project
     signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), project.secret, payload_body)
     halt 403, "Signatures didn't match!" unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
@@ -60,16 +61,33 @@ module GithubHelpers
                          processing_state: WEBHOOK_EVENT_STATUS_INIT)
     end
 
-    # create oauth if not exists
+    # create oauth if not exists so that user can be credited before registering in kcoin
+    user_eth_account = Digest::SHA1.hexdigest(UserAppHelpers::GITHUB + sender_id)
     oauth = Oauth.first(:oauth_provider => UserAppHelpers::GITHUB, :open_id => sender_id)
     Oauth.insert(login: sender_login,
                  name: sender_login,
                  oauth_provider: UserAppHelpers::GITHUB,
                  open_id: sender_id,
-                 eth_account: Digest::SHA1.hexdigest(UserAppHelpers::GITHUB + sender_id),
+                 eth_account: user_eth_account,
                  avatar_url: sender_avatar_url,
                  created_at: Time.now,
                  last_login_at: Time.now) unless oauth
+
+    # trigger block chain transfer
+    event = GithubEvent.get_by_delivery_id github_delivery
+    project = Project.get_by_github_project_id repository_id
+    # todo implement rules, using rule engine for example. Get rule by project and event. 5 here for testing purpose
+    halt 200, "event #{github_delivery} already processed" if event_processed(event)
+    puts "sending transaction to block chain for event #{github_delivery}"
+    bc_resp = transfer(project.symbol, project.eth_account, user_eth_account, 5)
+    event.update(processing_state: WEBHOOK_EVENT_STATUS_PERSISTED,
+                 transaction_id: bc_resp['transactionId'],
+                 processing_time: Time.now)
+    puts "event #{github_delivery} of type #{github_event} successfully persisted in block chain"
+  end
+
+  def event_processed(event)
+    event.processing_state == WEBHOOK_EVENT_STATUS_PERSISTED
   end
 
   def github_v3_api(path)

@@ -8,4 +8,9 @@ class GithubEvent < Sequel::Model(:github_events)
     event = GithubEvent.first(:github_delivery_id => github_delivery_id)
     !event.nil?
   end
+
+  def self.get_by_delivery_id(github_delivery_id)
+    GithubEvent.first(:github_delivery_id => github_delivery_id)
+  end
+
 end
