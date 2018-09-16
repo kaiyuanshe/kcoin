@@ -38,4 +38,4 @@ cn:
 
   # project import
   project_import_dup: "您已经导入了该项目，请重新选择"
-
+  project_import_fail: "导入项目失败："

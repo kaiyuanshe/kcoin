@@ -1,12 +1,6 @@
 require './controllers/base'
-require './helpers/website_helpers'
-require './helpers/github_helper'
-require './helpers/project_helper'
 
 class ProjectController < BaseController
-  helpers WebsiteHelpers
-  helpers GithubHelpers
-  helpers ProjectHelpers
 
   before do
     set_current_user
@@ -55,8 +49,12 @@ class ProjectController < BaseController
       import_context[:img] = "data:#{img_type};base64,#{image_content}"
     end
 
-    import_project import_context
-    {code: 601, msg: '您已经导入了该项目，请重新选择'}.to_json
+    begin
+      import_project import_context
+      {code: 601, msg: t('project_import_dup')}.to_json
+    rescue Exception => e
+      {code: 602, msg: "#{t('project_import_fail')}#{e.message}"}.to_json
+    end
   end
 
   post '/updateProject' do

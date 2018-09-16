@@ -3,7 +3,7 @@ migration 'create the users table' do
     primary_key :id
     String :login
     String :name, :null => true
-    String :eth_account, :null => false
+    String :eth_account, :null => false # address of user
     String :password_digest, :null => true
     String :email, :unique => true, :null => true
     String :avatar_url, :null => true

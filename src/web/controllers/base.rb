@@ -1,9 +1,12 @@
 Bundler.require
 
 require './config/init'
-require './helpers/user_helper'
 require './helpers/website_helpers'
 require './helpers/locale_helpers'
+require './helpers/fabric_helpers'
+require './helpers/user_helpers'
+require './helpers/github_helpers'
+require './helpers/project_helpers'
 require './lib/json_params'
 require 'sinatra/reloader'
 require 'sinatra-initializers'
@@ -16,10 +19,13 @@ class BaseController < Sinatra::Base
 
   helpers WebsiteHelpers
   helpers LocaleHelpers
-  helpers Sinatra::ContentFor
+  helpers FabricHelpers
   helpers UserAppHelpers
+  helpers GithubHelpers
+  helpers ProjectHelpers
+  helpers Sinatra::ContentFor
   register Sinatra::JsonBodyParams
-
+  
   use Rack::Locale
 
   configure do
