@@ -25,5 +25,5 @@ function initProjectList() {
 }
 
 function loadProjectDetail(id) {
-    $("#container").load("/project/projectDetailView", {project_code: id});
+    $("#container").load("/project/projectDetailView", {github_project_id: id});
 }

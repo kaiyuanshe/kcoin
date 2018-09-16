@@ -5,8 +5,8 @@ module ProjectHelpers
 
   def import_project(import_context)
     # save project
-    if Project.project_not_exist?(import_context[:project_id])
-      puts "Persisting project #{import_context[:project_id]} by user"
+    if Project.project_not_exist?(import_context[:github_project_id])
+      puts "Persisting project #{import_context[:github_project_id]} by user"
       DB.transaction do
         project = Project.create(name: import_context[:name],
                                  created_at: Time.now,
@@ -14,15 +14,15 @@ module ProjectHelpers
                                  img: import_context[:img],
                                  secret: SecureRandom.hex,
                                  symbol: SecureRandom.hex,
-                                 eth_account: Digest::SHA1.hexdigest(import_context[:project_id]),
+                                 eth_account: Digest::SHA1.hexdigest(import_context[:github_project_id]),
                                  first_word: import_context[:first_word],
-                                 project_id: import_context[:project_id])
+                                 github_project_id: import_context[:github_project_id])
         User[current_user.id].add_project(project)
       end
     end
 
 
-    project = Project.get_by_project_id(import_context[:project_id])
+    project = Project.get_by_github_project_id(import_context[:github_project_id])
     import_context[:id] = project.id
     import_context[:secret] = project.secret
     import_context[:symbol] = project.symbol
@@ -38,7 +38,7 @@ module ProjectHelpers
                        sender_login: current_user.login,
                        sender_id: current_user.id,
                        repository_name: project.name,
-                       repository_id: project.project_id,
+                       repository_id: project.github_project_id,
                        repository_full_name: project.name,
                        repository_owner_login: current_user.login,
                        repository_owner_id: current_user.id,

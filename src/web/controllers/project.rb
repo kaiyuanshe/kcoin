@@ -38,7 +38,7 @@ class ProjectController < BaseController
       :name => params[:name],
       :first_word => Spinying.parse(word: params[:name])[0].upcase,
       :tmpfile => params[:images],
-      :project_id => params[:project_id].to_s,
+      :github_project_id => params[:project_id].to_s,
       :owner => params[:owner]
     }
 
@@ -58,7 +58,7 @@ class ProjectController < BaseController
   end
 
   post '/updateProject' do
-    project = User[current_user.id].projects_dataset.where(project_code: params[:project_code]).first
+    project = User[current_user.id].projects_dataset.where(project_id: params[:github_project_id]).first
     # project.name = params[:name]
     tmpfile = params[:images]
     if tmpfile
@@ -83,26 +83,25 @@ class ProjectController < BaseController
 
   post '/projectDetailView' do
     # fetch project message
-    project_code = params[:project_code]
-    @project = User[current_user.id].projects_dataset.where(project_code: project_code).first
+    github_project_id = params[:github_project_id]
+    @project = Project.get_by_github_project_id(github_project_id)
+    halt 404, t('project_not_exist') unless @project
 
     # fetch data from chaincode
-    amount = HTTParty.post('http://localhost:8080/kcoin/fabric/proxy',
-                           {
-                             headers: {:Accept => 'application/json', 'Content-Type' => 'text/json'},
-                             body: {fn: 'balance', args: ['symbol', 'owner']}.to_json
-                           })
-    @kcoin = JSON.parse(amount.body)
+    balance = query_balance(@project.symbol, current_user)
+    @kcoin = {
+      :balance => balance['payload'].to_i
+    }
 
     # fetch member data form github
-    @collaborators = JSON.parse(HTTParty.get("https://api.github.com/repos/#{@project.owner}/#{@project.name}/contributors").body)
+    @collaborators = list_contributors(@project.owner, @project.name)
     haml :project_detail, layout: false
   end
 
 
   get '/getProjectState' do
-    state = HTTParty.get("https://api.github.com/repos/#{params[:repo_owner]}/#{params[:repo_name]}/stats/contributors").body
-    state
+    state = list_contributors(params[:repo_owner], params[:repo_name])
+    state.to_s
   end
 
 end

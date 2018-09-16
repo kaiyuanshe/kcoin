@@ -1,8 +1,8 @@
 migration 'create the projects table' do
   database.create_table :projects do
     primary_key :id
-    String :project_id, :null => false
-    index :project_id, :unique => true
+    String :github_project_id, :null => false # id from github
+    index :github_project_id, :unique => true
     String :name, :null => false
     String :owner, :null => false
     String :first_word, :null => false

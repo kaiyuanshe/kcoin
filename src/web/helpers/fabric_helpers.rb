@@ -48,4 +48,8 @@ module FabricHelpers
     invoke_server(FINCTION_INIT_LEDGER, args)
   end
 
+  def query_balance(symbol, eth_account)
+    query_server(FINCTION_BALANCE, [symbol, eth_account])
+  end
+
 end
