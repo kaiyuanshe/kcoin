@@ -88,7 +88,7 @@ class ProjectController < BaseController
     halt 404, t('project_not_exist') unless @project
 
     # fetch data from chaincode
-    balance = query_balance(@project.symbol, current_user)
+    balance = query_balance(@project.symbol, current_user.eth_account)
     @kcoin = {
       :balance => balance['payload'].to_i
     }

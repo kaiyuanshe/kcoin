@@ -163,6 +163,8 @@ public class FabricClient {
         ensureChannelReady();
 
         try {
+            logger.info(format("begin querying `%s` with args: %s", finction, Arrays.toString(args)));
+
             QueryByChaincodeRequest queryByChaincodeRequest = client.newQueryProposalRequest();
             queryByChaincodeRequest.setArgs(args);
             queryByChaincodeRequest.setFcn(finction);
@@ -185,7 +187,7 @@ public class FabricClient {
             } else {
                 String payload = proposalResponse.getProposalResponse().getResponse().getPayload().toStringUtf8();
                 logger.info(format("Query payload from peer %s returned %s", proposalResponse.getPeer().getName(), payload));
-                return FabricResponse.sunccess().withMessage(payload);
+                return FabricResponse.sunccess().withPayload(payload);
             }
         } catch (Exception e) {
             logger.error("Caught exception while running query", e);
@@ -245,6 +247,7 @@ public class FabricClient {
 
     private void ensureChannelReady() throws Exception {
         if (this.channel == null || this.channel.isShutdown()) {
+            this.channel.shutdown(true);
             initChannel();
         }
 
