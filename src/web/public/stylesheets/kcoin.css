@@ -844,8 +844,8 @@ div.chart {
 }
 
 .user-project-panel {
-    width: 200px;
-    height: 1600px;
+    /* width: 200px; */
+    /* height: 1600px; */
 }
 
 .brief {
@@ -867,7 +867,7 @@ div.chart {
 
 .wallet-address {
     background: #edf0f5;
-    width: 300px;
+    /* width: 300px; */
     height: 40px;
     padding-top: 9px;
     padding-left: 10px;
@@ -896,7 +896,7 @@ div.chart {
     width: 100px !important;
     height: 40px;
     margin-top: 50px;
-    margin-left: calc( 50% - 50px );
+    margin-left: calc(50% - 50px);
 }
 
 .brief > textarea {
@@ -974,4 +974,21 @@ div.chart {
     color: #f27370;
 }
 
-.user-project-list-split {border: 1px solid #cfd2d6;width:489px;height:1px;}
+.user-project-list-split {
+    border: 1px solid #cfd2d6;
+    width: 489px;
+    height: 1px;
+}
+
+.history-table {
+    width: 100%;
+}
+
+.history-head{
+    display: none;
+}
+
+
+.table.striped .tbody .tr:nth-child(odd), .table.striped tbody tr:nth-child(odd) {
+    background: #edf0f5;
+}

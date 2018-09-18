@@ -108,4 +108,8 @@ class ProjectController < BaseController
     state
   end
 
+  get '/history' do
+    haml :history
+  end
+
 end

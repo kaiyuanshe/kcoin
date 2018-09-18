@@ -1,13 +1,13 @@
 .container-fluid.pt-13.bg-white.h-vh-100.px-0
   .container.bg-white.px-0.pt-5#container
-    .row
+    .row.mx-0-fs.mx-3-md
       -# left area
       .cell-fs-12.cell-md-4.px-0.user-profile
         .float-left-md.pos-fixed-md.user-profile-float
           %img.d-block{:src=>"icons/kcoin-project-list-icon.png",:style=>"background: #f3f3f3;"}
           %span.d-block.mx-auto.text-center.mt-5.user-name 用户名
           %span.d-block.mt-10.brief-title 简介
-          %textarea.brief{"data-role"=>"textarea",
+          %textarea.brief{"d-flex-md"=>"textarea",
             "data-auto-size"=>"true",
             "data-clear-button"=>"false",
             :readonly=>"readonly"}
@@ -21,8 +21,8 @@
 
       -# right area
       .cell-fs-12.cell-md-8.px-0.user-project-panel
-        .row.mx-0
-          .cell-12
+        .row.mx-0-fs.mx-3-md
+          .cell-12.px-0-fs.px-3-md
             .user-kcoin-detail.d-flex
               -# kcoin detail
               .row.mx-0.user-kcoin-detail-left-area.d-flex-fs.d-inline-block-md.flex-align-center
@@ -37,66 +37,66 @@
               -# kcoin history
               .user-kcoin-detail-right-area.d-none-fs.d-inline-block-md
                 .row.mx-0.pt-2.project-detail
-                  .cell.text-right.px-0
+                  .stub.text-right.px-0
                     %span 08.09
-                  .cell-10.text-left.content-item
+                  .cell.text-left.content-item
                     %span 提交一次Pull Request
-                  .cell.text-right.px-0.content-item-num
+                  .stub.text-right.px-0.content-item-num
                     %span +10
                 .row.mx-0.pt-2.project-detail
-                  .cell.text-right.px-0
+                  .stub.text-right.px-0
                     %span 08.09
-                  .cell-10.text-left.content-item
+                  .cell.text-left.content-item
                     %span 提交一次Pull Request
-                  .cell.text-right.px-0.content-item-num
+                  .stub.text-right.px-0.content-item-num
                     %span +10
                 .row.mx-0.pt-2.project-detail
-                  .cell.text-right.px-0
+                  .stub.text-right.px-0
                     %span 08.09
-                  .cell-10.text-left.content-item
+                  .cell.text-left.content-item
                     %span 提交一次Pull Request
-                  .cell.text-right.px-0.content-item-num
+                  .stub.text-right.px-0.content-item-num
                     %span +10
                 .row.mx-0.pt-2.project-detail
-                  .cell.text-right.px-0
+                  .stub.text-right.px-0
                     %span 08.09
-                  .cell-10.text-left.content-item
+                  .cell.text-left.content-item
                     %span 提交一次Pull Request
-                  .cell.text-right.px-0.content-item-num
+                  .stub.text-right.px-0.content-item-num
                     %span +10
                 .row.mx-0
                   .cell-12.px-0.text-right.user-kcoin-detail-link
-                    %a{:href=>"#"} 查看更多 >
+                    %a{:href=>"/project/history"} 查看更多 >
 
-        .row.mx-0
-          .cell-12.mx-2
+        .row.mx-0-fs.mx-3-md
+          .cell-12.px-3
             .pt-15.user-project-detail
               %span.user-project-detail-title 我参与的项目
-            .row.pt-5
+            .row.pt-5.px-3-fs.px-0-md
               .stub.user-project-detail-image
                 .img-container.thumbnail.px-0.py-0.no-border
                   %img{:src=>"icons/kcoin-project-list-icon.png",:style=>"background: #f3f3f3;"}
-              .cell
-                .row
-                  .cell.text-left
-                    %span.user-project-list-title 项目名称
-                    %span.user-project-list-title token:
-                    %span.user-project-list-title-num 500
-                  .cell.text-right.user-kcoin-detail-link
+              .cell.px-0
+                .row.px-3
+                  .cell-12-fs.cell-md.text-left
+                    %span.d-flex-fs.d-inline-block-md.order-1.user-project-list-title 项目名称
+                    %span.order-2.user-project-list-title token:
+                    %span.order-3.user-project-list-title-num 500
+                  .cell-12-fs.cell-md.text-right-md.text-left-fs.user-kcoin-detail-link
                     %a{:href=>"#"} 查看更多 >
-                .row.mx-0.pt-2.project-detail.no-visible-fs.visible-md
-                  .cell.text-right.px-0
+                .row.mx-0.px-3.pt-2.project-detail.d-none-fs.d-flex-md
+                  .stub.text-right.px-0
                     %span 08.09
-                  .cell-10.text-left.content-item
+                  .cell.text-left.content-item
                     %span 提交一次Pull Request
-                  .cell.text-right.px-0.content-item-num
+                  .stub.text-right.px-0.content-item-num
                     %span +10
-                .row.mx-0.pt-2.project-detail.no-visible-fs.visible-md
-                  .cell.text-right.px-0
+                .row.mx-0.px-3.pt-2.project-detail.d-none-fs.d-flex-md
+                  .stub.text-right.px-0
                     %span 08.09
-                  .cell-10.text-left.content-item
+                  .cell.text-left.content-item
                     %span 提交一次Pull Request
-                  .cell.text-right.px-0.content-item-num
+                  .stub.text-right.px-0.content-item-num
                     %span +10
-                .row.mx-0.pt-2.no-visible-fs.visible-md
+                .row.mx-0.pt-2.d-none-fs.d-flex-md
                   .user-project-list-split
