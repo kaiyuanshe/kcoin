@@ -1,55 +1,102 @@
-.grid
+.container-fluid.pt-13.bg-white.h-vh-100.px-0
+  .container.bg-white.px-0.pt-5#container
     .row
-        .cell-3{:align=>"center"}
-            %img{:src=>"#{current_user.avatar_url}",:width=>200}
-            %br
-            %h4
-                =current_user.name
-        .cell-9
-            .grid
+      -# left area
+      .cell-fs-12.cell-md-4.px-0.user-profile
+        .float-left-md.pos-fixed-md.user-profile-float
+          %img.d-block{:src=>"icons/kcoin-project-list-icon.png",:style=>"background: #f3f3f3;"}
+          %span.d-block.mx-auto.text-center.mt-5.user-name 用户名
+          %span.d-block.mt-10.brief-title 简介
+          %textarea.brief{"data-role"=>"textarea",
+            "data-auto-size"=>"true",
+            "data-clear-button"=>"false",
+            :readonly=>"readonly"}
+            The state of Utah in the United States is home to lots of beautiful National Parks, & Bryce Canyon National Park ranks as three of the most magnificent & awe inspiring.
+
+            Bryce Canyon isn’t a canyon. it is the spectacular edge of the Paunsaugunt Plateau, a place where intricately carved towers & archways of stone shimmer in a dazzling array of colour under the bright sun.
+          %span.d-block.mt-10.wallet-address-title 钱包地址
+          %span.d-block.wallet-address
+            234jKLOUUUO7987230980890jkjkjl
+          %button#btn_edit.button.info.btn-user-edit 编辑
+
+      -# right area
+      .cell-fs-12.cell-md-8.px-0.user-project-panel
+        .row.mx-0
+          .cell-12
+            .user-kcoin-detail.d-flex
+              -# kcoin detail
+              .row.mx-0.user-kcoin-detail-left-area.d-flex-fs.d-inline-block-md.flex-align-center
+                .cell-fs-6.cell-md-12.order-1.text-right-fs.text-center-md.user-kcoin-detail-number
+                  %span.d-block-md.mx-auto.user-kcoin 3600
+                .cell-fs-6.cell-md-12.order-2.text-left-fs.text-center-md.user-kcoin-detail-title
+                  %span.d-block-md.mx-auto KCoin
+                .cell-fs-12.d-none-md.d-block-fs.order-3.pos-absolute.pos-bottom-center
+                  %span 查看更多
+                .d-inline-block-md.d-none-fs.order-4.user-kcoin-detail-split
+
+              -# kcoin history
+              .user-kcoin-detail-right-area.d-none-fs.d-inline-block-md
+                .row.mx-0.pt-2.project-detail
+                  .cell.text-right.px-0
+                    %span 08.09
+                  .cell-10.text-left.content-item
+                    %span 提交一次Pull Request
+                  .cell.text-right.px-0.content-item-num
+                    %span +10
+                .row.mx-0.pt-2.project-detail
+                  .cell.text-right.px-0
+                    %span 08.09
+                  .cell-10.text-left.content-item
+                    %span 提交一次Pull Request
+                  .cell.text-right.px-0.content-item-num
+                    %span +10
+                .row.mx-0.pt-2.project-detail
+                  .cell.text-right.px-0
+                    %span 08.09
+                  .cell-10.text-left.content-item
+                    %span 提交一次Pull Request
+                  .cell.text-right.px-0.content-item-num
+                    %span +10
+                .row.mx-0.pt-2.project-detail
+                  .cell.text-right.px-0
+                    %span 08.09
+                  .cell-10.text-left.content-item
+                    %span 提交一次Pull Request
+                  .cell.text-right.px-0.content-item-num
+                    %span +10
+                .row.mx-0
+                  .cell-12.px-0.text-right.user-kcoin-detail-link
+                    %a{:href=>"#"} 查看更多 >
+
+        .row.mx-0
+          .cell-12.mx-2
+            .pt-15.user-project-detail
+              %span.user-project-detail-title 我参与的项目
+            .row.pt-5
+              .stub.user-project-detail-image
+                .img-container.thumbnail.px-0.py-0.no-border
+                  %img{:src=>"icons/kcoin-project-list-icon.png",:style=>"background: #f3f3f3;"}
+              .cell
                 .row
-                    .cell-6
-                        %h4 Ethereum Account
-                .row
-                    %form.ml-6{"data-role"=>'validator', :action=>"/user/address", :method=>'post'}
-                        %div.row.mb-2{:style=>'width:480px'}
-                            %lable
-                                Address
-                            %input.text{'data-role'=>'input',
-                                        :name=>'address',
-                                        :value=>"#{current_user.eth_account ||= ''}",
-                                        :placeholder=>'Enter your Ethereum Account',
-                                        "data-validate"=>'required length=42 pattern=^0[xX][A-Za-z0-9]{40}$'}
-                            %span.invalid_feedback
-                                Invalid address
-                        %div.form-actions
-                            %input.button.secondary{:type=>'submit',
-                                                    :value=>"#{current_user.eth_account ? 'Update':'Save'}",
-                                                    :id=>'submit'}
-                .row.mt-10
-                    .cell-6
-                        %h4 Projects
-                    .cell-6
-                        %a.button.info.float-right{:href=>'/project/import'}
-                            Import project
-            %table.table.row-hover.cell-border.table-border
-                %thead
-                    %tr
-                        %th Project
-                        %th Account
-                        %th
-                %tbody
-                    %tr
-                        %td
-                            %a{:href=>"/project"} project_name
-                        %td
-                            My Cash: 1000 My Token: 1200
-                        %td
-                            .button detail
-                    %tr
-                        %td
-                            %a{:href=>"/project"} project_name
-                        %td
-                            My Cash: 1000 My Token: 1200
-                        %td
-                            .button detail
+                  .cell.text-left
+                    %span.user-project-list-title 项目名称
+                    %span.user-project-list-title token:
+                    %span.user-project-list-title-num 500
+                  .cell.text-right.user-kcoin-detail-link
+                    %a{:href=>"#"} 查看更多 >
+                .row.mx-0.pt-2.project-detail.no-visible-fs.visible-md
+                  .cell.text-right.px-0
+                    %span 08.09
+                  .cell-10.text-left.content-item
+                    %span 提交一次Pull Request
+                  .cell.text-right.px-0.content-item-num
+                    %span +10
+                .row.mx-0.pt-2.project-detail.no-visible-fs.visible-md
+                  .cell.text-right.px-0
+                    %span 08.09
+                  .cell-10.text-left.content-item
+                    %span 提交一次Pull Request
+                  .cell.text-right.px-0.content-item-num
+                    %span +10
+                .row.mx-0.pt-2.no-visible-fs.visible-md
+                  .user-project-list-split

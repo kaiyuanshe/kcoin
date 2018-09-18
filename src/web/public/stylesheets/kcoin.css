@@ -140,6 +140,7 @@
         margin-bottom: 38px;
         color: #ffffff;
     }
+
 }
 
 @media screen and (min-width: 0) and (max-width: 576px) {
@@ -174,6 +175,37 @@
         padding-top: 212px !important;
     }
 
+    .user-kcoin-detail-number {
+        font-family: MicrosoftYaHei;
+        font-size: 30px;
+        color: #ff5a59;
+        order: 2 !important;
+    }
+
+    .user-kcoin-detail-title {
+        font-family: PingFangHK-Semibold;
+        font-size: 30px;
+        color: #8b939e;
+        order: 1 !important;
+    }
+
+    .user-kcoin-detail {
+        background: #fdfeff;
+        border: 1px solid #e2e9f5;
+        box-shadow: 0 0 6px 1px #edf0f5;
+        border-radius: 5px;
+    }
+
+    .user-profile-float {
+        border: none !important;
+        box-shadow: none !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .user-kcoin-detail-left-area {
+        width: 100%;
+    }
 }
 
 .container {
@@ -563,12 +595,6 @@ div#project-detail-menu {
     padding-right: 0px;
 }
 
-.project-detail {
-}
-
-project-detail {
-}
-
 .project-detail .card-header {
     max-width: 498px;
     max-height: 82px;
@@ -795,3 +821,157 @@ div.chart {
 .kcoin-win-title .btn-close {
     padding-bottom: 0px !important;
 }
+
+.user-profile {
+    max-width: 340px;
+    min-height: 760px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.user-profile-float {
+    max-width: 340px;
+    max-height: 760px;
+    height: 100%;
+    width: 100%;
+    background: #fdfeff;
+    border: 1px solid #e2e9f5;
+    box-shadow: 0 0 6px 1px #edf0f5;
+    border-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.user-project-panel {
+    width: 200px;
+    height: 1600px;
+}
+
+.brief {
+    margin-top: 5px;
+    border: none;
+}
+
+.brief-title {
+    font-family: PingFangHK-Semibold, serif;
+    font-size: 20px;
+    color: #323a45;
+}
+
+.wallet-address-title {
+    font-family: PingFangHK-Semibold, serif;
+    font-size: 20px;
+    color: #323a45;
+}
+
+.wallet-address {
+    background: #edf0f5;
+    width: 300px;
+    height: 40px;
+    padding-top: 9px;
+    padding-left: 10px;
+    font-family: PingFangHK-Regular, serif;
+    font-size: 16px;
+    color: #323a45;
+    margin-top: 5px;
+}
+
+.user-name {
+    font-family: PingFangHK-Semibold, serif;
+    font-size: 20px;
+    color: #404b59;
+}
+
+.user-profile-float > img {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-user-edit {
+    width: 100px !important;
+    height: 40px;
+    margin-top: 50px;
+    margin-left: calc( 50% - 50px );
+}
+
+.brief > textarea {
+    padding-left: 0px;
+    padding-right: 0px;
+    font-family: PingFangHK-Regular, serif;
+    font-size: 16px;
+    color: #404b59;
+}
+
+.user-kcoin-detail {
+    min-width: 360px;
+    min-height: 100px;
+}
+
+.user-kcoin-detail > img {
+    width: inherit;
+    height: inherit;
+}
+
+.user-kcoin {
+    font-family: PingFangHK-Regular, Serif;
+    font-size: 46px;
+    color: #ff5a59;
+}
+
+.user-kcoin-detail-left-area {
+    min-width: 194px;
+    height: 100%;
+    min-height: 100px;
+    background: url('/icons/kcoin-project-list-half-icon.png') no-repeat;
+}
+
+.user-kcoin-detail-right-area {
+    padding-left: 40px;
+    max-width: calc(100% - 176px);
+    width: 100%;
+}
+
+.user-kcoin-detail-split {
+    border: 1px solid #cfd2d6;
+    width: 1px;
+    height: 59px;
+    position: absolute;
+    right: 0px;
+    top: calc(50% - 30px);
+}
+
+.user-kcoin-detail-link {
+    font-family: PingFangHK-Semibold, serif;
+    font-size: 16px;
+    color: #60a8f0 !important;
+}
+
+.user-project-detail-title {
+    font-family: PingFangHK-Semibold;
+    font-size: 20px;
+    color: #323a45;
+}
+
+.user-project-detail-image {
+    width: 120px;
+    height: 120px;
+}
+
+.user-project-list-title {
+    font-family: PingFangHK-Semibold;
+    font-size: 20px;
+    color: #5e6d81;
+}
+
+.user-project-list-title-num {
+    font-family: PingFangHK-Semibold;
+    font-size: 20px;
+    color: #f27370;
+}
+
+.user-project-list-split {border: 1px solid #cfd2d6;width:489px;height:1px;}

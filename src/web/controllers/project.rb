@@ -8,14 +8,14 @@ class ProjectController < BaseController
     set_current_user
     # if people login return explorer page, else redirect login page
     auth_params = {
-      redirect_uri: request.base_url + '/project'
+        redirect_uri: request.base_url + '/project'
     }
     redirect_url = '/user/login?' + URI.encode_www_form(auth_params)
     redirect redirect_url unless authenticated?
   end
 
   get '/' do
-    haml :project, layout: false
+    haml :project
   end
 
   get '/import' do
@@ -26,7 +26,7 @@ class ProjectController < BaseController
     user_id = current_user.id
     dataset = User[user_id].projects
     {
-      projectList: dataset
+        projectList: dataset
     }.to_json
   end
 
@@ -89,12 +89,13 @@ class ProjectController < BaseController
     @project = User[current_user.id].projects_dataset.where(project_code: project_code).first
 
     # fetch data from chaincode
-    amount = HTTParty.post('http://localhost:8080/kcoin/fabric/proxy',
-                        {
-                            headers: {:Accept => 'application/json', 'Content-Type' => 'text/json'},
-                            body: {fn: 'balance', args: ['symbol', 'owner']}.to_json
-                        })
-    @kcoin = JSON.parse(amount.body)
+    # amount = HTTParty.post('http://localhost:8080/kcoin/fabric/proxy',
+    #                     {
+    #                         headers: {:Accept => 'application/json', 'Content-Type' => 'text/json'},
+    #                         body: {fn: 'balance', args: ['symbol', 'owner']}.to_json
+    #                     })
+    # @kcoin = JSON.parse(amount.body)
+    @kcoin = JSON.parse('{"payload": 300}')
 
     # fetch member data form github
     @collaborators = JSON.parse(HTTParty.get("https://api.github.com/repos/#{@project.owner}/#{@project.name}/contributors").body)

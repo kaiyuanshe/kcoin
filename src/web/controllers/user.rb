@@ -14,6 +14,7 @@ class UserController < BaseController
     set_current_user
   end
 
+  # user profile page
   get '/' do
     redirect '/' unless authenticated?
     haml :user

@@ -1,48 +1,60 @@
-!!!
+!!! 5
 %html{:lang => 'en'}
     %head
-        %title
-            KCoin Project
         %meta{:charset => 'utf-8'}
-        %meta{:name => 'viewport', :content=>'width=device-width, initial-scale=1, shrink-to-fit=no'}
+        %meta{:name => 'viewport', :content=>'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no'}
 
         = include_stylesheet 'https://cdn.metroui.org.ua/v4/css/metro-all.min.css'
-        = content :stylesheets
+        = include_stylesheet 'kcoin'
 
         = include_javascript 'https://code.jquery.com/jquery-3.3.1.min.js'
         = include_javascript 'https://cdn.metroui.org.ua/v4/js/metro.min.js'
 
-    %body
-        .container{:style => 'padding:20px;'}
-            .grid
-                .row{:align=>'right'}
-                    .cell-12
-                        = current_user.name
-                        &nbsp;
-                        %a{:href=>'/auth/logout'}
-                            Logout
-            #body{:style => 'min-height: 600px;'}
-                = yield
-            .grid
-                .row{:align => 'center', :style => 'padding:20px 0px;'}
-                    .cell-12
-                        &nbsp;
-                        = link_to('Home', '/')
-                        &nbsp;
-                        = link_to('Dashboard', '/user')
-                        &nbsp;
-                        = link_to('Document', '/doc')
-                        &nbsp;
-                        = link_to('Download', '/download')
-                        &nbsp;
-                        = link_to('Explorer', '/explorer')
-                        &nbsp;
-                        = link_to('Club', '/club')
-                        &nbsp;
-                        = link_to('Blog', '/blog')
-                        &nbsp;
-                        = link_to('Code', '/code')
-                        &nbsp;
-                        = link_to('About', '/about')
+        %title
+            KCoin
 
-        = content :javascripts
+    %body.h-vh-100
+        .pos-fixed.fixed-top.app-bar-wrapper.z-top
+            %header.container-fluid.pos-relative.app-bar-expand-md{"data-role"=>'appbar'}
+
+                -# left area: project logo
+                %a.brand.no-hover.fg-white-hover.order-1
+                    %img{:src=>"icons/kcoin-log.png"}
+
+                -# center area: menu bar
+                %ul.app-bar-menu.order-3.order-md-2.text-center.mx-auto
+                    %li.divider.visible-fs.no-visible-ms.no-visible-md
+                    %li{:style=>'color: #fff!important;'}
+                        %a.fg-white-hover{:href => '/project'}
+                            = t('project_header_my_projects')
+                    %li.divider.visible-fs.no-visible-ms.no-visible-md
+                    %li
+                        %a.fg-white-hover{:href => '/user'}
+                            =t('project_header_user_center')
+                    %li.divider.visible-fs.no-visible-ms.no-visible-md
+                    %li
+                        %a.fg-white-hover{:href => '#'}
+                            =t('project_header_exchange')
+                    %li.divider.visible-fs.no-visible-ms.no-visible-md
+                    %li
+                        %a.fg-white-hover{:href => '#'}
+                            =t('project_header_faq')
+                    %li.divider.visible-fs.no-visible-ms.no-visible-md
+                    %li
+                        %a.fg-white-hover.visible-fs.no-visible-ms.no-visible-md{:href=>'/auth/logout'}
+                            =t('project_logout')
+
+                -# right area: user settings
+                .app-bar-container.order-2.order-md-3.d-none-fs.d-flex-md
+                    %span.app-bar-item
+                        = current_user.name
+                    .app-bar-container
+                        %a.app-bar-item.dropdown-toggle.marker-light.pl-1.pr-5{:href => '#'}
+                            %img.kcoin-avater{:src=>"#{current_user.avatar_url}"}
+                        %ul.v-menu.place-right{"data-role" => 'dropdown'}
+                            %li
+                                %a{:href=>'/auth/logout'}
+                                    =t('project_logout')
+
+        = yield
+
