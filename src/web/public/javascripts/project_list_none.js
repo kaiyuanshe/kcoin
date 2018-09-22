@@ -44,6 +44,7 @@ function openImportWin() {
                 template = template.replace(/\&gt;/, '>');
                 template = template.replace(/\&lt;/, '<')
             }
+            debugger
             $("#projectList").html(Metro.template(template, {map}));
             Metro.activity.close(import_activity);
             Metro.window.toggle("#win_import");

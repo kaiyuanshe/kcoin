@@ -38,7 +38,7 @@ class ProjectController < BaseController
         :name => params[:name],
         :first_word => Spinying.parse(word: params[:name])[0].upcase,
         :tmpfile => params[:images],
-        :github_project_id => params[:project_id].to_s,
+        :github_project_id => params[:github_project_id].to_s,
         :owner => params[:owner]
     }
 

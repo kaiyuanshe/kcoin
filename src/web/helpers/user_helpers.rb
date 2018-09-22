@@ -48,7 +48,7 @@ module UserAppHelpers
 
     session['github_oauth_state'] = SecureRandom.hex
     auth_params = {
-      :client_id => CONFIG[:github][:client_id],
+      :client_id => CONFIG[:login][:github][:client_id],
       :redirect_uri => request.base_url + '/auth/github/callback' + callback_uri,
       :scope => 'user,admin:repo_hook',
       :state => session['github_oauth_state']
@@ -63,9 +63,9 @@ module UserAppHelpers
     github_code = params[:code]
     options = {
       :body => {
-        :client_id => CONFIG[:github][:client_id],
+        :client_id => CONFIG[:login][:github][:client_id],
         :code => github_code,
-        :client_secret => CONFIG[:github][:client_secret]
+        :client_secret => CONFIG[:login][:github][:client_secret]
       },
       :headers => {
         :Accept => 'application/json'
