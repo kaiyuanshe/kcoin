@@ -29,7 +29,7 @@ en:
   login_signup: "Sign up"
   login_signin_github: "Sign in using Github"
 
-  # project pages
+ # project nav bar
   project_header_my_projects: "My projects"
   project_header_user_center: "User center"
   project_header_exchange: "Exchange"
@@ -47,3 +47,10 @@ en:
   user_edit_btn_cancel: "Cancel"
   user_edit_btn_edit: "edit"
   user_edit_btn_save: "Save"
+  
+  # project import
+  project_import_dup: "You imported this project already. Please select another project"
+  project_import_fail: "Failed in importing project："
+
+  # project detail
+  project_not_exist: "Project doesn't exist. You need to import the project first"

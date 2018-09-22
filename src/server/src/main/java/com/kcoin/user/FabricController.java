@@ -11,6 +11,8 @@ import com.jfinal.plugin.activerecord.Record;
 import com.kcoin.fabric.FabricClient;
 import com.kcoin.fabric.FabricResponse;
 
+import java.util.function.Function;
+
 /**
  * Created by juniwang on 22/07/2018.
  */
@@ -38,15 +40,13 @@ public class FabricController extends BaseController {
         Record r = getArgsRecord();
         String finction = r.getStr("fn");
         String[] args = getArgsAsArray(r);
-
-        FabricResponse response;
-        try {
-            FabricClient client = FabricClient.get();
-            response = client.invoke(finction, args);
-        } catch (Exception e) {
-            response = FabricResponse.failure().withMessage(e.getMessage());
-        }
-        renderJson(response);
+        call_fabric((client) -> {
+            try {
+                return client.invoke(finction, args);
+            } catch (Exception e) {
+                return FabricResponse.failure().withMessage(e.getMessage());
+            }
+        });
     }
 
     public void query() {
@@ -58,13 +58,27 @@ public class FabricController extends BaseController {
         Record r = getArgsRecord();
         String finction = r.getStr("fn");
         String[] args = getArgsAsArray(r);
+        call_fabric((client) -> {
+            try {
+                return client.query(finction, args);
+            } catch (Exception e) {
+                return FabricResponse.failure().withMessage(e.getMessage());
+            }
+        });
+    }
 
+    private void call_fabric(Function<FabricClient, FabricResponse> func) {
+        FabricResponse response;
         try {
             FabricClient client = FabricClient.get();
-            renderJson(client.query(finction, args));
+            response = func.apply(client);
         } catch (Exception e) {
-            FabricResponse response = FabricResponse.failure().withMessage(e.getMessage());
-            renderJson(response);
+            response = FabricResponse.failure().withMessage(e.getMessage());
+        }
+
+        renderJson(response);
+        if (response.getCode() / 100 != 2) {
+            renderError(response.getCode(), getRender());
         }
     }
 }

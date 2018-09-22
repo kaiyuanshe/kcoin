@@ -39,7 +39,7 @@
                 %span Kcoin总值
               .cell.text-right.right-title
                 %span
-                  =@kcoin["payload"]
+                  =@kcoin[:balance]
           .card-content.px-6.pb-4
             .content-title.text-center.py-1
               %span 发放记录
@@ -79,7 +79,7 @@
                 %span Tcoin总值
               .cell.text-right.right-title
                 %span
-                  =@kcoin["payload"]
+                  =@kcoin[:balance]
           .card-content.px-6.pb-4
             .content-title.text-center.py-1
               %span 发放记录
@@ -186,7 +186,7 @@
     :enctype=>"multipart/form-data"}
       .row.mx-0
         .cell-12.form-group.px-3-fs.px-0-sm
-          %input{:type=>"hidden",:name=>"project_code",:value=>"#{@project.project_code}"}
+          %input{:type=>"hidden",:name=>"github_project_id",:value=>"#{@project.github_project_id}"}
           %label 1. 填写项目名称
           %input#project_name{:type=>"text",
               :name=>"name",
@@ -195,9 +195,9 @@
               "data-validate" => "required"}
           %span.invalid_feedback
             项目名称不能为空
-          %input#project_id{:type=>"hidden",
+          %input#github_project_id{:type=>"hidden",
               :dir=>"rtl",
-              :name=>"project_id"}
+              :name=>"github_project_id"}
         .cell-12.form-group.px-3-fs.px-0-sm
           %label 2. 上传项目封面（选填，但只能添加不大于 2M 的图片）
           %input#img{:type=>"file",

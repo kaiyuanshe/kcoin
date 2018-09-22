@@ -1,8 +1,6 @@
 require './controllers/base'
-require './helpers/website_helpers'
 
 class ProjectController < BaseController
-  helpers WebsiteHelpers
 
   before do
     set_current_user
@@ -31,36 +29,36 @@ class ProjectController < BaseController
   end
 
   get '/fetchList' do
-    github_account = Oauth.where(user_id: current_user.id, oauth_provider: 'github').first
-    user_projects = HTTParty.get("https://api.github.com/users/#{github_account.login}/repos?type=all&page=1&per_page=100")
-    user_projects.body
+    list_projects current_user.id
   end
 
   post '/saveProject' do
-    name = params[:name]
-    first_word = Spinying.parse(word: name)[0].upcase
-    tmpfile = params[:images]
-    project_id = params[:project_id].to_s
+    import_context = {
+        :user_id => current_user.id,
+        :name => params[:name],
+        :first_word => Spinying.parse(word: params[:name])[0].upcase,
+        :tmpfile => params[:images],
+        :github_project_id => params[:project_id].to_s,
+        :owner => params[:owner]
+    }
 
-    count = User[current_user.id].projects_dataset.where(project_code: project_id).count
-
-    return {code: 602, msg: '您已经导入了该项目，请重新选择'}.to_json if count > 0
-
-    if tmpfile
-      img = 'data:' + tmpfile[:type] + ';base64,' + Sequel.blob(Base64.encode64(File.read(tmpfile[:tempfile])))
+    if import_context[:tmpfile]
+      f = import_context[:tmpfile]
+      img_type = f[:type]
+      image_content = Sequel.blob(Base64.encode64(File.read(f[:tempfile])))
+      import_context[:img] = "data:#{img_type};base64,#{image_content}"
     end
-    project = Project.create(name: name.to_s,
-                             created_at: Time.now,
-                             owner: params[:owner],
-                             img: img,
-                             first_word: first_word,
-                             project_code: project_id)
-    result = User[current_user.id].add_project(project)
-    {code: 601, msg: '您已经导入了该项目，请重新选择'}.to_json
+
+    begin
+      import_project import_context
+      {code: 601, msg: t('project_import_dup')}.to_json
+    rescue Exception => e
+      {code: 602, msg: "#{t('project_import_fail')}#{e.message}"}.to_json
+    end
   end
 
   post '/updateProject' do
-    project = User[current_user.id].projects_dataset.where(project_code: params[:project_code]).first
+    project = User[current_user.id].projects_dataset.where(project_id: params[:github_project_id]).first
     # project.name = params[:name]
     tmpfile = params[:images]
     if tmpfile
@@ -85,27 +83,25 @@ class ProjectController < BaseController
 
   post '/projectDetailView' do
     # fetch project message
-    project_code = params[:project_code]
-    @project = User[current_user.id].projects_dataset.where(project_code: project_code).first
+    github_project_id = params[:github_project_id]
+    @project = Project.get_by_github_project_id(github_project_id)
+    halt 404, t('project_not_exist') unless @project
 
     # fetch data from chaincode
-    # amount = HTTParty.post('http://localhost:8080/kcoin/fabric/proxy',
-    #                     {
-    #                         headers: {:Accept => 'application/json', 'Content-Type' => 'text/json'},
-    #                         body: {fn: 'balance', args: ['symbol', 'owner']}.to_json
-    #                     })
-    # @kcoin = JSON.parse(amount.body)
-    @kcoin = JSON.parse('{"payload": 300}')
+    balance = query_balance(@project.symbol, current_user.eth_account)
+    @kcoin = {
+        :balance => balance['payload'].to_i
+    }
 
     # fetch member data form github
-    @collaborators = JSON.parse(HTTParty.get("https://api.github.com/repos/#{@project.owner}/#{@project.name}/contributors").body)
+    @collaborators = list_contributors(@project.owner, @project.name)
     haml :project_detail, layout: false
   end
 
 
   get '/getProjectState' do
-    state = HTTParty.get("https://api.github.com/repos/#{params[:repo_owner]}/#{params[:repo_name]}/stats/contributors").body
-    state
+    state = list_contributors(params[:repo_owner], params[:repo_name])
+    state.to_s
   end
 
   get '/history' do

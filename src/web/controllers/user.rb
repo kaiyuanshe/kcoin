@@ -1,12 +1,10 @@
 require 'jwt'
 require './controllers/base'
-require './helpers/website_helpers'
-require './helpers/email_helper'
+require './helpers/email_helpers'
 require 'net/smtp'
 require 'digest/sha1'
 
 class UserController < BaseController
-  helpers WebsiteHelpers
   helpers EmailAppHelpers
   helpers UserAppHelpers
   KCOIN = 'kcoin'
@@ -20,11 +18,6 @@ class UserController < BaseController
     redirect '/' unless authenticated?
     user_detail = find_user(params[:user_id])
     haml :user, locals: {user_detail: user_detail}
-  end
-
-  post '/address' do
-    save_address params[:address]
-    redirect '/user'
   end
 
   get '/login' do
@@ -55,10 +48,14 @@ class UserController < BaseController
   # Registered user
   post '/join' do
     login_value = params[:login]
-    login_value = params[:email].split('@')[0] if login_value.empty?
+    if login_value.empty?
+      login_value = params[:email].split('@')[0]
+    end
+
     user = User.new(login: login_value,
                     name: params[:name],
                     password_digest: Digest::SHA1.hexdigest(params[:password]),
+                    eth_account: Digest::SHA1.hexdigest(params[:email]),
                     email: params[:email],
                     avatar_url: nil,
                     activated: true,
@@ -68,9 +65,6 @@ class UserController < BaseController
 
     user.save
     session[:user_id] = user.id
-
-    eth_account = Digest::SHA1.hexdigest(user.id.to_s)
-    user.update(eth_account: eth_account)
     send_email(user)
     redirect '/'
   end
