@@ -47,10 +47,10 @@ module UserAppHelpers
 
     session['github_oauth_state'] = SecureRandom.hex
     auth_params = {
-      :client_id => CONFIG[:login][:github][:client_id],
-      :redirect_uri => request.base_url + '/auth/github/callback' + callback_uri,
-      :scope => 'user',
-      :state => session['github_oauth_state']
+        :client_id => CONFIG[:login][:github][:client_id],
+        :redirect_uri => request.base_url + '/auth/github/callback' + callback_uri,
+        :scope => 'user',
+        :state => session['github_oauth_state']
     }
     redirect 'https://github.com/login/oauth/authorize?' + URI.encode_www_form(auth_params)
   end
@@ -61,14 +61,14 @@ module UserAppHelpers
 
     github_code = params[:code]
     options = {
-      :body => {
-        :client_id => CONFIG[:login][:github][:client_id],
-        :code => github_code,
-        :client_secret => CONFIG[:login][:github][:client_secret]
-      },
-      :headers =>{
-        :Accept => 'application/json'
-      }
+        :body => {
+            :client_id => CONFIG[:login][:github][:client_id],
+            :code => github_code,
+            :client_secret => CONFIG[:login][:github][:client_secret]
+        },
+        :headers => {
+            :Accept => 'application/json'
+        }
     }
     github_token_url = 'https://github.com/login/oauth/access_token'
     github_response = HTTParty.post(github_token_url, options)
@@ -77,9 +77,9 @@ module UserAppHelpers
       token_details = JSON.parse(github_response.body)
       if token_details.key?('access_token')
         headers = {
-          :Accept => 'application/json',
-          :Authorization => "token #{token_details['access_token']}",
-          'User-Agent' => 'Kaiyuanshe KCoin project'
+            :Accept => 'application/json',
+            :Authorization => "token #{token_details['access_token']}",
+            'User-Agent' => 'Kaiyuanshe KCoin project'
         }
 
         user_lookup = HTTParty.get('https://api.github.com/user?', headers: headers)
@@ -110,12 +110,12 @@ module UserAppHelpers
     end
 
     user_info = {
-      :login => login,
-      :name => name,
-      :oauth_provider => GITHUB,
-      :open_id => github_user['id'],
-      :email => email,
-      :avatar_url => github_user['avatar_url']
+        :login => login,
+        :name => name,
+        :oauth_provider => GITHUB,
+        :open_id => github_user['id'],
+        :email => email,
+        :avatar_url => github_user['avatar_url']
     }
 
     persist_user user_info
@@ -170,6 +170,15 @@ module UserAppHelpers
     user.update(eth_account: eth_account, updated_at: Time.now)
     session[KCOIN_LOGIN_INFO][:eth_account] = eth_account
     true
+  end
+
+  # find user by userId. If userId is empty,return current_user
+  def find_user(user_id)
+    if user_id.nil?
+      User[current_user.id]
+    else
+      User[user_id]
+    end
   end
 
 end

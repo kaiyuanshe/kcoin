@@ -36,3 +36,14 @@ cn:
   project_header_faq: "常见问题"
   project_logout: "退出登录"
 
+  # user detail pages
+  user_name: "姓名"
+  user_name_invalid: '姓名不能为空!'
+  user_profile: "个人简介"
+  user_profile_display: "简介"
+  user_wallet: "钱包地址"
+  user_wallet_regenerate: "重新生成"
+  user_wallet_password: "钱包密码"
+  user_edit_btn_cancel: "取消"
+  user_edit_btn_edit: "编辑"
+  user_edit_btn_save: "保存"

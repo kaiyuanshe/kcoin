@@ -4,20 +4,24 @@
       -# left area
       .cell-fs-12.cell-md-4.px-0.user-profile
         .float-left-md.pos-fixed-md.user-profile-float
-          %img.d-block{:src=>"icons/kcoin-project-list-icon.png",:style=>"background: #f3f3f3;"}
-          %span.d-block.mx-auto.text-center.mt-5.user-name 用户名
-          %span.d-block.mt-10.brief-title 简介
-          %textarea.brief{"d-flex-md"=>"textarea",
-            "data-auto-size"=>"true",
+          %img.d-block{:src=>"#{user_detail.avatar_url}",:style=>"background: #f3f3f3;"}
+          %span.d-block.mx-auto.text-center.mt-5.user-name
+            = user_detail.name
+          %span.d-block.mt-10.brief-title
+            = t('user_profile_display')
+          %textarea.brief{"data-role"=>"textarea",
+            "data-auto-size"=>"false",
             "data-clear-button"=>"false",
-            :readonly=>"readonly"}
-            The state of Utah in the United States is home to lots of beautiful National Parks, & Bryce Canyon National Park ranks as three of the most magnificent & awe inspiring.
-
-            Bryce Canyon isn’t a canyon. it is the spectacular edge of the Paunsaugunt Plateau, a place where intricately carved towers & archways of stone shimmer in a dazzling array of colour under the bright sun.
-          %span.d-block.mt-10.wallet-address-title 钱包地址
-          %span.d-block.wallet-address
-            234jKLOUUUO7987230980890jkjkjl
-          %button#btn_edit.button.info.btn-user-edit 编辑
+            "data-cls-component"=>"h-100",
+            "data-default-value"=>"#{user_detail.brief}",
+            :readonly=>"readonly",
+            :style=>"max-height:264px;box-shadow: none;"}
+          %span.d-block.mt-10.wallet-address-title
+            =t('user_wallet')
+          %span.d-block.wallet-address.text-ellipsis{:title=>"#{user_detail.eth_account}"}
+            = user_detail.eth_account
+          %a#btn_edit.button.info.btn-user-edit{:href => '/user/edit_page'}
+            =t('user_edit_btn_edit')
 
       -# right area
       .cell-fs-12.cell-md-8.px-0.user-project-panel

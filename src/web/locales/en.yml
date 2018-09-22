@@ -35,3 +35,15 @@ en:
   project_header_exchange: "Exchange"
   project_header_faq: "FAQ"
   project_logout: "Logout"
+
+  # user detail pages
+  user_name: "Name"
+  user_name_invalid: 'Invalid name!'
+  user_profile: "Personal profile"
+  user_profile_display: "Profile"
+  user_wallet: "Wallet address"
+  user_wallet_regenerate: "Regenerate address"
+  user_wallet_password: "Wallet password"
+  user_edit_btn_cancel: "Cancel"
+  user_edit_btn_edit: "edit"
+  user_edit_btn_save: "Save"
