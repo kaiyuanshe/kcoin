@@ -24,7 +24,7 @@
         .grid
           .row
             .cell.login-context
-              %form{:action=>"/user/join", :method=>'post',"d-flex-md"=>'validator', "data-interactive-check" => "true"}
+              %form{:action=>"/user/join", :method=>'post',"data-role"=>'validator', "data-interactive-check" => "true"}
                 .form-group
                   %label
                     = t('join_email')
