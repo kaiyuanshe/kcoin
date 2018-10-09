@@ -15,16 +15,16 @@ configure :test do
 end
 
 DB = settings.database
-
 DB.extension(:pagination)
 
-Dir['./config/migrations/*.rb'].each { |migration|
+Dir['./config/migrations/*.rb'].each {|migration|
   require migration
 }
 
 Sequel::Model.strict_param_setting = false
 
-
-Dir['./models/*.rb'].each { |model|
+Dir['./models/*.rb'].each {|model|
   require model
 }
+
+Role.find_role_or_create('admin')

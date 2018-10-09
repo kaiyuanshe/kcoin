@@ -6,7 +6,7 @@ class ProjectController < BaseController
     set_current_user
     # if people login return explorer page, else redirect login page
     auth_params = {
-        redirect_uri: request.base_url + '/project'
+      redirect_uri: request.base_url + '/project'
     }
     redirect_url = '/user/login?' + URI.encode_www_form(auth_params)
     redirect redirect_url unless authenticated?
@@ -24,7 +24,7 @@ class ProjectController < BaseController
     user_id = current_user.id
     dataset = User[user_id].projects
     {
-        projectList: dataset
+      projectList: dataset
     }.to_json
   end
 
@@ -34,12 +34,12 @@ class ProjectController < BaseController
 
   post '/saveProject' do
     import_context = {
-        :user_id => current_user.id,
-        :name => params[:name],
-        :first_word => Spinying.parse(word: params[:name])[0].upcase,
-        :tmpfile => params[:images],
-        :github_project_id => params[:github_project_id].to_s,
-        :owner => params[:owner]
+      :user_id => current_user.id,
+      :name => params[:name],
+      :first_word => Spinying.parse(word: params[:name])[0].upcase,
+      :tmpfile => params[:images],
+      :github_project_id => params[:github_project_id].to_s,
+      :owner => params[:owner]
     }
 
     if import_context[:tmpfile]
@@ -90,7 +90,7 @@ class ProjectController < BaseController
     # fetch data from chaincode
     balance = query_balance(@project.symbol, current_user.eth_account)
     @kcoin = {
-        :balance => balance['payload'].to_i
+      :balance => balance
     }
 
     # fetch member data form github

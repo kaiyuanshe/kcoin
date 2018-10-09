@@ -5,4 +5,5 @@ migration 'create the roles table' do
     Timestamp :created_at, null: false
     Timestamp :updated_at
   end
+
 end

@@ -24,9 +24,12 @@ module ProjectHelpers
 
     project = Project.get_by_github_project_id(import_context[:github_project_id])
     import_context[:id] = project.id
+    import_context[:token_name] = project.id
     import_context[:secret] = project.secret
     import_context[:symbol] = project.symbol
     import_context[:eth_account] = project.eth_account
+    # TODO should be from user's input while importing project
+    import_context[:init_supply] = 10000
     # register webhook
     register_webhook import_context
 

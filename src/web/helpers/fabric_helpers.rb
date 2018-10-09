@@ -42,14 +42,14 @@ module FabricHelpers
   end
 
   def init_ledger(context)
-    init_supply = 10000 # TODO should be from user's input while importing project
     # using id of project as name(id of the db record, not the project_id from github)
-    args = [context[:symbol], context[:id].to_s, context[:eth_account], init_supply.to_s]
+    args = [context[:symbol].to_s, context[:token_name].to_s, context[:eth_account].to_s, context[:init_supply].to_s]
     invoke_server(FINCTION_INIT_LEDGER, args)
   end
 
   def query_balance(symbol, eth_account)
-    query_server(FINCTION_BALANCE, [symbol, eth_account])
+    resp = query_server(FINCTION_BALANCE, [symbol, eth_account])
+    resp['payload'].to_i
   end
 
   def transfer(symbol, from, to, amount)

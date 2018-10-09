@@ -1,9 +1,5 @@
 class KCoinApp
-  require './controllers/website'
-  require './controllers/auth'
-  require './controllers/user'
-  require './controllers/project'
-  require './controllers/api'
+  Dir.glob('./controllers/*.rb').each {|file| require file}
   require './lib/config'
   require './lib/email_params'
 
