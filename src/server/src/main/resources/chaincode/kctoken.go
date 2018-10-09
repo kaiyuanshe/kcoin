@@ -8,6 +8,7 @@ import (
     "github.com/hyperledger/fabric/core/chaincode/shim"
     sc "github.com/hyperledger/fabric/protos/peer"
     "bytes"
+	"time"
 )
 
 // Define the Smart Contract structure
@@ -199,7 +200,7 @@ func getHistoryListResult(resultsIterator shim.HistoryQueryIteratorInterface) ([
 
     bArrayMemberAlreadyWritten := false
     for resultsIterator.HasNext() {
-        queryResponse, err := resultsIterator.Next()
+        response, err := resultsIterator.Next()
         if err != nil {
             return nil, err
         }
@@ -207,9 +208,34 @@ func getHistoryListResult(resultsIterator shim.HistoryQueryIteratorInterface) ([
         if bArrayMemberAlreadyWritten == true {
             buffer.WriteString(",")
         }
-        item, _ := json.Marshal(queryResponse.Value)
-        buffer.Write(item)
+        //item, _ := json.Marshal(response.Value)
+        //buffer.Write(item)
+        // txid
+        buffer.WriteString("{\"TxId\":")
+        buffer.WriteString("\"")
+        buffer.WriteString(response.TxId)
+        buffer.WriteString("\"")
 
+        //value
+		// if it was a delete operation on given key, then we need to set the
+		//corresponding value null. Else, we will write the response.Value
+		//as-is (as the Value itself a JSON marble)
+		if response.IsDelete {
+			buffer.WriteString(", \"Value\":")
+			buffer.WriteString("null")
+		} else {
+			buffer.WriteString(", \"Value\":")
+			buffer.WriteString(string(response.Value))
+		}
+
+
+		// time
+        buffer.WriteString(", \"Timestamp\":")
+        buffer.WriteString("\"")
+        buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
+        buffer.WriteString("\"")
+
+		buffer.WriteString("}")
         bArrayMemberAlreadyWritten = true
     }
     buffer.WriteString("]")

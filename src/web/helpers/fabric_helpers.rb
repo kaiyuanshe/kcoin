@@ -52,6 +52,10 @@ module FabricHelpers
     resp['payload'].to_i
   end
 
+  def query_history(symbol)
+    query_server(FINCTION_HISTORY_QUERY, [symbol])
+  end
+
   def transfer(symbol, from, to, amount)
     invoke_server(FINCTION_TRANSFER, [symbol, from, to, amount.to_s])
   end

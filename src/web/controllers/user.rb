@@ -7,6 +7,7 @@ require 'digest/sha1'
 class UserController < BaseController
   helpers EmailAppHelpers
   helpers UserAppHelpers
+  helpers HistoryHelpers
   KCOIN = 'kcoin'
 
   before do
@@ -16,8 +17,15 @@ class UserController < BaseController
   # user profile page
   get '/' do
     redirect '/' unless authenticated?
-    user_detail = find_user(params[:user_id])
-    haml :user, locals: {user_detail: user_detail}
+    user_id = params[:user_id] ? params[:user_id] : current_user.id
+    user_detail = find_user(user_id)
+    # fetch data from chaincode
+    history = get_history(user_id)
+    project_history = group_history(history)
+
+    haml :user, locals: { user_detail: user_detail,
+                          kcoin_history: history,
+                          project_list: project_history }
   end
 
   get '/login' do
@@ -72,7 +80,7 @@ class UserController < BaseController
   # Verify email is registered
   post '/validate/email' do
     user = User.first(email: params[:email])
-    user ? {flag: false}.to_json : {flag: true}.to_json
+    user ? { flag: false }.to_json : { flag: true }.to_json
   end
 
 
@@ -86,12 +94,12 @@ class UserController < BaseController
            else
              User.first(login: param, password_digest: pwd)
            end
-    user ? {flag: true}.to_json : {flag: false}.to_json
+    user ? { flag: true }.to_json : { flag: false }.to_json
   end
 
   get '/edit_page' do
     user_detail = find_user(params[:user_id])
-    haml :user_edit, locals: {user_detail: user_detail}
+    haml :user_edit, locals: { user_detail: user_detail }
   end
 
   post '/update_user' do

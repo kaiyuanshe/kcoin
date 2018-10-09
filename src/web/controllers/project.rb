@@ -2,6 +2,8 @@ require './controllers/base'
 
 class ProjectController < BaseController
 
+  helpers HistoryHelpers
+
   before do
     set_current_user
     # if people login return explorer page, else redirect login page
@@ -51,14 +53,14 @@ class ProjectController < BaseController
 
     begin
       import_project import_context
-      {code: 601, msg: t('project_import_dup')}.to_json
+      { code: 601, msg: t('project_import_dup') }.to_json
     rescue Exception => e
-      {code: 602, msg: "#{t('project_import_fail')}#{e.message}"}.to_json
+      { code: 602, msg: "#{t('project_import_fail')}#{e.message}" }.to_json
     end
   end
 
   post '/updateProject' do
-    project = User[current_user.id].projects_dataset.where(project_id: params[:github_project_id]).first
+    project = User[current_user.id].projects_dataset.where(github_project_id: params[:github_project_id]).first
     # project.name = params[:name]
     tmpfile = params[:images]
     if tmpfile
@@ -67,7 +69,7 @@ class ProjectController < BaseController
     end
     # User[current_user.id].update_project(project)
     project.update(name: params[:name], img: img)
-    {code: 601, msg: '项目信息修改完成'}.to_json
+    { code: 601, msg: '项目信息修改完成' }.to_json
   end
 
   get '/projectListsView' do
@@ -84,28 +86,35 @@ class ProjectController < BaseController
   post '/projectDetailView' do
     # fetch project message
     github_project_id = params[:github_project_id]
-    @project = Project.get_by_github_project_id(github_project_id)
-    halt 404, t('project_not_exist') unless @project
+    project = Project.get_by_github_project_id(github_project_id)
+    halt 404, t('project_not_exist') unless project
 
     # fetch data from chaincode
-    balance = query_balance(@project.symbol, current_user.eth_account)
-    @kcoin = {
-      :balance => balance
-    }
+    history = get_history_by_project(project.symbol)
 
     # fetch member data form github
-    @collaborators = list_contributors(@project.owner, @project.name)
-    haml :project_detail, layout: false
+    collaborators = list_contributors(project.owner, project.name)
+    haml :project_detail, layout: false, locals: { kcoin_history: history,
+                                                   collaborators: collaborators,
+                                                   project: project }
   end
 
-
   get '/getProjectState' do
-    state = list_contributors(params[:repo_owner], params[:repo_name])
-    state.to_s
+    state = state_contributors(params[:repo_owner], params[:repo_name])
+    state.to_json
   end
 
   get '/history' do
-    haml :history
+    history = if params[:uId].nil?
+                get_history_by_project(params[:symbol])
+              else
+                get_history(params[:uId])
+              end
+    haml :history, locals: { history: history }
+  end
+
+  get '/back' do
+    redirect back
   end
 
 end
