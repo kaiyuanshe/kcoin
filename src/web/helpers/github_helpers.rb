@@ -118,6 +118,14 @@ module GithubHelpers
     user_projects.body
   end
 
+  def state_contributors(owner, project_name)
+    # repo_name: org/project or user/project
+    uri = github_v3_api "repos/#{owner}/#{project_name}/stats/contributors"
+    resp = HTTParty.get (uri)
+    raise "failed in state contributors of #{owner}/#{project_name}" unless resp.code/100==2
+    JSON.parse(resp.body)
+  end
+
   def list_contributors(owner, project_name)
     # repo_name: org/project or user/project
     uri = github_v3_api "repos/#{owner}/#{project_name}/contributors"

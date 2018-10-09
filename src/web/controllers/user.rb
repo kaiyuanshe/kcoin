@@ -7,6 +7,7 @@ require 'digest/sha1'
 class UserController < BaseController
   helpers EmailAppHelpers
   helpers UserAppHelpers
+  helpers HistoryHelpers
   KCOIN = 'kcoin'
 
   before do
