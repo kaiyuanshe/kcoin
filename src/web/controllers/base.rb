@@ -6,7 +6,6 @@ require './helpers/locale_helpers'
 require './helpers/fabric_helpers'
 require './helpers/user_helpers'
 require './helpers/github_helpers'
-require './helpers/history_helpers'
 require './helpers/project_helpers'
 require './lib/json_params'
 require 'sinatra/reloader'
@@ -23,7 +22,6 @@ class BaseController < Sinatra::Base
   helpers FabricHelpers
   helpers UserAppHelpers
   helpers GithubHelpers
-  helpers HistoryHelpers
   helpers ProjectHelpers
   helpers Sinatra::ContentFor
   register Sinatra::JsonBodyParams
