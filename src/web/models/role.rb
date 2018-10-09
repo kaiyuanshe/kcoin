@@ -12,19 +12,18 @@ class Role < Sequel::Model(:roles)
     find_or_create(:name => name)
   end
 
-  def self.add_role_to_user(role, user)
+  def self.add_role_to_user(user_id, role)
     # Add role to user, create raise !
-    user.add_role(role)
+    User[user_id].add_role(find_role_or_create(role))
   end
 
-  def self.remove_role_from_user(role, user)
-    user.remove_role(role)
+  def self.remove_role_from_user(user_id, role)
+    User[user_id].remove_role(find_role_or_create(role))
   end
 
   def validate
     super
     validates_presence [:name]
-    validates_format RegexPattern::Username, :name
   end
 
   many_to_many :users

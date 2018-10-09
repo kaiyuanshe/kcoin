@@ -145,7 +145,6 @@ module GithubHelpers
       }
     }
     authorize_github_v3_api options[:headers]
-    # TODO might return 422: Hook already exists on this repository
     resp = HTTParty.post(webhook_uri, options)
     puts "register webhook: #{resp.code}, #{resp.body}"
     raise 'Failed to register webhook' unless resp.code==422 or resp.code/100==2

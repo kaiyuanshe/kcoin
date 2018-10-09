@@ -13,6 +13,7 @@ require 'sinatra-initializers'
 require 'i18n'
 require 'i18n/backend/fallbacks'
 require 'rack/contrib'
+require 'rack/protection'
 
 class BaseController < Sinatra::Base
   require './lib/regex_pattern'
@@ -25,8 +26,9 @@ class BaseController < Sinatra::Base
   helpers ProjectHelpers
   helpers Sinatra::ContentFor
   register Sinatra::JsonBodyParams
-  
+
   use Rack::Locale
+  use Rack::Protection
 
   configure do
     enable :protection # https://stackoverflow.com/questions/10509774/sinatra-and-rack-protection-setting
@@ -36,6 +38,7 @@ class BaseController < Sinatra::Base
 
     disable :show_exceptions
 
+    # sinatra
     set :template_engine, :haml
     set :haml, :format => :html5
     set :root, Pathname(File.expand_path('../..', __FILE__))
@@ -43,16 +46,21 @@ class BaseController < Sinatra::Base
     set :public_folder, 'public'
     set :static, true
     set :static_cache_control, [:public, max_age: 0]
-    set :session_secret, '%1qA2wS3eD4rF5tG6yH7uJ8iK9oL$'
 
+    # I18n
     I18n::Backend::Simple.send(:include, I18n::Backend::Fallbacks)
     I18n.load_path = Dir[File.join(settings.root, 'locales', '*.yml')]
     I18n.backend.load_translations
     I18n.enforce_available_locales = false
     set :default_locale, 'cn'
+
+    # kcoin
+    set :kcoin_symbol, 'kcoin-dev'
+    set :kcoin_owner, 'kcoin'
   end
 
-  configure :development do
+  configure :production do
+    set :kcoin_symbol, 'kcoin'
     register Sinatra::Reloader
   end
 
@@ -68,7 +76,7 @@ class BaseController < Sinatra::Base
 
   set(:role) do |*roles|
     condition do
-      unless authenticated? && roles.any? {|role| set_current_user.in_role? role}
+      unless authenticated? && roles.any? {|role| set_current_user.has_role? role}
         halt 401, {:response => 'Unauthorized access'}
       end
     end

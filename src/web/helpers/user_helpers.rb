@@ -78,9 +78,9 @@ module UserAppHelpers
       token_details = JSON.parse(github_response.body)
       if token_details.key?('access_token')
         headers = {
-            :Accept => 'application/json',
-            :Authorization => "token #{token_details['access_token']}",
-            'User-Agent' => 'Kaiyuanshe KCoin project'
+          :Accept => 'application/json',
+          :Authorization => "token #{token_details['access_token']}",
+          'User-Agent' => 'Kaiyuanshe KCoin project'
         }
 
         user_lookup = HTTParty.get('https://api.github.com/user?', headers: headers)
@@ -225,17 +225,22 @@ class AuthUser
     true
   end
 
-  def has_role(role)
-    RoleUser.user_have_role?(@id, role)
+  def has_role?(role)
+    # make the first user 'admin'
+    unless UserRole.user_have_role?(1, 'admin')
+      Role.add_role_to_user(1, 'admin')
+    end
+
+    UserRole.user_have_role?(@id, role)
   end
 
   def is_admin?
-    has_role? "admin"
+    has_role? 'admin'
   end
 
   # current_user.admin? returns false. current_user.has_a_baby? returns false.
   # (which is a bit of an assumption I suppose)
   def method_missing(m, *args)
-    return false
+    false
   end
 end
