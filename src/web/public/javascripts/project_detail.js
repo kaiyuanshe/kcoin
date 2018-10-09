@@ -49,6 +49,8 @@ function genOption(title, data) {
 function genData(key) {
     let url = "/project/getProjectState";
     let data;
+    var seriesData = [];
+
     if (key === "kcoin") {
         // url = "";
     } else if (key === "token") {
@@ -68,15 +70,14 @@ function genData(key) {
         async: false,
         success: function (res) {
             data = JSON.parse(res);
+            for (let i = 0; i < data.length; i++) {
+                seriesData.push({
+                    name: data[i].author.login,
+                    value: data[i].total
+                });
+            }
         }
     });
-    var seriesData = [];
-    for (let i = 0; i < data.length; i++) {
-        seriesData.push({
-            name: data[i].author.login,
-            value: data[i].total
-        });
-    }
     return {
         seriesData: seriesData,
     };

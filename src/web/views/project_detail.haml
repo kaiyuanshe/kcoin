@@ -5,18 +5,18 @@
     .row.project-name.px-6
       %figure.d-flex.flex-align-center
         .img-container.thumbnail.px-0.py-0.no-border
-          - if @project.img.equal? nil
+          - if project.img.equal? nil
             %img{:src=>"icons/kcoin-project-list-icon.png",:style=>"background: #f3f3f3;"}
             %div.kcoin-figure-title-letter-div.pos-absolute
               %div.kcoin-figure-title-letter-span
                 %p.mx-0
-                  =@project.first_word
+                  =project.first_word
           - else
-            %img{:src=>"#{@project.img}",:style=>"background: #f3f3f3;"}
+            %img{:src=>"#{project.img}",:style=>"background: #f3f3f3;"}
       %span
-        =@project.name
+        =project.name
     .row.tab-menu
-      %ul{"data-role"=>"tabs", "data-expand"=>"fs"}
+      %ul{"data-role"=>"tabs", "data-expand"=>"true"}
         %li
           %a{:href=>"#_target_info"} 帐号信息
         %li
@@ -27,8 +27,8 @@
           %a{:href=>"#_target_settings"} 项目设置
 
 .container.bd-default.px-0.project-detail-container
-  %input#repo_name{:type=>"hidden",:value=>"#{@project.name}"}
-  %input#repo_owner{:type=>"hidden",:value=>"#{@project.owner}"}
+  %input#repo_name{:type=>"hidden",:value=>"#{project.name}"}
+  %input#repo_owner{:type=>"hidden",:value=>"#{project.owner}"}
   #_target_info
     .row.project-detail
       .cell-fs-12.cell-md-6.mx-auto
@@ -36,81 +36,51 @@
           .card-header.px-6
             .row
               .cell.text-left.left-title.left-title.d-flex.flex-align-center
-                %span Kcoin总值
+                %span KCoin 总值
               .cell.text-right.right-title
                 %span
-                  =@kcoin[:balance]
+                  =kcoin_history[:KCoin]
           .card-content.px-6.pb-4
             .content-title.text-center.py-1
               %span 发放记录
-            .row.py-1
-              .cell-10.text-left.content-item
-                %span 提交一次Pull Request
-              .cell.text-right.content-item-num
-                %span +10
-            .row.py-1
-              .cell-10.text-left.content-item
-                %span 提交一次Pull Request
-              .cell.text-right.content-item-num
-                %span +10
-            .row.py-1
-              .cell-10.text-left.content-item
-                %span 提交一次Pull Request
-              .cell.text-right.content-item-num
-                %span +10
-            .row.py-1
-              .cell-10.text-left.content-item
-                %span 提交一次Pull Request
-              .cell.text-right.content-item-num
-                %span +10
-            .row.py-1
-              .cell-10.text-left.content-item
-                %span 提交一次Pull Request
-              .cell.text-right.content-item-num
-                %span +10
+            - kcoin_history[:History].each_with_index do |item, index|
+              -if index >= 5
+                -break
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span
+                    = item[:EventName]
+                .cell.text-right.content-item-num
+                  %span
+                    = item[:ChangeNum]
             .row
               .cell.text-right.koin-card-link
-                %a{:href=>"#"} 查看更多 >
+                %a{:href=>"/project/history?symbol=#{kcoin_history[:TokenSymbol]}"} 查看更多 >
       .cell-fs-12.cell-md-6.mx-auto
         .card
           .card-header.px-6
             .row
               .cell.text-left.left-title.left-title.d-flex.flex-align-center
-                %span Tcoin总值
+                %span Token 总值
               .cell.text-right.right-title
                 %span
-                  =@kcoin[:balance]
+                  =kcoin_history[:KCoin]
           .card-content.px-6.pb-4
             .content-title.text-center.py-1
               %span 发放记录
-            .row.py-1
-              .cell-10.text-left.content-item
-                %span 提交一次Pull Request
-              .cell.text-right.content-item-num
-                %span +10
-            .row.py-1
-              .cell-10.text-left.content-item
-                %span 提交一次Pull Request
-              .cell.text-right.content-item-num
-                %span +10
-            .row.py-1
-              .cell-10.text-left.content-item
-                %span 提交一次Pull Request
-              .cell.text-right.content-item-num
-                %span +10
-            .row.py-1
-              .cell-10.text-left.content-item
-                %span 提交一次Pull Request
-              .cell.text-right.content-item-num
-                %span +10
-            .row.py-1
-              .cell-10.text-left.content-item
-                %span 提交一次Pull Request
-              .cell.text-right.content-item-num
-                %span +10
+            - kcoin_history[:History].each_with_index do |item, index|
+              -if index >= 5
+                -break
+              .row.py-1
+                .cell-10.text-left.content-item
+                  %span
+                    = item[:EventName]
+                .cell.text-right.content-item-num
+                  %span
+                    = item[:ChangeNum]
             .row
               .cell.text-right.koin-card-link
-                %a{:href=>"#"} 查看更多 >
+                %a{:href=>"/project/history?symbol=#{kcoin_history[:TokenSymbol]}"} 查看更多 >
       .cell-fs-12.cell-md-6.mx-auto
         .card.chart#kcoin-chart
       .cell-fs-12.cell-md-6.mx-auto
@@ -166,7 +136,7 @@
       "data-cls-pagination"=>"flex-justify-center",
       "data-pagination-prev-title"=>"<",
       "data-pagination-next-title"=>">"}
-        - @collaborators.each do |item|
+        - collaborators.each do |item|
           %li.d-flex.flex-align-center.py-5
             .member-img.d-inline-block
               %img{:src=>"#{item["avatar_url"]}"}
@@ -186,18 +156,17 @@
     :enctype=>"multipart/form-data"}
       .row.mx-0
         .cell-12.form-group.px-3-fs.px-0-sm
-          %input{:type=>"hidden",:name=>"github_project_id",:value=>"#{@project.github_project_id}"}
           %label 1. 填写项目名称
           %input#project_name{:type=>"text",
               :name=>"name",
               maxlength: 120,
-              "value"=>"#{@project.name}",
+              "value"=>"#{project.name}",
               "data-validate" => "required"}
           %span.invalid_feedback
             项目名称不能为空
           %input#github_project_id{:type=>"hidden",
-              :dir=>"rtl",
-              :name=>"github_project_id"}
+              :name=>"github_project_id",
+              :value=>"#{project.github_project_id}"}
         .cell-12.form-group.px-3-fs.px-0-sm
           %label 2. 上传项目封面（选填，但只能添加不大于 2M 的图片）
           %input#img{:type=>"file",

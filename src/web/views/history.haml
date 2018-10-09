@@ -2,7 +2,7 @@
   .container.bg-white.px-0.pt-5#container
     .row.mx-2
       .cell-12.px-0.user-kcoin-detail-link
-        %a{:href=>"/project/history"} < 返回
+        %a{:href=>"/project/back"} < 返回
     .row.mx-2
       %table.table.striped.mt-4{"data-role"=>"table",
         "data-cls-table-top"=>"row flex-nowrap",
@@ -16,20 +16,18 @@
         "data-cls-pagination"=>"flex-justify-center",
         "data-pagination-prev-title"=>"◂",
         "data-pagination-next-title"=>"▸",
-        "data-rows"=>"5"}
+        "data-rows"=>"10"}
         %thead
           %tr
             %th time
             %th content
             %th num
         %tbody
-          %tr
-            %td 08.09
-            %td 提交一次Pull Request
-            %td +10
-          %tr
-            %td 08.09
-            %td 提交一次Pull Request
-            %td +10
-
-
+          - history[:History].each_with_index do |item, index|
+            %tr
+              %td
+                = item[:Date]
+              %td
+                = item[:EventName]
+              %td
+                = item[:ChangeNum]

@@ -79,9 +79,9 @@ module GithubHelpers
     # todo implement rules, using rule engine for example. Get rule by project and event. 5 here for testing purpose
     halt 200, "event #{github_delivery} already processed" if event_processed(event)
     puts "sending transaction to block chain for event #{github_delivery}"
-    bc_resp = transfer(project.symbol, project.eth_account, user_eth_account, 5)
+    # bc_resp = transfer(project.symbol, project.eth_account, user_eth_account, 5)
     event.update(processing_state: WEBHOOK_EVENT_STATUS_PERSISTED,
-                 transaction_id: bc_resp['transactionId'],
+                 # transaction_id: bc_resp['transactionId'],
                  processing_time: Time.now)
     puts "event #{github_delivery} of type #{github_event} successfully persisted in block chain"
   end
@@ -123,6 +123,15 @@ module GithubHelpers
     uri = github_v3_api "repos/#{owner}/#{project_name}/contributors"
     resp = HTTParty.get (uri)
     raise "failed in list contributors of #{owner}/#{project_name}" unless resp.code/100==2
+    JSON.parse(resp.body)
+  end
+
+
+  def state_contributors(owner, project_name)
+    # repo_name: org/project or user/project
+    uri = github_v3_api "repos/#{owner}/#{project_name}/stats/contributors"
+    resp = HTTParty.get (uri)
+    raise "failed in state contributors of #{owner}/#{project_name}" unless resp.code/100==2
     JSON.parse(resp.body)
   end
 
