@@ -3,8 +3,11 @@ $(function () {
     $("#btn_import").on("click", function () {
         openImportWin();
     });
-    $("#btn_prev").on("click", function () {
+    $(".btn_prev").on("click", function () {
         showPrevPage();
+    });
+    $(".btn_next").on("click", function () {
+        showNextPage();
     });
     $("#btn_submit").on("click", function () {
         saveForm();
@@ -39,12 +42,12 @@ function openImportWin() {
                     map.set(item.owner.id, [item]);
                 }
             });
+            debugger
             var template = $("#projectListTemplate").html();
             while (template.match(/\&gt;/) || template.match(/\&lt;/)) {
                 template = template.replace(/\&gt;/, '>');
                 template = template.replace(/\&lt;/, '<')
             }
-            debugger
             $("#projectList").html(Metro.template(template, {map}));
             Metro.activity.close(import_activity);
             Metro.window.toggle("#win_import");
@@ -61,15 +64,15 @@ function initPager() {
 function showNextPage(github_project_id) {
     $("#kcoin_stepper").data('stepper')['next']();
     $("#kcoin_master").data('master').next();
-    let index = findElem(list, "id", github_project_id);
-    $("#project_title").html(list[index].name);
-    $("#project_name").val(list[index].name);
-    $("#github_project_id").val(github_project_id);
-    $('.kcoin-step.complete').append("<style>.stepper::before{border: 2px solid #FF5C5D;}</style>");
+    if (github_project_id !== undefined) {
+        let index = findElem(list, "id", github_project_id);
+        $("#project_title").html(list[index].name);
+        $("#project_name").val(list[index].name);
+        $("#github_project_id").val(github_project_id);
+    }
 }
 
 function showPrevPage() {
-    $('.kcoin-step.complete').append("<style>.stepper::before{border: 2px dashed #FFD7D8;}</style>");
     $("#kcoin_stepper").data('stepper').prev();
     $("#kcoin_master").data('master').prev();
 }

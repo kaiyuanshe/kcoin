@@ -418,7 +418,7 @@ span {
     /* left: -16px; */
 }
 
-span.step.kcoin-step.current.kcoin-stepper-complete {
+.step.kcoin-step.current.kcoin-stepper-complete {
     width: 24px;
     height: 24px;
     background: #FF5C5D !important;
@@ -456,6 +456,12 @@ span.step.kcoin-step.current.kcoin-stepper-complete {
 .kcoin-win-panel {
     width: 100% !important;
     height: 100% !important;
+    max-height: 466px;
+}
+
+.kcoin-win-member-panel {
+    width: 100% !important;
+    height: 85% !important;
     max-height: 466px;
 }
 
@@ -740,6 +746,19 @@ dl {
     height: 0px;
 }
 
+.step.kcoin-step.complete.kcoin-stepper-complete::before {
+    content: "";
+    display: block;
+    width: 110px;
+    position: absolute;
+    background-color: white;
+    top: calc(50% - 2px);
+    left: 2px;
+    z-index: 0;
+    border: 2px solid #FF5C5D;
+    height: 0px;
+}
+
 span.step.kcoin-step {
     width: 24px;
     height: 24px;
@@ -991,4 +1010,16 @@ div.chart {
 
 .table.striped .tbody .tr:nth-child(odd), .table.striped tbody tr:nth-child(odd) {
     background: #edf0f5;
+}
+
+label.select.input.dropdown-toggle {
+    background: #ffffff;
+    border: 1px solid #979797 !important;
+    border-radius: 5px;
+    height: 40px !important;
+}
+
+.drop-container {
+    border: 1px solid #979797 !important;
+    border-radius: 5px;
 }
