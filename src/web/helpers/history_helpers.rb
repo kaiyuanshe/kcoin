@@ -13,9 +13,9 @@ module HistoryHelpers
   end
 
   def get_history_by_project(symbol)
-    list = get_list_by_project(symbol)
-    result = handle_history(list)
-    result
+    resp = query_history(symbol)
+    list = JSON.parse(resp['payload'])
+    handle_history(list)
   end
 
   def handle_history(list)
@@ -33,10 +33,10 @@ module HistoryHelpers
       record[:Time] = DateTime.parse(item['Timestamp']).strftime('%y.%m.%d')
 
       record[:ChangeNum] = if index > 0
-                             record[:KCoin] - ((list[index - 1] || {})['Value'] || {})['BalanceOf'].values[0]
-                           else
-                             record[:KCoin]
-                           end
+        record[:KCoin] - ((list[index - 1] || {})['Value'] || {})['BalanceOf'].values[0]
+      else
+        record[:KCoin]
+      end
       history << record
     end
 
@@ -53,8 +53,7 @@ module HistoryHelpers
 
     kcoin = 0
     project_list.each do |project|
-      array = get_list_by_project(project.symbol)
-      result = handle_history(array)
+      result = get_history_by_project(project.symbol)
       kcoin += result[:KCoin].to_i
       list.concat(result[:History])
     end
@@ -62,10 +61,6 @@ module HistoryHelpers
     result[:History] = list
     result[:KCoin] = kcoin
     result
-  end
-
-  def get_list_by_project(symbol)
-    query_history(symbol)
   end
 
   def group_history(history)
