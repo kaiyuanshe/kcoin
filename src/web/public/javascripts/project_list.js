@@ -8,11 +8,10 @@ function initProjectList() {
         type: "GET",
         url: "/project/projectLists",
         success: function (res) {
-            var res = JSON.parse(res);
-            var list = res.projectList;
+            var list = JSON.parse(res);
             console.log(list);
-            $("#list-num").text($("#list-num").text() + "（ "+list.length+" ）")
-            if (res.projectList.length > 0) {
+            $("#list-num").text($("#list-num").text() + "（ " + list.length + " ）")
+            if (list.length > 0) {
                 let template = $("#listTemplate").html();
                 while (template.match(/\&gt;/) || template.match(/\&lt;/)) {
                     template = template.replace(/\&gt;/, '>');
