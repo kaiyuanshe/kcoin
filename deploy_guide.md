@@ -72,7 +72,7 @@ bundle install
 cp lib/config-sample.rb lib/config.rb # update config file if needed
 puma -C config/puma.rb -d
 ```
-Run `pumactl -P /var/run/puma.pid stop` to stop puma. And run `puma -C config/puma.rb -d` again to start it.
+Run `pumactl -P /var/run/puma.pid stop` to stop puma. And run `puma -C config/puma_prod.rb -d` again to start it.
 
 ### Config Nginx
 ```
