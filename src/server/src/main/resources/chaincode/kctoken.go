@@ -8,7 +8,7 @@ import (
     "github.com/hyperledger/fabric/core/chaincode/shim"
     sc "github.com/hyperledger/fabric/protos/peer"
     "bytes"
-	"time"
+    "time"
 )
 
 // Define the Smart Contract structure
@@ -177,6 +177,29 @@ func (s *SmartContract) getBalance(stub shim.ChaincodeStubInterface, args []stri
     return shim.Success([]byte(value))
 }
 
+func (s *SmartContract) getBalanceList(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+    if len(args) < 2 {
+        return shim.Error("Incorrect number of arguments. Expecting at least 2")
+    }
+
+    tokenAsBytes, err := stub.GetState(args[0])
+    if err != nil {
+        return shim.Error(err.Error())
+    }
+    token := Token{}
+    m := make(map[string]int)
+
+    json.Unmarshal(tokenAsBytes, &token)
+    for i := 1; i < len(args); i++ {
+        m[args[i]] = token.balance(args[i])
+        fmt.Printf("%s balance is %s \n", args[i], m[args[i]])
+    }
+    balanceAsBytes, _ := json.Marshal(m)
+    return shim.Success(balanceAsBytes)
+}
+
+
 func (s *SmartContract) historyQuery(stub shim.ChaincodeStubInterface, args []string) sc.Response {
 
     if len(args) != 1 {
@@ -217,25 +240,25 @@ func getHistoryListResult(resultsIterator shim.HistoryQueryIteratorInterface) ([
         buffer.WriteString("\"")
 
         //value
-		// if it was a delete operation on given key, then we need to set the
-		//corresponding value null. Else, we will write the response.Value
-		//as-is (as the Value itself a JSON marble)
-		if response.IsDelete {
-			buffer.WriteString(", \"Value\":")
-			buffer.WriteString("null")
-		} else {
-			buffer.WriteString(", \"Value\":")
-			buffer.WriteString(string(response.Value))
-		}
+        // if it was a delete operation on given key, then we need to set the
+        // corresponding value null. Else, we will write the response.Value
+        //as-is (as the Value itself a JSON marble)
+        if response.IsDelete {
+            buffer.WriteString(", \"Value\":")
+            buffer.WriteString("null")
+        } else {
+            buffer.WriteString(", \"Value\":")
+            buffer.WriteString(string(response.Value))
+        }
 
 
-		// time
+        // time
         buffer.WriteString(", \"Timestamp\":")
         buffer.WriteString("\"")
         buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
         buffer.WriteString("\"")
 
-		buffer.WriteString("}")
+        buffer.WriteString("}")
         bArrayMemberAlreadyWritten = true
     }
     buffer.WriteString("]")
@@ -256,6 +279,8 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
         return s.transfer(stub, args)
     } else if function == "balance" {
         return s.getBalance(stub, args)
+    } else if function == "batchBalance" {
+        return s.getBalanceList(stub, args)
     } else if function == "historyQuery" {
         return s.historyQuery(stub, args)
     }
