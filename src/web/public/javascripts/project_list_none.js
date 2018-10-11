@@ -56,6 +56,7 @@ function renderTemplate(template, target, data) {
     target.html(Metro.template(template, {data}));
 }
 
+// replace &gt; and &lt; to >,<
 function unescapeForMetro(str) {
     if (str === undefined || str === null) {
         return
@@ -63,22 +64,39 @@ function unescapeForMetro(str) {
     return str.replace(/\&gt;/g, '>').replace(/\&lt;/g, '<');
 }
 
-function bindingEventOnMemeberInput() {
-    $("[name='member_token']").on("change", function (event) {
-        debugger;
-        let total = 0;
-
-        $("[name='member_token']").each(function (item) {
-            total += Number($(this)[0].value);
-        });
-
-        if (total > Number($("#total_supply")[0].value)) {
-            alert("lager");
-            event.target.value = ''
+// set disabled to input element
+function toggleElementDisabled(source, flag) {
+    source.each(function () {
+        let target = $(this);
+        if (target[0].value === undefined || target[0].value === null || target[0].value === '') {
+            target.prop("disabled", flag);
         }
     });
 }
 
+// binding change event for member input to calculator token value
+function bindingEventOnMemberInput() {
+    $("[name='member_token']").on("change", function (event) {
+        let total = 0;
+
+        $("[name='member_token']").each(function () {
+            total += Number($(this)[0].value);
+        });
+        let result = Number($("#total_supply")[0].value) - total;
+        if (result < 0) {
+            Metro.toast.create("预分配值大于当前剩余值，请重新分配！", null, 3000, "alert");
+            event.target.value = '';
+        } else if (result == 0) {
+            toggleElementDisabled($("[name='member_token']"), true);
+            $("#tokenNum").html(result)
+        } else {
+            toggleElementDisabled($("[name='member_token']"), false);
+            $("#tokenNum").html(result)
+        }
+    });
+}
+
+// render contributors to page
 function bindingContributors(full_name) {
     let uri = 'https://api.github.com/repos/' + full_name + '/contributors';
 
@@ -86,13 +104,14 @@ function bindingContributors(full_name) {
         type: "GET",
         url: uri,
         success: function (res) {
-            console.log(res)
+            console.log(res);
             renderTemplate($("#memberListTemplate").html(), $("#memberList"), res);
-            bindingEventOnMemeberInput()
+            bindingEventOnMemberInput()
         }
     });
 }
 
+// set to first page
 function initPager() {
     $("#kcoin_stepper").data('stepper').first();
     $("#kcoin_master").data('master').toPage(0);
@@ -110,7 +129,7 @@ function showNextPage(github_project_id) {
         if (!validateForm()) {
             return
         }
-        $("#tokenName").html($("#token_name").val());
+        $(".tokenName").html($("#token_name").val());
         $("#tokenNum").html($("#total_supply").val());
     }
 
@@ -119,10 +138,19 @@ function showNextPage(github_project_id) {
 }
 
 function showPrevPage() {
-    $("#kcoin_stepper").data('stepper').prev();
-    $("#kcoin_master").data('master').prev();
+    if ($("#kcoin_stepper").data('stepper').current === 2) {
+        initPager();
+    } else {
+        $("[name='member_token']").each(function () {
+            $(this)[0].value = '';
+        });
+        toggleElementDisabled($("[name='member_token']"), false);
+        $("#kcoin_stepper").data('stepper').prev();
+        $("#kcoin_master").data('master').prev();
+    }
 }
 
+// validate upload file size
 function validateFileSize() {
     if ($("#img")[0].files[0].size < (1024 * 1024 * 2)) {
         return true;
@@ -131,6 +159,7 @@ function validateFileSize() {
     }
 }
 
+// validate form data
 function validateForm() {
     let flag = true;
     if (!Metro.validator.validate($("#project_name"))) {
@@ -153,10 +182,24 @@ function saveForm() {
     if (!validateForm()) {
         return;
     }
-    var github_project_id = $("#github_project_id").val();
-    var index = findElem(list, "id", github_project_id);
-    var formData = new FormData($("#import_form")[0]);
+    let github_project_id = $("#github_project_id").val();
+    let index = findElem(list, "id", github_project_id);
+    let formData = new FormData($("#import_form")[0]);
     formData.append("owner", list[index].owner.login);
+
+    let map = new Map();
+    $("[name='member_token']").each(function () {
+        let id = $(this).attr('data-member-id');
+        let value = $(this)[0].value;
+        if (map.has(id)) {
+            map.get(id).push(value);
+        } else {
+            map.set(id, value);
+        }
+    });
+    formData.append("members", JSON.stringify([...map]));
+    debugger;
+
     $.ajax({
         type: "POST",
         data: formData,

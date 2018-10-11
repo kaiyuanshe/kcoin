@@ -53,6 +53,7 @@ class ProjectController < BaseController
 
     begin
       import_project import_context
+      JSON.parse((params || {})[:members])
       { code: 601, msg: t('project_import_dup') }.to_json
     rescue Exception => e
       { code: 602, msg: "#{t('project_import_fail')}#{e.message}" }.to_json

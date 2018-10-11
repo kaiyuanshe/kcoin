@@ -117,9 +117,12 @@
       .page
         .row.mx-0
           .cell-12.form-group.px-0
-            %span#tokenName
-            %span 还剩：
-            %span#tokenNum
+            %div.ml-5
+              %span 给所有成员分配初始
+              %span.tokenName
+              %span 值，当前剩余
+              %span#tokenNum
+              %span.tokenName
             .kcoin-win-member-panel{"data-role"=>"panel",
             "data-width"=>"100%",
             "data-height"=>"100%",
@@ -140,6 +143,7 @@
                         %input{:type=>"text",
                         :name=>"member_token",
                         maxlength: 120,
+                        "data-member-id"=>"<%item.id%>",
                         :placeholder => "请填写初始 token 值"}
                         %span.invalid_feedback
                           token 值不能为空
