@@ -34,6 +34,7 @@ en:
   project_header_user_center: "User center"
   project_header_exchange: "Exchange"
   project_header_faq: "FAQ"
+  project_header_admin: "Site Admin"
   project_logout: "Logout"
 
   # user detail pages
