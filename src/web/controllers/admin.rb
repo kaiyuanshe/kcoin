@@ -4,24 +4,23 @@ class AdminController < BaseController
 
   before do
     set_current_user
-    redirect '/' unless authenticated? && current_user.has_role?('admin')
+    redirect '/user/login' unless authenticated?
+    redirect '/project' unless current_user.is_admin?
   end
 
   get '/' do
-    # haml :index, :layout => false
-    redirect '/project'
+    symbol = settings.kcoin_symbol
+    owner = settings.kcoin_owner
+    kcoin_balance = query_balance(symbol, owner)
+    haml :admin, locals: {
+      :kcoin_balance => kcoin_balance
+    }
   end
 
-  get '/explorer' do
-    haml :explorer
-  end
+  post '/issue' do
+    amount = params[:amount].to_i
+    puts "amount to issue: #{amount.to_s}"
 
-  get '/locale/:locale' do
-    session[:locale] = params[:locale]
-    redirect request.referrer
-  end
-
-  get '/initkcoin', :role => [:admin] do
     symbol = settings.kcoin_symbol
     owner = settings.kcoin_owner
     kcoin_balance = query_balance(symbol, owner)
@@ -31,10 +30,37 @@ class AdminController < BaseController
         :symbol => symbol,
         :token_name => symbol,
         :eth_account => owner,
-        :init_supply => 10000000
+        :init_supply => amount
       }
       init_ledger kcoin_context
     end
-    'OK'
+
+    redirect '/admin'
   end
+
+  post '/invest' do
+    amount = params[:amount].to_i
+    project_id = params[:project_id].to_i
+    puts "invest kcoin of quantity #{amount.to_s} to project #{project_id.to_s}"
+
+    symbol = settings.kcoin_symbol
+    owner = settings.kcoin_owner
+    kcoin_balance = query_balance(symbol, owner)
+    project = Project[project_id]
+
+    if project.nil?
+      error_msg = '项目不存在'
+    elsif kcoin_balance < amount
+      error_msg = '余额不足'
+    else
+      transfer(symbol, owner, project.eth_account, amount)
+      error_msg = ''
+    end
+
+    haml :admin, locals: {
+      :kcoin_balance => kcoin_balance - amount,
+      :error_msg => error_msg
+    }
+  end
+
 end
