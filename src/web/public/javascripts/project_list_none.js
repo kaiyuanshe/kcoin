@@ -42,15 +42,53 @@ function openImportWin() {
                     map.set(item.owner.id, [item]);
                 }
             });
-            debugger
-            var template = $("#projectListTemplate").html();
-            while (template.match(/\&gt;/) || template.match(/\&lt;/)) {
-                template = template.replace(/\&gt;/, '>');
-                template = template.replace(/\&lt;/, '<')
-            }
-            $("#projectList").html(Metro.template(template, {map}));
+
+            renderTemplate($("#projectListTemplate").html(), $("#projectList"), map);
+
             Metro.activity.close(import_activity);
             Metro.window.toggle("#win_import");
+        }
+    });
+}
+
+function renderTemplate(template, target, data) {
+    template = unescapeForMetro(template);
+    target.html(Metro.template(template, {data}));
+}
+
+function unescapeForMetro(str) {
+    if (str === undefined || str === null) {
+        return
+    }
+    return str.replace(/\&gt;/g, '>').replace(/\&lt;/g, '<');
+}
+
+function bindingEventOnMemeberInput() {
+    $("[name='member_token']").on("change", function (event) {
+        debugger;
+        let total = 0;
+
+        $("[name='member_token']").each(function (item) {
+            total += Number($(this)[0].value);
+        });
+
+        if (total > Number($("#total_supply")[0].value)) {
+            alert("lager");
+            event.target.value = ''
+        }
+    });
+}
+
+function bindingContributors(full_name) {
+    let uri = 'https://api.github.com/repos/' + full_name + '/contributors';
+
+    $.ajax({
+        type: "GET",
+        url: uri,
+        success: function (res) {
+            console.log(res)
+            renderTemplate($("#memberListTemplate").html(), $("#memberList"), res);
+            bindingEventOnMemeberInput()
         }
     });
 }
@@ -62,14 +100,22 @@ function initPager() {
 }
 
 function showNextPage(github_project_id) {
-    $("#kcoin_stepper").data('stepper')['next']();
-    $("#kcoin_master").data('master').next();
     if (github_project_id !== undefined) {
         let index = findElem(list, "id", github_project_id);
         $("#project_title").html(list[index].name);
         $("#project_name").val(list[index].name);
         $("#github_project_id").val(github_project_id);
+        bindingContributors(list[index].full_name);
+    } else {
+        if (!validateForm()) {
+            return
+        }
+        $("#tokenName").html($("#token_name").val());
+        $("#tokenNum").html($("#total_supply").val());
     }
+
+    $("#kcoin_stepper").data('stepper')['next']();
+    $("#kcoin_master").data('master').next();
 }
 
 function showPrevPage() {
@@ -85,12 +131,26 @@ function validateFileSize() {
     }
 }
 
-function saveForm() {
+function validateForm() {
+    let flag = true;
     if (!Metro.validator.validate($("#project_name"))) {
-        return;
+        flag = false;
+    }
+    if (!Metro.validator.validate($("#token_name"))) {
+        flag = false;
+    }
+    if (!Metro.validator.validate($("#total_supply"))) {
+        flag = false;
     }
     if (!Metro.validator.validate($("#img"))) {
         Metro.toast.create("上传的图片不能超过 2 M", null, 3000, "alert");
+        flag = false;
+    }
+    return flag;
+}
+
+function saveForm() {
+    if (!validateForm()) {
         return;
     }
     var github_project_id = $("#github_project_id").val();

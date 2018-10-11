@@ -31,11 +31,11 @@ module ProjectHelpers
     # TODO should be from user's input while importing project
     import_context[:init_supply] = 10000
     # register webhook
-    register_webhook import_context
+    # register_webhook import_context
 
     # init hyper ledger and create a special event in github_events
     # so that we can get the detail of the event by block chain transaction id
-    bc_resp = init_ledger import_context
+    # bc_resp = init_ledger import_context
     GithubEvent.insert(github_delivery_id: project.symbol,
                        github_event: PROJECT_IMPORT_EVENT,
                        sender_login: current_user.login,
@@ -46,8 +46,8 @@ module ProjectHelpers
                        repository_owner_login: current_user.login,
                        repository_owner_id: current_user.id,
                        received_at: Time.now,
-                       payload: bc_resp.to_s,
-                       transaction_id: bc_resp['transactionId'],
+                       # payload: bc_resp.to_s,
+                       # transaction_id: bc_resp['transactionId'],
                        processing_time: Time.now,
                        processing_state: WEBHOOK_EVENT_STATUS_PERSISTED)
     true

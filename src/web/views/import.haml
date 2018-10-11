@@ -35,16 +35,16 @@
             "data-height"=>"100%",
             "data-cls-content"=>"px-5",
             "data-cls-panel"=>"border-none"}
-                        %template#projectListTemplate
-                            <% for(let item of map.values()){ %>
-                            %p.my-5
-                                %img.kcoin-img-org{:src=>"<%item[0].owner.avatar_url%>"}
-                                %label <%item[0].owner.login%>
-                                %label.fg-gray（<%item.length%> 个项目）
-                            %ul.mx-0.my-0
-                                <% for(var i = 0; i < item.length; i++) { %>
-                                %li.kcoin-li.d-flex.flex-align-center{:name=>"github_project_id",
-                :onclick=>"showNextPage(<%list[i].id%>)",
+            %template#projectListTemplate
+              <% for(let item of data.values()){ %>
+              %p.my-5
+                %img.kcoin-img-org{src: "<%item[0].owner.avatar_url%>"}
+                %label <%item[0].owner.login%>
+                %label.fg-gray（<%item.length%> 个项目）
+              %ul.mx-0.my-0
+                <% for(var i = 0; i < item.length; i++) { %>
+                %li.kcoin-li.d-flex.flex-align-center{name: "github_project_id",
+                onclick: "showNextPage(<%list[i].id%>)",
                 :value=>"<%list[i].id%>"} <%list[i].name%>
                 <% } %>
               <% } %>
@@ -99,7 +99,7 @@
                 :name=>"total_supply",
                 maxlength: 120,
                 :placeholder => "请填写初始总额",
-                "data-validate" => "required"}
+                "data-validate" => "required pattern=^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$"}
                 %span.invalid_feedback
                   初始总额不能为空，切必须为数字
           .cell-12.form-group.px-5
@@ -117,48 +117,33 @@
       .page
         .row.mx-0
           .cell-12.form-group.px-0
+            %span#tokenName
+            %span 还剩：
+            %span#tokenNum
             .kcoin-win-member-panel{"data-role"=>"panel",
             "data-width"=>"100%",
             "data-height"=>"100%",
             "data-cls-content"=>"px-5",
             "data-cls-panel"=>"border-none"}
-              .row
+              .row#memberList
+              %template#memberListTemplate
+                <% for(let item of data.values()){ %>
                 %li.py-5.cell-6.px-0
                   .row.mx-5
                     .member-img.stub.px-0{:style=>"width:81px"}
-                      -#%img{:src=>"#{item["avatar_url"]}"}
-                      %img{:src=>"icons/kcoin-project-list-icon.png"}
+                      %img{:src=>"<%item.avatar_url%>"}
                     .member-msg.cell.px-0
                       .cell-12
                         %span
-                          -#= item["login"]
-                          name
+                          <%item.login%>
                       .cell-12
                         %input{:type=>"text",
-                        :name=>"token_name",
+                        :name=>"member_token",
                         maxlength: 120,
-                        :placeholder => "请填写初始 token 值",
-                        "data-validate" => "required"}
+                        :placeholder => "请填写初始 token 值"}
                         %span.invalid_feedback
                           token 值不能为空
-                %li.py-5.cell-6.px-0
-                  .row.mx-5
-                    .member-img.stub.px-0{:style=>"width:81px"}
-                      -#%img{:src=>"#{item["avatar_url"]}"}
-                      %img{:src=>"icons/kcoin-project-list-icon.png"}
-                    .member-msg.cell.px-0
-                      .cell-12
-                        %span
-                          -#= item["login"]
-                          name
-                      .cell-12
-                        %input{:type=>"text",
-                        :name=>"token_name",
-                        maxlength: 120,
-                        :placeholder => "请填写初始 token 值",
-                        "data-validate" => "required"}
-                        %span.invalid_feedback
-                          token 值不能为空
+                <% } %>
         .row.mx-0
           .cell-12.text-center.px-0.pos-fixed.pos-bottom-center.mb-5
             %button.btn_prev.button.info.outline.mr-0-fs.mr-5-md.kcoin-button-normal 上一步
