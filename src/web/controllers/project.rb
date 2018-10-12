@@ -23,11 +23,8 @@ class ProjectController < BaseController
   end
 
   get '/projectLists' do
-    user_id = current_user.id
-    dataset = User[user_id].projects
-    {
-      projectList: dataset
-    }.to_json
+    projects = list_user_project(current_user.id, settings.kcoin_symbol)
+    projects.to_json
   end
 
   get '/fetchList' do
@@ -56,10 +53,9 @@ class ProjectController < BaseController
 
     begin
       import_project import_context
-      JSON.parse((params || {})[:members])
-      { code: 601, msg: t('project_import_dup') }.to_json
+      {code: 601, msg: t('project_import_dup')}.to_json
     rescue Exception => e
-      { code: 602, msg: "#{t('project_import_fail')}#{e.message}" }.to_json
+      {code: 602, msg: "#{t('project_import_fail')}#{e.message}"}.to_json
     end
   end
 
@@ -73,7 +69,7 @@ class ProjectController < BaseController
     end
     # User[current_user.id].update_project(project)
     project.update(name: params[:name], img: img)
-    { code: 601, msg: '项目信息修改完成' }.to_json
+    {code: 601, msg: '项目信息修改完成'}.to_json
   end
 
   get '/projectListsView' do
@@ -98,9 +94,9 @@ class ProjectController < BaseController
 
     # fetch member data form github
     collaborators = list_contributors(project.owner, project.name)
-    haml :project_detail, layout: false, locals: { kcoin_history: history,
-                                                   collaborators: collaborators,
-                                                   project: project }
+    haml :project_detail, layout: false, locals: {kcoin_history: history,
+                                                  collaborators: collaborators,
+                                                  project: project}
   end
 
   get '/getProjectState' do
@@ -110,11 +106,11 @@ class ProjectController < BaseController
 
   get '/history' do
     history = if params[:uId].nil?
-                get_history_by_project(params[:symbol])
-              else
-                get_history(params[:uId])
-              end
-    haml :history, locals: { history: history }
+      get_history_by_project(params[:symbol])
+    else
+      get_history(params[:uId])
+    end
+    haml :history, locals: {history: history}
   end
 
   get '/back' do

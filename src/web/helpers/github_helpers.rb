@@ -135,6 +135,7 @@ module GithubHelpers
   end
 
   def register_webhook(import_context)
+    puts "register_webhook: #{import_context.to_s}"
     webhook_uri = github_v3_api "/repos/#{import_context[:owner]}/#{import_context[:name]}/hooks"
     options = {
       :body => {

@@ -27,6 +27,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.security.Security;
+import java.time.DateTimeException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -52,6 +53,8 @@ public class FabricClient {
     private HFClient client = null;
     private Channel channel = null;
     private ChaincodeID chaincodeID = null;
+    private long lastChannelInitTime = System.currentTimeMillis();
+    private static final Object syncObject = new Object();
 
     // configurables
     private long waitSecond = 300;
@@ -228,11 +231,18 @@ public class FabricClient {
     }
 
     private void initChannel() throws Exception {
-        String channelName = networkConfig.getChannelNames().iterator().next();
-        //Channel ch = networkConfig.loadChannel(client, channelName);
-        Channel ch = client.loadChannelFromConfig(channelName, networkConfig);
-        ch.initialize();
-        this.channel = ch;
+        synchronized (syncObject) {
+            if (this.channel != null) {
+                this.channel.shutdown(true);
+            }
+
+            String channelName = networkConfig.getChannelNames().iterator().next();
+            //Channel ch = networkConfig.loadChannel(client, channelName);
+            Channel ch = client.loadChannelFromConfig(channelName, networkConfig);
+            ch.initialize();
+            this.channel = ch;
+            this.lastChannelInitTime = System.currentTimeMillis();
+        }
     }
 
     private void initUserContext() throws Exception {
@@ -246,8 +256,11 @@ public class FabricClient {
     }
 
     private void ensureChannelReady() throws Exception {
-        if (this.channel == null || this.channel.isShutdown()) {
-            this.channel.shutdown(true);
+        if (this.channel == null
+                || this.channel.isShutdown()
+                // re-init Channel every 10 minutes. It seems that the channel breaks from time to time
+                // TODO Need to investigate the root cause
+                || System.currentTimeMillis() - lastChannelInitTime > 1000 * 60 * 10) {
             initChannel();
         }
 

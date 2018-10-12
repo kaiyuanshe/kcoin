@@ -3,6 +3,7 @@ module FabricHelpers
   FINCTION_INIT_LEDGER = 'initLedger'
   FINCTION_TRANSFER = 'transfer'
   FINCTION_BALANCE = 'balance'
+  FINCTION_BATCH_BALANCE = 'batchBalance'
   FINCTION_HISTORY_QUERY = 'historyQuery'
 
   def query_url
@@ -50,6 +51,22 @@ module FabricHelpers
   def query_balance(symbol, eth_account)
     resp = query_server(FINCTION_BALANCE, [symbol, eth_account])
     resp['payload'].to_i
+  end
+
+  def query_balance_list(symbol, eth_account_list)
+    if eth_account_list.kind_of? Array
+      args = [symbol.to_s]
+      eth_account_list.each {|x| args.push x.to_s}
+    else
+      args = [symbol.to_s, eth_account_list.to_s]
+    end
+
+    query_server(FINCTION_BATCH_BALANCE, args)
+  end
+
+  def ledger_ready(symbol, owner)
+    owner_balance = query_balance(symbol, owner)
+    owner_balance > 0
   end
 
   def query_history(symbol)

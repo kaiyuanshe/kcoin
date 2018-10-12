@@ -61,32 +61,7 @@ public class KCoinConfig extends JFinalConfig {
      * Plugin config
      */
     public void configPlugin(Plugins plugins) {
-        // druid
-        DruidPlugin druidPlugin = new DruidPlugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password").trim());
-        druidPlugin.setDriverClass("org.sqlite.JDBC");
-        plugins.add(druidPlugin);
 
-        // ActiveRecord
-        ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);
-        // set table fields to upperCase
-        arp.setContainerFactory(new CaseInsensitiveContainerFactory(false));
-        // set sql template path
-        arp.getEngine().setSourceFactory(new ClassPathSourceFactory());
-        arp.addSqlTemplate("/sql/All.sql");
-        //映射表到model
-        _MappingKit.mapping(arp);
-        //事物隔离级别
-        arp.setTransactionLevel(4);
-        // MappingKit
-        _MappingKit.mapping(arp);
-        plugins.add(arp);
-    }
-
-    public static DruidPlugin getDruidPlugin() {
-        PropKit.use("configs.properties");
-        DruidPlugin druidPlugin = new DruidPlugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password").trim());
-        druidPlugin.setDriverClass("org.sqlite.JDBC");
-        return druidPlugin;
     }
 
     /**

@@ -34,6 +34,7 @@ cn:
   project_header_user_center: "个人中心"
   project_header_exchange: "兑换商城"
   project_header_faq: "常见问题"
+  project_header_admin: "管理员专用"
   project_logout: "退出登录"
 
   # user detail pages

@@ -43,7 +43,7 @@ Run `ruby -version` to make sure it's ready
 gem install bundler
 ```
 
-# Deploy KCoin
+# Deploy KCoin Web
 ### source code
 install git first if it's not ready by 
 ```
@@ -72,7 +72,7 @@ bundle install
 cp lib/config-sample.rb lib/config.rb # update config file if needed
 puma -C config/puma.rb -d
 ```
-Run `pumactl -P /var/run/puma.pid stop` to stop puma. And run `puma -C config/puma.rb -d` again to start it.
+Run `pumactl -P /var/run/puma.pid stop` to stop puma. And run `puma -C config/puma_prod.rb -d` again to start it.
 
 ### Config Nginx
 ```
@@ -81,3 +81,24 @@ cp config/nginx.conf /etc/nginx/nginx.conf # Ubuntu: update user to www-data by 
 service nginx start  # centos
 systemctl restart nginx.service # ubuntu
 ```
+
+### Logs Rotation
+enable logrorate to keep logs of 14 days
+```
+cd /var/www/kcoin/src/web
+cp config/logrotate /etc/logrotate.d/kcoin
+```
+in case you want to test the rotation, try `logrotate /etc/logrotate.d/kcoin -f`. Issue `apt-get install logrotate` if `logrotate` is not installed.
+
+
+# Deploy KCoin Server
+Kcoin server is a JFinal-based java web application. Build it a WAR file(make sure including proper config settings) and run it in tomcat
+
+### Logs Rotation
+`catalina.out` is rotated by default where kcoin server logs goes. However, other logs of tomcat is not rotated. Try replace `/etc/logrotate.d/tomcat` with the cusomized one:
+```
+cd /var/www/kcoin/src/server
+cp logrotate /etc/logrotate.d/tomcat
+``` 
+
+

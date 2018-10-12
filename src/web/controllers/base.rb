@@ -60,11 +60,12 @@ class BaseController < Sinatra::Base
 
     # kcoin
     set :kcoin_symbol, 'kcoin-dev'
-    set :kcoin_owner, 'kcoin'
+    set :kcoin_owner, 'kcoin-dev'
   end
 
   configure :production do
-    set :kcoin_symbol, 'kcoin'
+    set :kcoin_symbol, Digest::SHA1.hexdigest('kcoin')
+    set :kcoin_owner, Digest::SHA1.hexdigest('kcoin')
     register Sinatra::Reloader
   end
 

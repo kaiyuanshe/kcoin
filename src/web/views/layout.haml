@@ -40,6 +40,11 @@
             %a.fg-white-hover{:href => '#'}
               =t('project_header_faq')
           %li.divider.visible-fs.no-visible-ms.no-visible-md
+          - if current_user.is_admin?
+            %li
+              %a.fg-white-hover{:href => '/admin'}
+                =t('project_header_admin')
+            %li.divider.visible-fs.no-visible-ms.no-visible-md
           %li
             %a.fg-white-hover.visible-fs.no-visible-ms.no-visible-md{:href=>'/auth/logout'}
               =t('project_logout')
