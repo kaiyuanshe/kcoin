@@ -1,0 +1,7 @@
+/var/log/tomcat7/catalina.out {
+  copytruncate
+  rotate 14
+  compress
+  missingok
+  create 640 tomcat7 adm
+}
