@@ -41,7 +41,10 @@ class ProjectController < BaseController
       :first_word => Spinying.parse(word: params[:name])[0].upcase,
       :tmpfile => params[:images],
       :github_project_id => params[:github_project_id].to_s,
-      :owner => params[:owner]
+      :owner => params[:owner],
+      :custom_name=> params[:custom_name],
+      :token_name=> params[:token_name],
+      :discuss_method=> params[:discuss_method]
     }
 
     if import_context[:tmpfile]

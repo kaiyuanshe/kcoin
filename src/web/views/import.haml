@@ -56,21 +56,21 @@
               %span#project_title.pos-absolute.pos-left-center.ml-15
           .cell-12.form-group.px-5
             %label 1. 填写项目名称
-            %input#project_name{:type=>"text",
-            :name=>"name",
+            %input.project_name{:type=>"text",
+            :name=>"custom_name",
             maxlength: 120,
             "data-validate" => "required"}
             %span.invalid_feedback
               项目名称不能为空
-            %input#github_project_id{:type=>"hidden",
-            :dir=>"rtl",
-            :name=>"github_project_id"}
+            %input#github_project_id{:type=>"hidden",:name=>"github_project_id"}
+            %input.project_name{:type=>"hidden",:name=>"name"}
           .cell-12.form-group.px-5
             %label
               2. 选择项目决策方式
             .user-kcoin-detail-link.d-inline-block
               %a{:href=>"/project/history?uId="} 查看更多 >
             %select#decision_method{"data-role"=>"select",
+            :name=>"discuss_method",
             "data-cls-select"=>"input",
             "data-filter"=>"false"}
               %option{:name=>"decision_method",:value=>"0"}
@@ -95,8 +95,8 @@
                 %span.invalid_feedback
                   token 名称不能为空
               .cell-6.pl-2.pr-0
-                %input#total_supply{:type=>"text",
-                :name=>"total_supply",
+                %input#init_supply{:type=>"text",
+                :name=>"init_supply",
                 maxlength: 120,
                 :placeholder => "请填写初始总额",
                 "data-validate" => "required pattern=^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$"}

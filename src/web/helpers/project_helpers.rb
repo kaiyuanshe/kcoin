@@ -16,6 +16,9 @@ module ProjectHelpers
                                  symbol: SecureRandom.hex,
                                  eth_account: Digest::SHA1.hexdigest(import_context[:github_project_id]),
                                  first_word: import_context[:first_word],
+                                 custom_name: import_context[:custom_name],
+                                 token_name: import_context[:token_name],
+                                 discuss_method: import_context[:discuss_method],
                                  github_project_id: import_context[:github_project_id])
         User[current_user.id].add_project(project)
       end
@@ -29,7 +32,7 @@ module ProjectHelpers
     import_context[:symbol] = project.symbol
     import_context[:eth_account] = project.eth_account
     # TODO should be from user's input while importing project
-    import_context[:init_supply] = 10000
+    import_context[:init_supply] = project.init_supply
     # register webhook
     # register_webhook import_context
 

@@ -82,7 +82,7 @@ function bindingEventOnMemberInput() {
         $("[name='member_token']").each(function () {
             total += Number($(this)[0].value);
         });
-        let result = Number($("#total_supply")[0].value) - total;
+        let result = Number($("#init_supply")[0].value) - total;
         if (result < 0) {
             Metro.toast.create("预分配值大于当前剩余值，请重新分配！", null, 3000, "alert");
             event.target.value = '';
@@ -122,7 +122,7 @@ function showNextPage(github_project_id) {
     if (github_project_id !== undefined) {
         let index = findElem(list, "id", github_project_id);
         $("#project_title").html(list[index].name);
-        $("#project_name").val(list[index].name);
+        $(".project_name").val(list[index].name);
         $("#github_project_id").val(github_project_id);
         bindingContributors(list[index].full_name);
     } else {
@@ -130,7 +130,7 @@ function showNextPage(github_project_id) {
             return
         }
         $(".tokenName").html($("#token_name").val());
-        $("#tokenNum").html($("#total_supply").val());
+        $("#tokenNum").html($("#init_supply").val());
     }
 
     $("#kcoin_stepper").data('stepper')['next']();
@@ -162,13 +162,13 @@ function validateFileSize() {
 // validate form data
 function validateForm() {
     let flag = true;
-    if (!Metro.validator.validate($("#project_name"))) {
+    if (!Metro.validator.validate($(".project_name"))) {
         flag = false;
     }
     if (!Metro.validator.validate($("#token_name"))) {
         flag = false;
     }
-    if (!Metro.validator.validate($("#total_supply"))) {
+    if (!Metro.validator.validate($("#init_supply"))) {
         flag = false;
     }
     if (!Metro.validator.validate($("#img"))) {
