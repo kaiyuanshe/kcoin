@@ -1,5 +1,6 @@
 module ProjectHelpers
 
+  include EmailHelpers
   include GithubHelpers
   include FabricHelpers
 
@@ -31,7 +32,6 @@ module ProjectHelpers
     import_context[:secret] = project.secret
     import_context[:symbol] = project.symbol
     import_context[:eth_account] = project.eth_account
-    # TODO should be from user's input while importing project
     import_context[:init_supply] = project.init_supply
     # register webhook
     # register_webhook import_context
@@ -53,6 +53,11 @@ module ProjectHelpers
                        # transaction_id: bc_resp['transactionId'],
                        processing_time: Time.now,
                        processing_state: WEBHOOK_EVENT_STATUS_PERSISTED)
+
+    # send email to other member from project
+    import_context[:import_user] = current_user.name
+    # send_project_import_email(import_context, current_user)
+
     true
   end
 

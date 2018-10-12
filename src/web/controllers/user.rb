@@ -1,11 +1,10 @@
 require 'jwt'
 require './controllers/base'
 require './helpers/email_helpers'
-require 'net/smtp'
 require 'digest/sha1'
 
 class UserController < BaseController
-  helpers EmailAppHelpers
+  helpers EmailHelpers
   helpers UserAppHelpers
   helpers HistoryHelpers
   KCOIN = 'kcoin'
@@ -73,7 +72,7 @@ class UserController < BaseController
 
     user.save
     session[:user_id] = user.id
-    send_email(user)
+    send_register_email(user)
     redirect '/'
   end
 

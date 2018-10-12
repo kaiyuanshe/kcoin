@@ -1,13 +1,13 @@
 module UserAppHelpers
-
-  KCOIN_LOGIN_INFO = 'kcoin_login_info'
-  GITHUB = 'github'
-  KCOIN = 'kcoin'
-
+  require 'net/smtp'
   require 'httparty'
   require 'date'
   require 'net/http'
   require 'uri'
+
+  KCOIN_LOGIN_INFO = 'kcoin_login_info'
+  GITHUB = 'github'
+  KCOIN = 'kcoin'
 
   def authenticated?
     set_current_user.is_authenticated?
