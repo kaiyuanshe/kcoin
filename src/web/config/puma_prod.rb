@@ -6,4 +6,4 @@ preload_app!
 
 bind 'unix:///var/run/puma.sock'
 pidfile '/var/run/puma.pid'
-stdout_redirect '/var/log/kcoin/stdout', '/var/log/kcoin/stderr', true
+stdout_redirect '/var/log/kcoin/kcoin-web.out.log', '/var/log/kcoin/kcoin-web.err.log', true
