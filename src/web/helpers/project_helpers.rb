@@ -19,6 +19,7 @@ module ProjectHelpers
                                  first_word: import_context[:first_word],
                                  custom_name: import_context[:custom_name],
                                  token_name: import_context[:token_name],
+                                 init_supply: import_context[:init_supply],
                                  discuss_method: import_context[:discuss_method],
                                  github_project_id: import_context[:github_project_id])
         User[current_user.id].add_project(project)
@@ -28,13 +29,12 @@ module ProjectHelpers
 
     project = Project.get_by_github_project_id(import_context[:github_project_id])
     import_context[:id] = project.id
-    import_context[:token_name] = project.id
     import_context[:secret] = project.secret
     import_context[:symbol] = project.symbol
     import_context[:eth_account] = project.eth_account
     import_context[:init_supply] = project.init_supply
     # register webhook
-    # register_webhook import_context
+    register_webhook import_context
 
     # init hyper ledger and create a special event in github_events
     # so that we can get the detail of the event by block chain transaction id
@@ -79,6 +79,7 @@ module ProjectHelpers
                             :id => p.id,
                             :name => p.name,
                             :owner => p.owner,
+                            :github_project_id => p.github_project_id,
                             :first_word => p.first_word,
                             :description => p.description,
                             :img => p.img,

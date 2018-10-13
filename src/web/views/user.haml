@@ -32,7 +32,7 @@
               .row.mx-0.user-kcoin-detail-left-area.d-flex-fs.d-inline-block-md.flex-align-center
                 .cell-fs-6.cell-md-12.order-1.text-right-fs.text-center-md.user-kcoin-detail-number
                   %span.d-block-md.mx-auto.user-kcoin
-                    =kcoin_history[:KCoin]
+                    =token_history[:KCoin]
                 .cell-fs-6.cell-md-12.order-2.text-left-fs.text-center-md.user-kcoin-detail-title
                   %span.d-block-md.mx-auto KCoin
                 .cell-fs-12.d-none-md.d-block-fs.order-3.pos-absolute.pos-bottom-center
@@ -41,7 +41,7 @@
 
               -# kcoin history
               .user-kcoin-detail-right-area.d-none-fs.d-inline-block-md
-                - kcoin_history[:History].each_with_index do |item, index|
+                - token_history[:History].each_with_index do |item, index|
                   -if index >= 3
                     -break
                   .row.mx-0.pt-2.project-detail
@@ -57,7 +57,7 @@
 
                 .row.mx-0
                   .cell-12.px-0.text-right.user-kcoin-detail-link
-                    %a{:href=>"/project/history?uId=#{kcoin_history[:UserId]}"} 查看更多 >
+                    %a{:href=>"/project/history?uId=#{token_history[:UserId]}"} 查看更多 >
 
         .row.mx-0-fs.mx-3-md
           .cell-12.px-3

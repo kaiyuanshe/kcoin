@@ -23,7 +23,7 @@ class UserController < BaseController
     project_history = group_history(history)
 
     haml :user, locals: { user_detail: user_detail,
-                          kcoin_history: history,
+                          token_history: history,
                           project_list: project_history }
   end
 

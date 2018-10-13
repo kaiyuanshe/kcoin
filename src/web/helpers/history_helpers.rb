@@ -18,6 +18,38 @@ module HistoryHelpers
     handle_history(list)
   end
 
+  def get_kcoin_history(eth_account)
+    resp = query_history(settings.kcoin_symbol)
+    list = JSON.parse(resp['payload'])
+    result = {}
+    history = []
+    list.to_enum.with_index.reverse_each do |item, index|
+      tmp = item['Value'] || {}
+      event = GithubEvent.first(transaction_id: item['TxId'])
+      value = tmp['BalanceOf'] || {}
+      amount = value[eth_account.to_s]
+      next if event.nil?
+      record = {}
+      record[:KCoin] = amount
+      record[:TokenSymbol] = tmp['TokenSymbol']
+      record[:EventName] = event[:github_event]
+      record[:Date] = DateTime.parse(item['Timestamp']).strftime('%m.%d')
+      record[:Year] = DateTime.parse(item['Timestamp']).strftime('%y')
+      record[:Time] = DateTime.parse(item['Timestamp']).strftime('%y.%m.%d')
+
+      record[:ChangeNum] = if index > 0
+                             record[:KCoin] - ((list[index - 1] || {})['Value'] || {})['BalanceOf'].values[0]
+                           else
+                             record[:KCoin]
+                           end
+      history << record
+    end
+    result[:History] = history
+    result[:KCoin] = query_balance(settings.kcoin_symbol, eth_account)
+
+    result
+  end
+
   def handle_history(list)
     result = {}
     history = []
@@ -33,10 +65,10 @@ module HistoryHelpers
       record[:Time] = DateTime.parse(item['Timestamp']).strftime('%y.%m.%d')
 
       record[:ChangeNum] = if index > 0
-        record[:KCoin] - ((list[index - 1] || {})['Value'] || {})['BalanceOf'].values[0]
-      else
-        record[:KCoin]
-      end
+                             record[:KCoin] - ((list[index - 1] || {})['Value'] || {})['BalanceOf'].values[0]
+                           else
+                             record[:KCoin]
+                           end
       history << record
     end
 
@@ -51,10 +83,9 @@ module HistoryHelpers
     result = Hash.new
     list = []
 
-    kcoin = 0
+    kcoin = query_balance(settings.kcoin_symbol, User[user_id].eth_account)
     project_list.each do |project|
       result = get_history_by_project(project.symbol)
-      kcoin += result[:KCoin].to_i
       list.concat(result[:History])
     end
 
@@ -72,6 +103,7 @@ module HistoryHelpers
       record[:TokenSymbol] = (item[0] || {})[:TokenSymbol]
       record[:History] = item
       project = Project.first(symbol: record[:TokenSymbol])
+      next if project.nil?
       record[:ProjectName] = project[:name]
       record[:Img] = project[:img]
       result << record
