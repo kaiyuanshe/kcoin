@@ -23,9 +23,9 @@ class UserController < BaseController
     history = get_history(user_id)
     project_history = group_history(history)
 
-    haml :user, locals: { user_detail: user_detail,
-                          kcoin_history: history,
-                          project_list: project_history }
+    haml :user, locals: {user_detail: user_detail,
+                         kcoin_history: history,
+                         project_list: project_history}
   end
 
   get '/login' do
@@ -37,14 +37,14 @@ class UserController < BaseController
   end
 
   post '/login' do
-    param = params[:email].to_s
+    email = params[:email].to_s
     pwd = Digest::SHA1.hexdigest(params[:password])
     @user = nil
-    @user = if param.include? '@'
-              User.first(email: param, password_digest: pwd)
-            else
-              User.first(login: param, password_digest: pwd)
-            end
+    @user = if email.include? '@'
+      User.first(email: email, password_digest: pwd)
+    else
+      User.first(login: email, password_digest: pwd)
+    end
     if @user
       if @user.password_digest == pwd
         session[:user_id] = @user.id
@@ -60,18 +60,25 @@ class UserController < BaseController
       login_value = params[:email].split('@')[0]
     end
 
-    user = User.new(login: login_value,
-                    name: params[:name],
-                    password_digest: Digest::SHA1.hexdigest(params[:password]),
-                    eth_account: Digest::SHA1.hexdigest(params[:email]),
-                    email: params[:email],
-                    avatar_url: nil,
-                    activated: true,
-                    creawted_at: Time.now,
-                    updateed_at: Time.now,
-                    last_login_at: Time.now)
+    DB.transaction do
+      user = User.new(login: login_value,
+                      name: params[:name],
+                      password_digest: Digest::SHA1.hexdigest(params[:password]),
+                      eth_account: Digest::SHA1.hexdigest(params[:email]),
+                      email: params[:email],
+                      avatar_url: nil,
+                      activated: true,
+                      creawted_at: Time.now,
+                      updateed_at: Time.now,
+                      last_login_at: Time.now)
 
-    user.save
+      user.save
+      UserEmail.insert(user_id: user.id,
+                       email: params[:email],
+                       verified: false,
+                       created_at: Time.now)
+    end
+
     session[:user_id] = user.id
     send_email(user)
     redirect '/'
@@ -79,27 +86,28 @@ class UserController < BaseController
 
   # Verify email is registered
   post '/validate/email' do
-    user = User.first(email: params[:email])
-    user ? { flag: false }.to_json : { flag: true }.to_json
+    valid = email_not_registered params[:email]
+    {
+      flag: valid
+    }.to_json
   end
 
 
   # Verify user is existed
   post '/validate/user' do
     param = params[:email].to_s
-    user = nil
     pwd = Digest::SHA1.hexdigest(params[:password])
     user = if param.include? '@'
-             User.first(email: param, password_digest: pwd)
-           else
-             User.first(login: param, password_digest: pwd)
-           end
-    user ? { flag: true }.to_json : { flag: false }.to_json
+      User.first(email: param, password_digest: pwd)
+    else
+      User.first(login: param, password_digest: pwd)
+    end
+    user ? {flag: true}.to_json : {flag: false}.to_json
   end
 
   get '/edit_page' do
     user_detail = find_user(params[:user_id])
-    haml :user_edit, locals: { user_detail: user_detail }
+    haml :user_edit, locals: {user_detail: user_detail}
   end
 
   post '/update_user' do

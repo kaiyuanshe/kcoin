@@ -52,6 +52,7 @@ class ProjectController < BaseController
       import_project import_context
       {code: 601, msg: t('project_import_dup')}.to_json
     rescue Exception => e
+      puts e.to_s
       {code: 602, msg: "#{t('project_import_fail')}#{e.message}"}.to_json
     end
   end
