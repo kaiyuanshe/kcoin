@@ -98,6 +98,8 @@ module UserAppHelpers
   end
 
   def set_current_github_user(github_user, email_list, auth_token)
+    raise 'user has no email, please add email on github first' unless email_list.length > 0
+
     login = github_user['login']
     name = login
     if github_user.key?('name')
@@ -118,7 +120,8 @@ module UserAppHelpers
       :name => name,
       :oauth_provider => GITHUB,
       :open_id => github_user['id'],
-      :email => email,
+      :email => email, # primary email
+      :email_list => email_list, # all emails
       :avatar_url => github_user['avatar_url'],
       :access_token => auth_token
     }
@@ -127,22 +130,65 @@ module UserAppHelpers
     true
   end
 
-  def binding_user(oauth)
-    user = User.first(email: oauth.email)
-    if user.eql? nil
-      User.insert(login: oauth.login,
-                  name: oauth.name,
-                  eth_account: oauth.eth_account,
-                  email: oauth.email,
-                  avatar_url: oauth.avatar_url,
-                  activated: true,
-                  created_at: Time.now,
-                  last_login_at: Time.now)
-      user = User.first(email: oauth.email)
-      oauth.update(user_id: user.id)
+  def persist_emails(user_id, email_list)
+    # add user's new email into DB
+    email_list.each do |ne|
+      puts "persist email #{ne['email']} for user #{user_id.to_s}"
+      UserEmail.insert(
+        user_id: user_id,
+        email: ne['email'],
+        verified: ne['verified'],
+        created_at: Time.now
+      )
     end
+  end
+
+  def binding_user(oauth, email_list)
+    existed_user_emails = []
+    none_existed_user_emails = []
+    email_list.each do |x|
+      ue = UserEmail.first(email: x['email'])
+      if ue.nil?
+        none_existed_user_emails.push x
+      elsif existed_user_emails.push ue
+      end
+    end
+    puts "binding user. #{existed_user_emails.length} UserEmail found: #{existed_user_emails.to_s}"
+
+    if existed_user_emails.length > 0 # email matched existing records
+      user = User[existed_user_emails[0].user_id]
+      user.update(
+        last_login_at: Time.now,
+        avatar_url: oauth.avatar_url,
+        activated: true
+      )
+      persist_emails(user.id, none_existed_user_emails)
+    else
+      # all emails are new
+      # check primary email first for backward compatibility. Remove this 2 month later(after 2018/12/15).
+      user = User.first(email: oauth.email)
+      if user.eql? nil
+        DB.transaction do
+          User.insert(login: oauth.login,
+                      name: oauth.name,
+                      eth_account: oauth.eth_account,
+                      email: oauth.email, # primary email only
+                      avatar_url: oauth.avatar_url,
+                      activated: true,
+                      created_at: Time.now,
+                      last_login_at: Time.now)
+          user = User.first(email: oauth.email)
+          oauth.update(user_id: user.id)
+          persist_emails(user.id, none_existed_user_emails)
+        end
+      else
+        persist_emails(user.id, none_existed_user_emails)
+      end
+    end
+
     user
   end
+
 
   def persist_user(user_info)
     oauth = Oauth.first(:oauth_provider => user_info[:oauth_provider], :open_id => user_info[:open_id])
@@ -166,17 +212,10 @@ module UserAppHelpers
       oauth = Oauth.first(:oauth_provider => user_info[:oauth_provider], :open_id => user_info[:open_id])
     end
 
-    user = binding_user oauth
+    user = binding_user(oauth, user_info[:email_list])
     user_info[:id] = user.id
     user_info[:eth_account] = user.eth_account
     session[KCOIN_LOGIN_INFO] = user_info
-  end
-
-  def save_address(eth_account)
-    user = User[current_user.id]
-    user.update(eth_account: eth_account, updated_at: Time.now)
-    session[KCOIN_LOGIN_INFO][:eth_account] = eth_account
-    true
   end
 
   # find user by userId. If userId is empty,return current_user
@@ -186,6 +225,11 @@ module UserAppHelpers
     else
       User[user_id]
     end
+  end
+
+  def email_not_registered(email)
+    exist = UserEmail.first(:email => email)
+    exist.nil?
   end
 end
 
