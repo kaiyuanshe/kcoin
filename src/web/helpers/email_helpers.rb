@@ -1,5 +1,6 @@
 module EmailHelpers
   require 'net/smtp'
+  require 'base64'
 
   def send_register_email(_user)
     active_url = request.base_url + '/user/activeUser?'
@@ -101,7 +102,7 @@ MESSAGE_END
     Net::SMTP.start(EMAIL[:address],
                     EMAIL[:port],
                     EMAIL[:helo],
-                    EMAIL[:user], EMAIL[:secret], :plain) do |smtp|
+                    EMAIL[:user], Base64.decode64(EMAIL[:secret]), :plain) do |smtp|
       smtp.send_message message, EMAIL[:account],
                         _user.email.to_s
     end
@@ -112,8 +113,7 @@ MESSAGE_END
 
     message = <<MESSAGE_END
 From: #{EMAIL[:form]}
-To: 13993143738@163.com
-Cc: 13993143738@163.com
+To: 1054602234@qq.com
 MIME-Version: 1.0
 Content-type: text/html;charset=utf-8
 Subject: KCoin 项目导入提醒
@@ -197,12 +197,11 @@ Subject: KCoin 项目导入提醒
 
 MESSAGE_END
 
-    resutl = Net::SMTP.start(EMAIL[:address],
-                             EMAIL[:port],
-                             EMAIL[:helo],
-                             EMAIL[:user], EMAIL[:secret], :plain) do |smtp|
-      smtp.send_message message, EMAIL[:account], '13993143738@qq.com'
+    Net::SMTP.start(EMAIL[:address],
+                    EMAIL[:port],
+                    EMAIL[:helo],
+                    EMAIL[:user], Base64.decode64(EMAIL[:secret]), :plain) do |smtp|
+      smtp.send_message message, EMAIL[:account], '1054602234@qq.com'
     end
-    resutl
   end
 end
