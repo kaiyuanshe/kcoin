@@ -15,6 +15,7 @@ $(function () {
 });
 
 var list = [];
+var contributors
 
 function openImportWin() {
     let import_activity = Metro.activity.open({
@@ -104,7 +105,7 @@ function bindingContributors(full_name) {
         type: "GET",
         url: uri,
         success: function (res) {
-            console.log(res);
+            contributors = res;
             renderTemplate($("#memberListTemplate").html(), $("#memberList"), res);
             bindingEventOnMemberInput()
         }
@@ -187,18 +188,12 @@ function saveForm() {
     let formData = new FormData($("#import_form")[0]);
     formData.append("owner", list[index].owner.login);
 
-    let map = new Map();
     $("[name='member_token']").each(function () {
         let id = $(this).attr('data-member-id');
-        let value = $(this)[0].value;
-        if (map.has(id)) {
-            map.get(id).push(value);
-        } else {
-            map.set(id, value);
-        }
+        var tmp = contributors.find(x => x.id === Number(id));
+        tmp["init_supply"] = $(this)[0].value
     });
-    formData.append("members", JSON.stringify([...map]));
-    debugger;
+    formData.append("contributors", JSON.stringify([...contributors]));
 
     $.ajax({
         type: "POST",

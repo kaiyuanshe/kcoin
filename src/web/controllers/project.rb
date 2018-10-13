@@ -42,7 +42,8 @@ class ProjectController < BaseController
       :custom_name=> params[:custom_name],
       :token_name=> params[:token_name],
       :init_supply=> params[:init_supply],
-      :discuss_method=> params[:discuss_method]
+      :discuss_method=> params[:discuss_method],
+      :contributors=> JSON.parse(params[:contributors])
     }
 
     if import_context[:tmpfile]

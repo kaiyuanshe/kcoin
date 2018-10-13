@@ -116,7 +116,7 @@ To: 13993143738@163.com
 Cc: 13993143738@163.com
 MIME-Version: 1.0
 Content-type: text/html;charset=utf-8
-Subject: KCoin 导入项目提醒的萨发送的发送
+Subject: KCoin 项目导入提醒
 
 <!DOCTYPE html>
 <html lang="en">
@@ -186,8 +186,8 @@ Subject: KCoin 导入项目提醒的萨发送的发送
 
 <div class="main">
     <div class="title">项目导入通知</div>
-    <img class="img" src="#{user.avatar_url}"/>
-    <div class="content">#{user.login} 已在KCoin平台导入你们的项目—— #{project[:custom_name]}，KCoin平台是一个基于区块链激励开源贡献的经济系统。您可通过下面的链接前往平台查看项目。</div>
+    <img class="img" src="#{project[:importer_avatar_url]}"/>
+    <div class="content">#{project['importer_user']} 已在KCoin平台导入你们的项目—— #{project[:custom_name]}，KCoin平台是一个基于区块链激励开源贡献的经济系统。您可通过下面的链接前往平台查看项目。</div>
     <a class="btn" href="#{action_url}" >查看项目</a>
 </div>
 
