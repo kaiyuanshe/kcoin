@@ -13,7 +13,7 @@
             "data-auto-size"=>"false",
             "data-clear-button"=>"false",
             "data-cls-component"=>"h-100",
-            "data-default-value"=>"#{user_detail.brief}",
+            "data-default-value"=>"#{user_detail.brief ||= t('user_no_brief')}",
             :readonly=>"readonly",
             :style=>"max-height:264px;box-shadow: none;"}
           %span.d-block.mt-10.wallet-address-title

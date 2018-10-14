@@ -48,6 +48,7 @@ en:
   user_edit_btn_cancel: "Cancel"
   user_edit_btn_edit: "edit"
   user_edit_btn_save: "Save"
+  user_no_brief: "This guy is lazy. Leave nothing here."
   
   # project import
   project_import_dup: "You imported this project already. Please select another project"

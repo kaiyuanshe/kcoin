@@ -58,12 +58,12 @@ module ProjectHelpers
 
     # send email to other member from project
     import_context[:import_user] = current_user.name
-    send_mail(import_context, current_user)
+    notify_other_members(import_context, current_user)
 
     true
   end
 
-  def send_mail(context, current_user)
+  def notify_other_members(context, current_user)
     importer = context[:contributors].select do |item|
       item['login'].eql?(current_user.login)
     end

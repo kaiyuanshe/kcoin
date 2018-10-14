@@ -16,7 +16,7 @@ module EmailHelpers
     active_url = request.base_url + '/user/activeUser?'
 
     message = <<MESSAGE_END
-From: #{EMAIL[:form]}
+From: #{CONFIG[:email][:form]}
 To: #{_user.email}
 MIME-Version: 1.0
 Content-type: text/html;charset=utf-8
@@ -109,14 +109,19 @@ Subject: kcoin 帐号激活
 
 MESSAGE_END
 
-    send_mail(message, user.email.to_s)
+    begin
+      send_mail(message, _user.email.to_s)
+    rescue Exception => ex
+      puts "fail to send register email #{ex.to_s}"
+    end
+
   end
 
   def send_project_import_email(project, user)
     action_url = request.base_url + '/project'
 
     message = <<MESSAGE_END
-From: #{EMAIL[:form]}
+From: #{CONFIG[:email][:form]}
 To: 1054602234@qq.com
 MIME-Version: 1.0
 Content-type: text/html;charset=utf-8
