@@ -38,7 +38,12 @@ class ProjectController < BaseController
       :first_word => Spinying.parse(word: params[:name])[0].upcase,
       :tmpfile => params[:images],
       :github_project_id => params[:github_project_id].to_s,
-      :owner => params[:owner]
+      :owner => params[:owner],
+      :custom_name=> params[:custom_name],
+      :token_name=> params[:token_name],
+      :init_supply=> params[:init_supply],
+      :discuss_method=> params[:discuss_method],
+      :contributors=> JSON.parse(params[:contributors])
     }
 
     if import_context[:tmpfile]
@@ -88,11 +93,13 @@ class ProjectController < BaseController
     halt 404, t('project_not_exist') unless project
 
     # fetch data from chaincode
-    history = get_history_by_project(project.symbol)
+    token_history = get_history_by_project(project.symbol)
+    kcoin_history = get_kcoin_history(project.eth_account)
 
     # fetch member data form github
     collaborators = list_contributors(project.owner, project.name)
-    haml :project_detail, layout: false, locals: {kcoin_history: history,
+    haml :project_detail, layout: false, locals: {token_history: token_history,
+                                                  kcoin_history: kcoin_history,
                                                   collaborators: collaborators,
                                                   project: project}
   end

@@ -26,19 +26,19 @@ module FabricHelpers
 
   def call_server(url, fn, args)
     options = {
-      :body => {
-        :fn => fn,
-        :args => args,
+      body: {
+        fn: fn,
+        args: args,
       }.to_json,
-      :headers => {
+      headers: {
         :Accept => 'application/json',
         'Content-Type' => 'application/json'
       },
-      :timeout => 120 # 2 minutes
+      timeout: 120 # 2 minutes
     }
     resp = HTTParty.post(url, options)
     puts "invoke #{fn} with args #{args.to_s}, response #{resp.code}, #{resp.body}"
-    raise 'Communication error with the block chain' unless resp.code/100==2
+    raise 'Communication error with the block chain' unless resp.code / 100 == 2
     JSON.parse(resp.body)
   end
 

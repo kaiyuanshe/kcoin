@@ -55,7 +55,7 @@
                     = item[:ChangeNum]
             .row
               .cell.text-right.koin-card-link
-                %a{:href=>"/project/history?symbol=#{kcoin_history[:TokenSymbol]}"} 查看更多 >
+                %a{:href=>"/project/history?symbol=#{token_history[:TokenSymbol]}"} 查看更多 >
       .cell-fs-12.cell-md-6.mx-auto
         .card
           .card-header.px-6
@@ -64,11 +64,11 @@
                 %span Token 总值
               .cell.text-right.right-title
                 %span
-                  =kcoin_history[:KCoin]
+                  =token_history[:KCoin]
           .card-content.px-6.pb-4
             .content-title.text-center.py-1
               %span 发放记录
-            - kcoin_history[:History].each_with_index do |item, index|
+            - token_history[:History].each_with_index do |item, index|
               -if index >= 5
                 -break
               .row.py-1
@@ -80,7 +80,7 @@
                     = item[:ChangeNum]
             .row
               .cell.text-right.koin-card-link
-                %a{:href=>"/project/history?symbol=#{kcoin_history[:TokenSymbol]}"} 查看更多 >
+                %a{:href=>"/project/history?symbol=#{token_history[:TokenSymbol]}"} 查看更多 >
       .cell-fs-12.cell-md-6.mx-auto
         .card.chart#kcoin-chart
       .cell-fs-12.cell-md-6.mx-auto

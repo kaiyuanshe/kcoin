@@ -1,11 +1,10 @@
 require 'jwt'
 require './controllers/base'
 require './helpers/email_helpers'
-require 'net/smtp'
 require 'digest/sha1'
 
 class UserController < BaseController
-  helpers EmailAppHelpers
+  helpers EmailHelpers
   helpers UserAppHelpers
   helpers HistoryHelpers
   KCOIN = 'kcoin'
@@ -23,9 +22,9 @@ class UserController < BaseController
     history = get_history(user_id)
     project_history = group_history(history)
 
-    haml :user, locals: {user_detail: user_detail,
-                         kcoin_history: history,
-                         project_list: project_history}
+    haml :user, locals: { user_detail: user_detail,
+                          token_history: history,
+                          project_list: project_history }
   end
 
   get '/login' do
@@ -82,7 +81,7 @@ class UserController < BaseController
     end
 
     session[:user_id] = user.id
-    send_email(user)
+    send_register_email(user)
     redirect session[:redirect_uri] ||= '/'
   end
 
