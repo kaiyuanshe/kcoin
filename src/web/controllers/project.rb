@@ -111,9 +111,9 @@ class ProjectController < BaseController
 
   get '/history' do
     history = if params[:uId].nil?
-      get_history_by_project(params[:symbol])
-    else
-      get_history(params[:uId])
+    #   get_history_by_project(params[:symbol])
+    # else
+    #   get_history(params[:uId])
     end
     haml :history, locals: {history: history}
   end

@@ -4,94 +4,58 @@ module HistoryHelpers
   include FabricHelpers
   include GithubHelpers
 
-  def get_history(user_id)
-    # get user`s all project histroy
-    result = get_list_by_user(user_id)
+  def get_project_list_history(user_id)
+    project_list = User[user_id].projects
+    args = project_list.map {|x| x[:symbol] + '_' + x[:eth_account]}
+    result = batch_query_history(args)
+    result.each do |project_history|
+      handle_history(project_history)
+    end
 
-    result[:UserId] = user_id
     result
   end
 
   def get_history_by_project(symbol)
-    resp = query_history(symbol)
+    # resp = query_history(symbol)
     list = JSON.parse(resp['payload'])
     handle_history(list)
   end
 
-  def get_kcoin_history(eth_account)
-    resp = query_history(settings.kcoin_symbol)
-    list = JSON.parse(resp['payload'])
+  def get_kcoin_history(owner)
+    history = query_history(settings.kcoin_symbol, owner)
     result = {}
-    history = []
-    list.to_enum.with_index.reverse_each do |item, index|
-      tmp = item['Value'] || {}
+    history['History'].to_enum.with_index.reverse_each do |item, index|
       event = GithubEvent.first(transaction_id: item['TxId'])
-      value = tmp['BalanceOf'] || {}
-      amount = value[eth_account.to_s]
       next if event.nil?
-      record = {}
-      record[:KCoin] = amount
-      record[:TokenSymbol] = tmp['TokenSymbol']
-      record[:EventName] = event[:github_event]
-      record[:Date] = DateTime.parse(item['Timestamp']).strftime('%m.%d')
-      record[:Year] = DateTime.parse(item['Timestamp']).strftime('%y')
-      record[:Time] = DateTime.parse(item['Timestamp']).strftime('%y.%m.%d')
+      item[:EventName] = event[:github_event]
+      item[:Date] = DateTime.parse(item['Timestamp']).strftime('%m.%d')
+      item[:Year] = DateTime.parse(item['Timestamp']).strftime('%y')
+      item[:Time] = DateTime.parse(item['Timestamp']).strftime('%y.%m.%d')
 
-      record[:ChangeNum] = if index > 0
-                             record[:KCoin] - ((list[index - 1] || {})['Value'] || {})['BalanceOf'].values[0]
-                           else
-                             record[:KCoin]
-                           end
-      history << record
+      item[:ChangeNum] = if index > 0
+                           item['Supply'] - ((history['History'] || {})[index-1] || {})['Supply']
+                         else
+                           item['Supply']
+                         end
     end
-    result[:History] = history
-    result[:KCoin] = query_balance(settings.kcoin_symbol, eth_account)
-
     result
   end
 
-  def handle_history(list)
-    result = {}
-    history = []
-    list.to_enum.with_index.reverse_each do |item, index|
+  def handle_history(history)
+    history['History'].to_enum.with_index.reverse_each do |item, index|
       event = GithubEvent.first(transaction_id: item['TxId'])
       next if event.nil?
-      record = {}
-      record[:EventName] = event[:github_event]
-      record[:KCoin] = (item['Value'] || {})['BalanceOf'].values[0]
-      record[:TokenSymbol] = (item['Value'] || {})['TokenSymbol']
-      record[:Date] = DateTime.parse(item['Timestamp']).strftime('%m.%d')
-      record[:Year] = DateTime.parse(item['Timestamp']).strftime('%y')
-      record[:Time] = DateTime.parse(item['Timestamp']).strftime('%y.%m.%d')
+      item[:EventName] = event[:github_event]
+      item[:Date] = DateTime.parse(item['Timestamp']).strftime('%m.%d')
+      item[:Year] = DateTime.parse(item['Timestamp']).strftime('%y')
+      item[:Time] = DateTime.parse(item['Timestamp']).strftime('%y.%m.%d')
 
-      record[:ChangeNum] = if index > 0
-                             record[:KCoin] - ((list[index - 1] || {})['Value'] || {})['BalanceOf'].values[0]
-                           else
-                             record[:KCoin]
-                           end
-      history << record
+      item[:ChangeNum] = if index > 0
+                           item['Supply'] - ((history['History'] || {})[index-1] || {})['Supply']
+                         else
+                           item['Supply']
+                         end
     end
-
-    result[:KCoin] = (history[0] || {})[:KCoin]
-    result[:History] = history
-
-    result
-  end
-
-  def get_list_by_user(user_id)
-    project_list = User[user_id].projects
-    result = Hash.new
-    list = []
-
-    kcoin = query_balance(settings.kcoin_symbol, User[user_id].eth_account)
-    project_list.each do |project|
-      result = get_history_by_project(project.symbol)
-      list.concat(result[:History])
-    end
-
-    result[:History] = list
-    result[:KCoin] = kcoin
-    result
   end
 
   def group_history(history)

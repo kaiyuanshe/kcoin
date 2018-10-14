@@ -64,35 +64,36 @@
             .pt-15.user-project-detail
               %span.user-project-detail-title 我参与的项目
             - project_list.each_with_index do |list, index|
-              .row.pt-5.px-3-fs.px-0-md
-                .stub.user-project-detail-image
-                  .img-container.thumbnail.px-0.py-0.no-border
-                    - if list[:Img].equal? nil
-                      %img{:src=>"icons/kcoin-project-list-icon.png",:style=>"background: #f3f3f3;"}
-                    - else
-                      %img{:src=>"#{list[:Img]}",:style=>"background: #f3f3f3;"}
-                .cell.px-0
-                  .row.px-3
-                    .cell-12-fs.cell-md.text-left
-                      %span.d-flex-fs.d-inline-block-md.order-1.user-project-list-title
-                        = list[:ProjectName]
-                      %span.order-2.user-project-list-title token:
-                      %span.order-3.user-project-list-title-num
-                        = list[:KCoin]
-                    .cell-12-fs.cell-md.text-right-md.text-left-fs.user-kcoin-detail-link
-                      %a{:href=>"/project/history?symbol=#{list[:TokenSymbol]}"} 查看更多 >
-                  - list[:History].each_with_index do |item, item_index|
-                    -if item_index >= 2
-                      -break
-                    .row.mx-0.px-3.pt-2.project-detail.d-none-fs.d-flex-md
-                      .stub.text-right.px-0
-                        %span
-                          = item[:Date]
-                      .cell.text-left.content-item
-                        %span
-                          = item[:EventName]
-                      .stub.text-right.px-0.content-item-num
-                        %span
-                          = item[:ChangeNum]
-                  .row.mx-0.pt-2.d-none-fs.d-flex-md
-                    .user-project-list-split
+              -list.each_with_index do |item,it|
+                .row.pt-5.px-3-fs.px-0-md
+                  .stub.user-project-detail-image
+                    .img-container.thumbnail.px-0.py-0.no-border
+                      - if item[:Img].equal? nil
+                        %img{:src=>"icons/kcoin-project-list-icon.png",:style=>"background: #f3f3f3;"}
+                      - else
+                        %img{:src=>"#{item[:Img]}",:style=>"background: #f3f3f3;"}
+                  .cell.px-0
+                    .row.px-3
+                      .cell-12-fs.cell-md.text-left
+                        %span.d-flex-fs.d-inline-block-md.order-1.user-project-list-title
+                          = list[:ProjectName]
+                        %span.order-2.user-project-list-title token:
+                        %span.order-3.user-project-list-title-num
+                          = list[:KCoin]
+                      .cell-12-fs.cell-md.text-right-md.text-left-fs.user-kcoin-detail-link
+                        %a{:href=>"/project/history?symbol=#{list[:TokenSymbol]}"} 查看更多 >
+                    - list[:History].each_with_index do |item, item_index|
+                      -if item_index >= 2
+                        -break
+                      .row.mx-0.px-3.pt-2.project-detail.d-none-fs.d-flex-md
+                        .stub.text-right.px-0
+                          %span
+                            = item[:Date]
+                        .cell.text-left.content-item
+                          %span
+                            = item[:EventName]
+                        .stub.text-right.px-0.content-item-num
+                          %span
+                            = item[:ChangeNum]
+                    .row.mx-0.pt-2.d-none-fs.d-flex-md
+                      .user-project-list-split

@@ -19,12 +19,12 @@ class UserController < BaseController
     user_id = params[:user_id] ? params[:user_id] : current_user.id
     user_detail = find_user(user_id)
     # fetch data from chaincode
-    history = get_history(user_id)
-    project_history = group_history(history)
+    token_history = get_kcoin_history(user_detail.eth_account)
+    project_history = get_project_list_history(user_id)
 
-    haml :user, locals: { user_detail: user_detail,
-                          token_history: history,
-                          project_list: project_history }
+    haml :user, locals: {user_detail: user_detail,
+                         token_history: token_history,
+                         project_list: project_history}
   end
 
   get '/login' do
@@ -42,10 +42,10 @@ class UserController < BaseController
     pwd = Digest::SHA1.hexdigest(params[:password])
     @user = nil
     @user = if email.include? '@'
-      User.first(email: email, password_digest: pwd)
-    else
-      User.first(login: email, password_digest: pwd)
-    end
+              User.first(email: email, password_digest: pwd)
+            else
+              User.first(login: email, password_digest: pwd)
+            end
     if @user
       if @user.password_digest == pwd
         session[:user_id] = @user.id
@@ -89,7 +89,7 @@ class UserController < BaseController
   post '/validate/email' do
     valid = email_not_registered params[:email]
     {
-      flag: valid
+        flag: valid
     }.to_json
   end
 
@@ -99,10 +99,10 @@ class UserController < BaseController
     param = params[:email].to_s
     pwd = Digest::SHA1.hexdigest(params[:password])
     user = if param.include? '@'
-      User.first(email: param, password_digest: pwd)
-    else
-      User.first(login: param, password_digest: pwd)
-    end
+             User.first(email: param, password_digest: pwd)
+           else
+             User.first(login: param, password_digest: pwd)
+           end
     user ? {flag: true}.to_json : {flag: false}.to_json
   end
 

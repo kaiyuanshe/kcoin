@@ -118,8 +118,7 @@ module ProjectHelpers
     end
 
     puts "query kcoin/token of user's project, user_id=#{user_id.to_s}, accounts=#{accounts.to_s}"
-    kcoin_balance_resp = query_balance_list(kcoin_symbol, accounts)
-    payload = JSON.parse(kcoin_balance_resp['payload'])
+    payload = query_balance_list(kcoin_symbol, accounts)
     payload.each do |acc, bal|
       ind = accounts.find_index acc
       project_hashes[ind][:kcoin] = bal.to_i if ind
