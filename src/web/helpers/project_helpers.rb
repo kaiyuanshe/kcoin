@@ -34,12 +34,12 @@ module ProjectHelpers
     import_context[:eth_account] = project.eth_account
     import_context[:init_supply] = project.init_supply
     # register webhook
-    # register_webhook import_context
+    register_webhook import_context
 
     # init hyper ledger and create a special event in github_events
     # so that we can get the detail of the event by block chain transaction id
     unless ledger_ready(import_context[:symbol], import_context[:eth_account])
-      # bc_resp = init_ledger import_context
+      bc_resp = init_ledger import_context
       GithubEvent.insert(github_delivery_id: project.symbol,
                          github_event: PROJECT_IMPORT_EVENT,
                          sender_login: current_user.login,
@@ -50,8 +50,8 @@ module ProjectHelpers
                          repository_owner_login: current_user.login,
                          repository_owner_id: current_user.id,
                          received_at: Time.now,
-                         # payload: bc_resp.to_s,
-                         # transaction_id: bc_resp['transactionId'],
+                         payload: bc_resp.to_s,
+                         transaction_id: bc_resp['transactionId'],
                          processing_time: Time.now,
                          processing_state: WEBHOOK_EVENT_STATUS_PERSISTED)
     end
@@ -84,7 +84,7 @@ module ProjectHelpers
                    last_login_at: Time.now) unless oauth
 
       # send supply to blackchain
-      # transfer(context[:symbol], context[:eth_account], user_eth_account, item[:init_supply])
+      transfer(context[:symbol], context[:eth_account], user_eth_account, item[:init_supply])
       # send email
       !item['login'].eql?(current_user.login) ? send_project_import_email(context, item) : next
     end
