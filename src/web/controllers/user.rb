@@ -22,9 +22,9 @@ class UserController < BaseController
     history = get_history(user_id)
     project_history = group_history(history)
 
-    haml :user, locals: { user_detail: user_detail,
-                          token_history: history,
-                          project_list: project_history }
+    haml :user, locals: {user_detail: user_detail,
+                         token_history: history,
+                         project_list: project_history}
   end
 
   get '/login' do
@@ -78,9 +78,10 @@ class UserController < BaseController
                        email: params[:email],
                        verified: false,
                        created_at: Time.now)
+      session[:user_id] = user.id
     end
 
-    session[:user_id] = user.id
+    user = User[session[:user_id]]
     send_register_email(user)
     redirect session[:redirect_uri] ||= '/'
   end
