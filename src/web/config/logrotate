@@ -1,17 +1,17 @@
 /var/log/kcoin/nginx_*.log {
-        copytruncate
-	daily
-	missingok
-	rotate 7
-	compress
-	create 0640 www-data adm
+    copytruncate
+    daily
+    missingok
+    rotate 7
+    compress
+    create 0640 www-data adm
 }
 
 /var/log/kcoin/kcoin-web*.log{
-        copytruncate
-        daily
-        missingok
-        rotate 14
-        compress
-        create 0640 root adm
+    copytruncate
+    daily
+    missingok
+    rotate 14
+    compress
+    create 0640 root adm
 }
