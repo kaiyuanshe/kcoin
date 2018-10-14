@@ -13,6 +13,7 @@ class KCoinApp
       map('/project') {run ProjectController}
       map('/api') {run ApiController}
       map('/admin') {run AdminController}
+      map('/exchange') {run ExchangeController}
     end
   end
 

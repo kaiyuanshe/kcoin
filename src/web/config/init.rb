@@ -28,3 +28,11 @@ Dir['./models/*.rb'].each {|model|
 }
 
 Role.find_role_or_create('admin')
+
+# temp code for coscon 2018, can be safely delete after 18-10-22
+filename = "#{File.dirname(__FILE__)}/coscon18.tmp"
+if File.exist? filename
+  File.readlines(filename).each do |line|
+    CosconPoll2018.import line
+  end
+end
