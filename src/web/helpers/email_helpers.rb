@@ -2,6 +2,16 @@ module EmailHelpers
   require 'net/smtp'
   require 'base64'
 
+  def send_mail(message, to)
+    Net::SMTP.start(CONFIG[:email][:address],
+                    CONFIG[:email][:port],
+                    CONFIG[:email][:helo],
+                    CONFIG[:email][:user],
+                    CONFIG[:email][:secret], :plain) do |smtp|
+      smtp.send_message message, CONFIG[:email][:account], to
+    end
+  end
+
   def send_register_email(_user)
     active_url = request.base_url + '/user/activeUser?'
 
@@ -99,13 +109,7 @@ Subject: kcoin 帐号激活
 
 MESSAGE_END
 
-    Net::SMTP.start(EMAIL[:address],
-                    EMAIL[:port],
-                    EMAIL[:helo],
-                    EMAIL[:user], Base64.decode64(EMAIL[:secret]), :plain) do |smtp|
-      smtp.send_message message, EMAIL[:account],
-                        _user.email.to_s
-    end
+    send_mail(message, user.email.to_s)
   end
 
   def send_project_import_email(project, user)
@@ -197,11 +201,6 @@ Subject: KCoin 项目导入提醒
 
 MESSAGE_END
 
-    Net::SMTP.start(EMAIL[:address],
-                    EMAIL[:port],
-                    EMAIL[:helo],
-                    EMAIL[:user], Base64.decode64(EMAIL[:secret]), :plain) do |smtp|
-      smtp.send_message message, EMAIL[:account], '1054602234@qq.com'
-    end
+    send_mail(message, user.email.to_s)
   end
 end
