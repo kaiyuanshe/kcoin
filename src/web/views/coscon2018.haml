@@ -1,0 +1,77 @@
+.container-fluid.pt-13.bg-white.h-vh-100.px-0
+  .container.coscon-container
+    .grid.coscon-title-rectangle
+      .row
+        .cell-12.pt-2
+          %span.coscon-win-title
+            感谢您参与本次的《2018中国开源开发者调查》
+    .grid.mb-0
+      .row
+        .cell-7
+          .grid
+            .row
+              .cell-11.offset-1
+                %span.coscon-mt-tille
+                  2018中国开源年会 COSCon'18门票火热销售中
+            .row.mt-10
+              .cell-11.offset-1
+                %span.coscon-mt-detail
+                  时间：2018年10月20日 8:30 ～ 2018年10月21日 17:30
+            .row.mt-1
+              .cell-11.offset-1
+                %span.coscon-mt-detail
+                  地点：广东深圳市南山区科苑路15号深圳科兴科学园国际会议中心
+            .row.mt-1
+              .cell-11.offset-1
+                %a.coscon-mt-a{:href=>'http://coscon.kaiyuanshe.cn', :target=>'_blank'}
+                  查看详情 >
+        .cell-5.p-2
+          %a{:href=>'http://coscon.kaiyuanshe.cn', :target=>'_blank'}
+            %img{:src=>'/icons/coscon2018.png'}
+    .grid.coscon-award-win
+      .row.pl-8.pt-4
+        .cell-12
+          %span.coscon-mt-tille
+            请登录KCoin平台，并领取以下奖励
+      .row.pl-8.pt-4
+        .cell-2.pt-4.pl-10
+          %label.coscon-award-label
+            门票：
+        .cell-4.coscon-award-rectangle.pl-3
+          %label.coscon-award-detail
+            COSCon'18 门票5折优惠券
+          - if current_user.is_authenticated? and poll
+            %div.coscon-award-tip
+              优惠码：KYS2018KCoin
+      .row.pl-8.pt-4
+        .cell-2.pt-4.pl-10
+          %label.coscon-award-label
+            KCoin：
+        .cell-4.coscon-award-rectangle.pl-3
+          %span.coscon-award-detail
+            100 KCoin
+          %div.coscon-award-tip
+            KCoin兑换商城即将开启,敬请期待
+      .row.pt-6
+        - if not current_user.is_authenticated?
+          .cell-5.offset-4.pl-10
+            %a.coscon-award-submit-a{:href=>'/user/login?redirect_uri=/coscon2018'}
+              立即登陆领取 >>
+        - elsif poll
+          .cell-12.pl-10
+            %label
+              您已成功领取奖励。您可以点击
+            %a.coscon-award-submit-a{:href=>'/user'}
+              个人中心
+            %label
+              查看详情。您也可以复制上方优惠码并
+            %a.coscon-award-submit-a{:href=>'http://www.huodongxing.com/go/coscon2018', :target=>'_blank'}
+              前往购票 >>
+        - else
+          .cell-12.pl-10
+            %label
+              对不起，您没有参与本次调查。您可以
+            %a.coscon-award-submit-a{:href=>'/projects'}
+              导入并参与项目
+            %label
+              来获取KCoin

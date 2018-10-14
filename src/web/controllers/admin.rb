@@ -57,10 +57,15 @@ class AdminController < BaseController
       error_msg = ''
     end
 
-    haml :admin, locals: {
-      :kcoin_balance => kcoin_balance - amount,
-      :error_msg => error_msg
-    }
+    if error_msg.length > 0
+      haml :admin, locals: {
+        :kcoin_balance => kcoin_balance - amount,
+        :error_msg => error_msg
+      }
+    else
+      redirect '/admin'
+    end
+
   end
 
 end

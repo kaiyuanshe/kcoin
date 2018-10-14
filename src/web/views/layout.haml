@@ -14,7 +14,7 @@
       KCoin
 
   %body.h-vh-100
-    .pos-fixed.fixed-top.app-bar-wrapper.z-top
+    .pos-fixed.fixed-top.app-bar-wrapper
       %header.container-fluid.pos-relative{"data-role"=>'appbar',"data-expand-point"=>"md"}
 
         -# left area: project logo
@@ -33,7 +33,7 @@
               =t('project_header_user_center')
           %li.divider.visible-fs.no-visible-ms.no-visible-md
           %li
-            %a.fg-white-hover{:href => '#'}
+            %a.fg-white-hover{:href => '/exchange'}
               =t('project_header_exchange')
           %li.divider.visible-fs.no-visible-ms.no-visible-md
           %li
@@ -51,15 +51,31 @@
 
         -# right area: user settings
         .app-bar-container.order-2.order-md-3.d-none-fs.d-flex-md
-          %span.app-bar-item
-            = current_user.name
-          .app-bar-container
-            %a.app-bar-item.dropdown-toggle.marker-light.pl-1.pr-5{:href => '#'}
-              %img.kcoin-avater{:src=>"#{current_user.avatar_url}"}
-            %ul.v-menu.place-right{"data-role" => 'dropdown'}
-              %li
-                %a{:href=>'/auth/logout'}
-                  =t('project_logout')
+          - if current_user.is_authenticated?
+            %span.app-bar-item
+              = current_user.name
+            .app-bar-container
+              %a.app-bar-item.dropdown-toggle.marker-light.pl-1.pr-5{:href => '#'}
+                %img.kcoin-avater{:src=>"#{current_user.avatar_url}"}
+              %ul.v-menu.place-right{"data-role" => 'dropdown'}
+                %li
+                  %a{:href=>'/auth/logout'}
+                    =t('project_logout')
+          - else
+            .app-bar-container
+              %a.app-bar-item.marker-light.pl-1.pr-5{:href => '/user/login'}
+                =t('login_title')
 
-    = yield
+      = yield
 
+    %footer.fixed-bottom.z-top.bg-black
+      .grid
+        .row.pt-4{:style=>'text-align: center'}
+          .cell-12
+            %span
+              © 2015-2018 开源社&nbsp;&nbsp;
+            %span
+              %a{:href=>'http://www.miibeian.gov.cn', :target=>'_blank'}
+                沪ICP备15046442号
+              %a{:href=>'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011202006189',:target=>'_blank'}
+                %img{:src=>'/icons/police.png'}

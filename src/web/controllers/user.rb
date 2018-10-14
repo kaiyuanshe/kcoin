@@ -29,10 +29,12 @@ class UserController < BaseController
   end
 
   get '/login' do
+    session[:redirect_uri] = request.params['redirect_uri'] ||= '/'
     haml :login, layout: false
   end
 
   get '/join' do
+    session[:redirect_uri] = request.params['redirect_uri'] ||= '/'
     haml :join, layout: false
   end
 
@@ -48,7 +50,7 @@ class UserController < BaseController
     if @user
       if @user.password_digest == pwd
         session[:user_id] = @user.id
-        redirect '/'
+        redirect session[:redirect_uri] ||= '/'
       end
     end
   end
@@ -81,7 +83,7 @@ class UserController < BaseController
 
     session[:user_id] = user.id
     send_email(user)
-    redirect '/'
+    redirect session[:redirect_uri] ||= '/'
   end
 
   # Verify email is registered

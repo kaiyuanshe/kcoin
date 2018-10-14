@@ -10,6 +10,8 @@ src/server/target/
 src/server/out/
 src/server/classes/
 
+# temp files
+**/*.tmp
 
 # Logs
 src/**/*.log

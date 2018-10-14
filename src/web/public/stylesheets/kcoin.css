@@ -788,6 +788,97 @@ span.step.kcoin-step.complete.kcoin-stepper-complete {
 span {
 }
 
+.coscon-container {
+    background: #ffffff;
+    border: 1px solid #cfd2d6;
+    box-shadow: 0 4px 10px 0 #e2e9f5;
+    border-radius: 10px;
+    width: 748px;
+    height: 548px;
+    padding: 0;
+}
+
+.coscon-title-rectangle {
+    background: #333333;
+    border: 1px solid #cfd2d6;
+    width: 748px;
+    height: 48px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-align: center;
+}
+
+.coscon-win-title {
+    font-family: PingFangHK-Regular;
+    font-size: 16px;
+    color: #f3f3f3;
+    text-align: left;
+}
+
+.coscon-mt-tille {
+    font-family: PingFangHK-Semibold;
+    font-size: 18px;
+    color: #404b59;
+    text-align: left;
+}
+
+.coscon-mt-detail {
+    font-family: PingFangHK-Semibold;
+    font-size: 13px;
+    color: #404b59;
+    text-align: left;
+}
+
+.coscon-mt-a {
+    font-family: PingFangHK-Semibold;
+    font-size: 13px;
+    color: #60a8f0;
+    text-align: left;
+}
+
+.coscon-award-win {
+    background: #fcfdff;
+    border: 1px solid #e2e9f5;
+    width: 748px;
+    height: 246px;
+}
+
+.coscon-award-label {
+    font-family: PingFangHK-Semibold;
+    font-size: 16px;
+    color: #404b59;
+    text-align: left;
+}
+
+.coscon-award-rectangle {
+    background: #ffffff;
+    border: 2px solid #5ca7f3;
+    border-radius: 5px;
+    width: 196px;
+    height: 50px;
+}
+
+.coscon-award-detail {
+    font-family: PingFangHK-Semibold;
+    font-size: 16px;
+    color: #ff5a59;
+    text-align: left;
+}
+
+.coscon-award-tip {
+    font-family: PingFangHK-Semibold;
+    font-size: 13px;
+    color: #8b939e;
+    text-align: left;
+}
+
+.coscon-award-submit-a {
+    font-family: PingFangHK-Semibold;
+    font-size: 18px;
+    color: #60a8f0;
+    text-align: left;
+}
+
 div.chart {
     height: 400px;
     border: none !important;
@@ -984,10 +1075,9 @@ div.chart {
     width: 100%;
 }
 
-.history-head{
+.history-head {
     display: none;
 }
-
 
 .table.striped .tbody .tr:nth-child(odd), .table.striped tbody tr:nth-child(odd) {
     background: #edf0f5;

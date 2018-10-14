@@ -49,7 +49,7 @@ module UserAppHelpers
     session['github_oauth_state'] = SecureRandom.hex
     auth_params = {
       :client_id => CONFIG[:github][:client_id],
-      :redirect_uri => request.base_url + '/auth/github/callback' + callback_uri,
+      :redirect_uri => request.base_url + '/auth/github/callback?redirect_uri=' + callback_uri,
       :scope => 'user,admin:repo_hook',
       :state => session['github_oauth_state']
     }
