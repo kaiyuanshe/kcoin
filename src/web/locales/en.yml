@@ -33,7 +33,8 @@ en:
   project_header_my_projects: "My projects"
   project_header_user_center: "User center"
   project_header_exchange: "Exchange"
-  project_header_faq: "FAQ"
+  project_header_doc: "Documentation"
+  project_header_contribute: "Contribute"
   project_header_admin: "Site Admin"
   project_logout: "Logout"
 
