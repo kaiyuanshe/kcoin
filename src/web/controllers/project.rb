@@ -5,13 +5,7 @@ class ProjectController < BaseController
   helpers HistoryHelpers
 
   before do
-    set_current_user
-    # if people login return explorer page, else redirect login page
-    auth_params = {
-      redirect_uri: request.base_url + '/project'
-    }
-    redirect_url = '/user/login?' + URI.encode_www_form(auth_params)
-    redirect redirect_url unless authenticated?
+    enforce_login '/project'
   end
 
   get '/' do
@@ -39,11 +33,11 @@ class ProjectController < BaseController
       :tmpfile => params[:images],
       :github_project_id => params[:github_project_id].to_s,
       :owner => params[:owner],
-      :custom_name=> params[:custom_name],
-      :token_name=> params[:token_name],
-      :init_supply=> params[:init_supply],
-      :discuss_method=> params[:discuss_method],
-      :contributors=> JSON.parse(params[:contributors])
+      :custom_name => params[:custom_name],
+      :token_name => params[:token_name],
+      :init_supply => params[:init_supply],
+      :discuss_method => params[:discuss_method],
+      :contributors => JSON.parse(params[:contributors])
     }
 
     if import_context[:tmpfile]
