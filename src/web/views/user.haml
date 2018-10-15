@@ -1,50 +1,89 @@
-.container-fluid.pt-13.bg-white.h-vh-100.px-0
-  .container.bg-white.px-0.pt-5#container
-    .row.mx-0-fs.mx-3-md
-      -# left area
-      .cell-fs-12.cell-md-4.px-0.user-profile
-        .float-left-md.pos-fixed-md.user-profile-float
-          %img.d-block{:src=>"#{user_detail.avatar_url}",:style=>"background: #f3f3f3;"}
-          %span.d-block.mx-auto.text-center.mt-5.user-name
-            = user_detail.name
-          %span.d-block.mt-10.brief-title
-            = t('user_profile_display')
-          %textarea.brief{"data-role"=>"textarea",
-            "data-auto-size"=>"false",
-            "data-clear-button"=>"false",
-            "data-cls-component"=>"h-100",
-            "data-default-value"=>"#{user_detail.brief}",
-            :readonly=>"readonly",
-            :style=>"max-height:264px;box-shadow: none;"}
-          %span.d-block.mt-10.wallet-address-title
-            =t('user_wallet')
-          %span.d-block.wallet-address.text-ellipsis{:title=>"#{user_detail.eth_account}"}
-            = user_detail.eth_account
-          %a#btn_edit.button.info.btn-user-edit{:href => '/user/edit_page'}
-            =t('user_edit_btn_edit')
+.pt-5
+  .row.mx-0-fs.mx-3-md
+    -# left area
+    .cell-fs-12.cell-md-4.px-0.user-profile
+      .float-left-md.pos-fixed-md.user-profile-float
+        %img.d-block{:src=>"#{user_detail.avatar_url}",:style=>"background: #f3f3f3;"}
+        %span.d-block.mx-auto.text-center.mt-5.user-name
+          = user_detail.name
+        %span.d-block.mt-10.brief-title
+          = t('user_profile_display')
+        %textarea.brief{"data-role"=>"textarea",
+          "data-auto-size"=>"false",
+          "data-clear-button"=>"false",
+          "data-cls-component"=>"h-100",
+          "data-default-value"=>"#{user_detail.brief}",
+          :readonly=>"readonly",
+          :style=>"max-height:264px;box-shadow: none;"}
+        %span.d-block.mt-10.wallet-address-title
+          =t('user_wallet')
+        %span.d-block.wallet-address.text-ellipsis{:title=>"#{user_detail.eth_account}"}
+          = user_detail.eth_account
+        %a#btn_edit.button.info.btn-user-edit{:href => '/user/edit_page'}
+          =t('user_edit_btn_edit')
 
-      -# right area
-      .cell-fs-12.cell-md-8.px-0.user-project-panel
-        .row.mx-0-fs.mx-3-md
-          .cell-12.px-0-fs.px-3-md
-            .user-kcoin-detail.d-flex
-              -# kcoin detail
-              .row.mx-0.user-kcoin-detail-left-area.d-flex-fs.d-inline-block-md.flex-align-center
-                .cell-fs-6.cell-md-12.order-1.text-right-fs.text-center-md.user-kcoin-detail-number
-                  %span.d-block-md.mx-auto.user-kcoin
-                    = token_history['TotalBalance']
-                .cell-fs-6.cell-md-12.order-2.text-left-fs.text-center-md.user-kcoin-detail-title
-                  %span.d-block-md.mx-auto KCoin
-                .cell-fs-12.d-none-md.d-block-fs.order-3.pos-absolute.pos-bottom-center
-                  %span 查看更多
-                .d-inline-block-md.d-none-fs.order-4.user-kcoin-detail-split
+    -# right area
+    .cell-fs-12.cell-md-8.px-0.user-project-panel
+      .row.mx-0-fs.mx-3-md
+        .cell-12.px-0-fs.px-3-md
+          .user-kcoin-detail.d-flex
+            -# kcoin detail
+            .row.mx-0.user-kcoin-detail-left-area.d-flex-fs.d-inline-block-md.flex-align-center
+              .cell-fs-6.cell-md-12.order-1.text-right-fs.text-center-md.user-kcoin-detail-number
+                %span.d-block-md.mx-auto.user-kcoin
+                  = token_history['TotalBalance']
+              .cell-fs-6.cell-md-12.order-2.text-left-fs.text-center-md.user-kcoin-detail-title
+                %span.d-block-md.mx-auto KCoin
+              .cell-fs-12.d-none-md.d-block-fs.order-3.pos-absolute.pos-bottom-center
+                %span 查看更多
+              .d-inline-block-md.d-none-fs.order-4.user-kcoin-detail-split
 
-              -# kcoin history
-              .user-kcoin-detail-right-area.d-none-fs.d-inline-block-md
-                - token_history['History'].each_with_index do |item, index|
-                  -if index >= 3
+            -# kcoin history
+            .user-kcoin-detail-right-area.d-none-fs.d-inline-block-md
+              - token_history['History'].each_with_index do |item, index|
+                -if index >= 3
+                  -break
+                .row.mx-0.pt-2.project-detail
+                  .stub.text-right.px-0
+                    %span
+                      = item[:Date]
+                  .cell.text-left.content-item
+                    %span
+                      = item[:EventName]
+                  .stub.text-right.px-0.content-item-num
+                    %span
+                      = item[:ChangeNum]
+
+              .row.mx-0
+                .cell-12.px-0.text-right.user-kcoin-detail-link
+                  %a{:href=>"/project/history?uId=#{token_history[:UserId]}"} 查看更多 >
+
+      .row.mx-0-fs.mx-3-md
+        .cell-12.px-3
+          .pt-15.user-project-detail
+            %span.user-project-detail-title 我参与的项目
+          - project_list.each_with_index do |list, index|
+            .row.pt-5.px-3-fs.px-0-md
+              .stub.user-project-detail-image
+                .img-container.thumbnail.px-0.py-0.no-border
+                  - if list[:Img].equal? nil
+                    %img{:src=>"icons/kcoin-project-list-icon.png",:style=>"background: #f3f3f3;"}
+                  - else
+                    %img{:src=>"#{list[:Img]}",:style=>"background: #f3f3f3;"}
+              .cell.px-0
+                .row.px-3
+                  .cell-12-fs.cell-md.text-left
+                    %span.d-flex-fs.d-inline-block-md.order-1.user-project-list-title
+                      = list[:ProjectName]
+                    %span.order-2.user-project-list-title token:
+                    %span.order-3.user-project-list-title-num
+                      = list['TotalBalance']
+                  .cell-12-fs.cell-md.text-right-md.text-left-fs.user-kcoin-detail-link
+                    %a{:href=>"/project/history?symbol=#{list[:TokenSymbol]}"} 查看更多 >
+                - list['History'].each_with_index do |item, item_index|
+                  -if item_index >= 2
                     -break
-                  .row.mx-0.pt-2.project-detail
+                  .row.mx-0.px-3.pt-2.project-detail.d-none-fs.d-flex-md
                     .stub.text-right.px-0
                       %span
                         = item[:Date]
@@ -54,45 +93,5 @@
                     .stub.text-right.px-0.content-item-num
                       %span
                         = item[:ChangeNum]
-
-                .row.mx-0
-                  .cell-12.px-0.text-right.user-kcoin-detail-link
-                    %a{:href=>"/project/history?uId=#{token_history[:UserId]}"} 查看更多 >
-
-        .row.mx-0-fs.mx-3-md
-          .cell-12.px-3
-            .pt-15.user-project-detail
-              %span.user-project-detail-title 我参与的项目
-            - project_list.each_with_index do |list, index|
-              .row.pt-5.px-3-fs.px-0-md
-                .stub.user-project-detail-image
-                  .img-container.thumbnail.px-0.py-0.no-border
-                    - if list[:Img].equal? nil
-                      %img{:src=>"icons/kcoin-project-list-icon.png",:style=>"background: #f3f3f3;"}
-                    - else
-                      %img{:src=>"#{list[:Img]}",:style=>"background: #f3f3f3;"}
-                .cell.px-0
-                  .row.px-3
-                    .cell-12-fs.cell-md.text-left
-                      %span.d-flex-fs.d-inline-block-md.order-1.user-project-list-title
-                        = list[:ProjectName]
-                      %span.order-2.user-project-list-title token:
-                      %span.order-3.user-project-list-title-num
-                        = list['TotalBalance']
-                    .cell-12-fs.cell-md.text-right-md.text-left-fs.user-kcoin-detail-link
-                      %a{:href=>"/project/history?symbol=#{list[:TokenSymbol]}"} 查看更多 >
-                  - list['History'].each_with_index do |item, item_index|
-                    -if item_index >= 2
-                      -break
-                    .row.mx-0.px-3.pt-2.project-detail.d-none-fs.d-flex-md
-                      .stub.text-right.px-0
-                        %span
-                          = item[:Date]
-                      .cell.text-left.content-item
-                        %span
-                          = item[:EventName]
-                      .stub.text-right.px-0.content-item-num
-                        %span
-                          = item[:ChangeNum]
-                  .row.mx-0.pt-2.d-none-fs.d-flex-md
-                    .user-project-list-split
+                .row.mx-0.pt-2.d-none-fs.d-flex-md
+                  .user-project-list-split

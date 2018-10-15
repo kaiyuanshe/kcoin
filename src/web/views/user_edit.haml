@@ -1,57 +1,56 @@
-.container-fluid.pt-13.bg-white.h-vh-100.px-0
-  .container.bg-white.px-0.pt-5#container
-    .row.mx-0-fs.mx-3-md
-      -# left area
-      .cell-fs-12.cell-md-4.px-0.user-profile.mx-0
-        .float-left-md.pos-fixed-md.user-profile-float
-          %img.d-block{:src=>"#{user_detail.avatar_url}",:style=>"background: #f3f3f3;"}
-          %form{:action=>"/user/update_user", :method=>'post',"data-role"=>'validator'}
+.pt-5
+  .row.mx-0-fs.mx-3-md
+    -# left area
+    .cell-fs-12.cell-md-4.px-0.user-profile.mx-0
+      .float-left-md.pos-fixed-md.user-profile-float
+        %img.d-block{:src=>"#{user_detail.avatar_url}",:style=>"background: #f3f3f3;"}
+        %form{:action=>"/user/update_user", :method=>'post',"data-role"=>'validator'}
+          .form-group
             .form-group
-              .form-group
-                %label
-                  = t('user_name')
-                %input.border-radius-5.border.mt-2{:type => 'text',
-                       :name => 'name',
-                       :value => "#{user_detail.name}",
-                       maxlength: 20,
-                       "data-role" => "input",
-                       "data-clear-button" => "false",
-                       "data-validate" => "required"}
-                %span.invalid_feedback
-                  = t('user_name_invalid')
+              %label
+                = t('user_name')
+              %input.border-radius-5.border.mt-2{:type => 'text',
+                     :name => 'name',
+                     :value => "#{user_detail.name}",
+                     maxlength: 20,
+                     "data-role" => "input",
+                     "data-clear-button" => "false",
+                     "data-validate" => "required"}
+              %span.invalid_feedback
+                = t('user_name_invalid')
 
-              .form-group
-                %label
-                  = t('user_profile')
-                %textarea.mt-2{:name=>"brief",
-                  "data-role"=>"textarea",
-                  "data-cls-component"=>"border-radius-5 border h-100",
-                  "data-cls-textarea"=>"border-radius-5 border",
-                  "data-clear-button"=>"false",
-                  "data-auto-size"=>"false",
-                  "data-default-value"=>"#{user_detail.brief}",
-                  :style=>"height:140px;"}
+            .form-group
+              %label
+                = t('user_profile')
+              %textarea.mt-2{:name=>"brief",
+                "data-role"=>"textarea",
+                "data-cls-component"=>"border-radius-5 border h-100",
+                "data-cls-textarea"=>"border-radius-5 border",
+                "data-clear-button"=>"false",
+                "data-auto-size"=>"false",
+                "data-default-value"=>"#{user_detail.brief}",
+                :style=>"height:140px;"}
 
-              .form-group
-                %label
-                  =t('user_wallet')
-                .text-right.user-kcoin-detail-link.d-inline.ml-5
-                  %a{:href=>"/user/wallet_regenerate"}
-                    =t('user_wallet_regenerate')
-                %span.d-block.wallet-address
-                  234jKLOUUUO7987230980890jkjkjl
+            .form-group
+              %label
+                =t('user_wallet')
+              .text-right.user-kcoin-detail-link.d-inline.ml-5
+                %a{:href=>"/user/wallet_regenerate"}
+                  =t('user_wallet_regenerate')
+              %span.d-block.wallet-address
+                234jKLOUUUO7987230980890jkjkjl
 
-              .form-group
-                %label
-                  =t('user_wallet_password')
-                %input.border-radius-5.border.mt-2{:type => 'text',
-                       :value => '',
-                       maxlength: 20,
-                       "data-role" => "input",
-                       "data-clear-button" => "false"}
+            .form-group
+              %label
+                =t('user_wallet_password')
+              %input.border-radius-5.border.mt-2{:type => 'text',
+                     :value => '',
+                     maxlength: 20,
+                     "data-role" => "input",
+                     "data-clear-button" => "false"}
 
-              .mt-10.cell.text-center
-                %a#btn_cancel.button.info.outline{:href=>"/user",:style=>"width: 100px;"}
-                  =t('user_edit_btn_cancel')
-                %button.button.info.ml-5{:type=>'submit',:style=>"width: 100px;"}
-                  =t('user_edit_btn_save')
+            .mt-10.cell.text-center
+              %a#btn_cancel.button.info.outline{:href=>"/user",:style=>"width: 100px;"}
+                =t('user_edit_btn_cancel')
+              %button.button.info.ml-5{:type=>'submit',:style=>"width: 100px;"}
+                =t('user_edit_btn_save')

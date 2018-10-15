@@ -1,33 +1,31 @@
-.container-fluid.pt-13.bg-white.h-vh-100.px-0
-  .container.bg-white.px-0.pt-5#container
-    .row.mx-2
-      .cell-12.px-0.user-kcoin-detail-link
-        %a{:href=>"/project/back"} < 返回
-    .row.mx-2
-      %table.table.striped.mt-4{"data-role"=>"table",
-        "data-cls-table-top"=>"row flex-nowrap",
-        "data-cls-component"=>"history-table",
-        "data-cls-head"=>"history-head",
-        "data-cls-rows-count"=>"cell-md-4",
-        "data-rows-steps"=>"10",
-        "data-show-rows-steps"=>"false",
-        "data-show-search"=>"false",
-        "data-show-table-info"=>"false",
-        "data-cls-pagination"=>"flex-justify-center",
-        "data-pagination-prev-title"=>"◂",
-        "data-pagination-next-title"=>"▸",
-        "data-rows"=>"10"}
-        %thead
-          %tr
-            %th time
-            %th content
-            %th num
-        %tbody
-          - history[:History].each_with_index do |item, index|
-            %tr
-              %td
-                = item[:Date]
-              %td
-                = item[:EventName]
-              %td
-                = item[:ChangeNum]
+.row.mx-2
+  .cell-12.px-0.user-kcoin-detail-link
+    %a{:href=>"/project/back"} < 返回
+.row.mx-2
+  %table.table.striped.mt-4{"data-role"=>"table",
+    "data-cls-table-top"=>"row flex-nowrap",
+    "data-cls-component"=>"history-table",
+    "data-cls-head"=>"history-head",
+    "data-cls-rows-count"=>"cell-md-4",
+    "data-rows-steps"=>"10",
+    "data-show-rows-steps"=>"false",
+    "data-show-search"=>"false",
+    "data-show-table-info"=>"false",
+    "data-cls-pagination"=>"flex-justify-center",
+    "data-pagination-prev-title"=>"◂",
+    "data-pagination-next-title"=>"▸",
+    "data-rows"=>"10"}
+    %thead
+      %tr
+        %th time
+        %th content
+        %th num
+    %tbody
+      - history[:History].each_with_index do |item, index|
+        %tr
+          %td
+            = item[:Date]
+          %td
+            = item[:EventName]
+          %td
+            = item[:ChangeNum]

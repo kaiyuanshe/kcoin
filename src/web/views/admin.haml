@@ -1,63 +1,61 @@
-.container-fluid.pt-13.bg-white.h-vh-100.px-0
-    .container.bg-white.px-2#container
-        .grid
-            .row{:style=>'margin-top: 20px; text-align: center; width: 100%;'}
-                .cell-12
-                    %h3.py-4-md 管理 KCoin
-            .row
-                .cell-2
-                .cell-10
-                    .table.cell-hover.cell-border
-                        .tr
-                            .td
-                                当前余额
-                            .td
-                                #{kcoin_balance}
-                        .tr
-                            .td
-                                发行/增发
-                            .td
-                                %form.ml-6{"data-role"=>'validator', :action=>"/admin/issue", :method=>'post'}
-                                    %div.row{:style=>'width:400px'}
-                                        %lable
-                                            数量
-                                        %input.pb-10-md.my-1-md{'data-role'=>'input',
-                                                    :name=>'amount',
-                                                    :value=>'1000000',
-                                                    :placeholder=>'Enter the amount',
-                                                    "data-validate"=>'required pattern=^[1-9][0-9]*$'}
-                                        %span.invalid_feedback
-                                            Invalid amount
-                                        %input.button.secondary{:type=>'submit',
-                                                                :value=>'发行',
-                                                                :id=>'submit'}
-                        .tr
-                            .td
-                                注资
-                            .td
-                                %form.ml-6{"data-role"=>'validator', :action=>"/admin/invest", :method=>'post'}
-                                    %div.row{:style=>'width:400px'}
-                                        %lable
-                                            数量
-                                        %input.pb-10-md.my-1-md{'data-role'=>'input',
-                                                    :name=>'amount',
-                                                    :value=>'10000',
-                                                    :placeholder=>'Enter the amount',
-                                                    "data-validate"=>'required pattern=^[1-9][0-9]*$'}
-                                        %span.invalid_feedback
-                                            Invalid amount
-                                    %div.row{:style=>'width:400px'}
-                                        %lable
-                                            项目Id
-                                        %input.pb-10-md.my-1-md{'data-role'=>'input',
-                                                    :name=>'project_id',
-                                                    :value=>'',
-                                                    :placeholder=>'Enter the project Id',
-                                                    "data-validate"=>'required pattern=^[1-9][0-9]*$'}
-                                        %span.invalid_feedback
-                                            Invalid amount
-                                        %input.button.secondary{:type=>'submit',
-                                                                :value=>'注资',
-                                                                :id=>'submit'}
-                                        %span.fg-red.pt-4-md.ml-4-md
-                                            #{error_msg ||= ''}
+.grid
+    .row{:style=>'margin-top: 20px; text-align: center; width: 100%;'}
+        .cell-12
+            %h3.py-4-md 管理 KCoin
+    .row
+        .cell-2
+        .cell-10
+            .table.cell-hover.cell-border
+                .tr
+                    .td
+                        当前余额
+                    .td
+                        #{kcoin_balance}
+                .tr
+                    .td
+                        发行/增发
+                    .td
+                        %form.ml-6{"data-role"=>'validator', :action=>"/admin/issue", :method=>'post'}
+                            %div.row{:style=>'width:400px'}
+                                %lable
+                                    数量
+                                %input.pb-10-md.my-1-md{'data-role'=>'input',
+                                            :name=>'amount',
+                                            :value=>'1000000',
+                                            :placeholder=>'Enter the amount',
+                                            "data-validate"=>'required pattern=^[1-9][0-9]*$'}
+                                %span.invalid_feedback
+                                    Invalid amount
+                                %input.button.secondary{:type=>'submit',
+                                                        :value=>'发行',
+                                                        :id=>'submit'}
+                .tr
+                    .td
+                        注资
+                    .td
+                        %form.ml-6{"data-role"=>'validator', :action=>"/admin/invest", :method=>'post'}
+                            %div.row{:style=>'width:400px'}
+                                %lable
+                                    数量
+                                %input.pb-10-md.my-1-md{'data-role'=>'input',
+                                            :name=>'amount',
+                                            :value=>'10000',
+                                            :placeholder=>'Enter the amount',
+                                            "data-validate"=>'required pattern=^[1-9][0-9]*$'}
+                                %span.invalid_feedback
+                                    Invalid amount
+                            %div.row{:style=>'width:400px'}
+                                %lable
+                                    项目Id
+                                %input.pb-10-md.my-1-md{'data-role'=>'input',
+                                            :name=>'project_id',
+                                            :value=>'',
+                                            :placeholder=>'Enter the project Id',
+                                            "data-validate"=>'required pattern=^[1-9][0-9]*$'}
+                                %span.invalid_feedback
+                                    Invalid amount
+                                %input.button.secondary{:type=>'submit',
+                                                        :value=>'注资',
+                                                        :id=>'submit'}
+                                %span.fg-red.pt-4-md.ml-4-md
+                                    #{error_msg ||= ''}
