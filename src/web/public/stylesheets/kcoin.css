@@ -356,6 +356,10 @@ span {
     color: #9c9c9c;
 }
 
+#project_lists > li:hover {
+    cursor: pointer;
+}
+
 /* figure style */
 .kcoin-figure {
     /* max-width: 220px; */

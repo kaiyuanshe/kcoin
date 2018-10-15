@@ -37,8 +37,12 @@
               =t('project_header_exchange')
           %li.divider.visible-fs.no-visible-ms.no-visible-md
           %li
-            %a.fg-white-hover{:href => '#'}
-              =t('project_header_faq')
+            %a.fg-white-hover{:href => 'https://github.com/kaiyuanshe/kcoin/tree/master/docs', :target=>'_blank'}
+              =t('project_header_doc')
+          %li.divider.visible-fs.no-visible-ms.no-visible-md
+          %li
+            %a.fg-white-hover{:href => 'https://github.com/kaiyuanshe/kcoin', :target=>'_blank'}
+              =t('project_header_contribute')
           %li.divider.visible-fs.no-visible-ms.no-visible-md
           - if current_user.is_admin?
             %li
