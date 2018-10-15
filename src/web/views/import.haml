@@ -1,7 +1,6 @@
 .pt-2#win_import{"data-role"=>"window",
-"data-width"=>"100%",
 "data-height"=>"100%",
-"data-place"=>"center",
+"data-place"=>"left",
 "data-draggable"=>"true",
 "data-btn-min"=>"false",
 "data-btn-max"=>"false",
@@ -10,7 +9,7 @@
 "data-close-action"=>"Metro.actions.HIDE",
 "data-cls-caption"=>"kcoin-win-title",
 "data-cls-master"=>"px-3",
-"data-cls-window"=>"kcoin-win no-visible ",
+"data-cls-window"=>"kcoin-win no-visible",
 "data-on-close-click"=>"closeWin"}
 
   #kcoin_stepper{"data-role"=>"stepper",
@@ -30,6 +29,8 @@
       .page
         .row.mx-0
           .cell-12.form-group.px-0
+            %input#search_input{type: "text",
+              placeholder: "快速导入：请在此处复制 GithHub 项目的 URL"}
             .kcoin-win-panel#projectList{"data-role"=>"panel",
             "data-width"=>"100%",
             "data-height"=>"100%",

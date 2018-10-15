@@ -12,22 +12,43 @@ $(function () {
     $("#btn_submit").on("click", function () {
         saveForm();
     });
+    $("#search_input").on("change", function () {
+        var fullName = $("#search_input").val();
+        fullName = fullName.match(/github.com[\:/]?(\S*)(\.git)?/);
+
+        if (fullName === undefined || fullName == null) {
+            Metro.toast.create("无法解析该URL，请重新输入!", null, 3000, "alert");
+            return
+        }
+        fullName = fullName[1].replace(".git", "");
+
+        if (fullName.split("/").length > 2) {
+            Metro.toast.create("无法匹配到该项目，请重新输入!", null, 3000, "alert");
+            return
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "https://api.github.com/repos/" + fullName,
+            success: function (res) {
+                $("#project_title").html(res.name);
+                $(".project_name").val(res.name);
+                $("#github_project_id").val(res.id);
+            }
+        });
+
+        $("#kcoin_stepper").data('stepper')['next']();
+        $("#kcoin_master").data('master').next();
+
+        bindingContributors(fullName);
+    });
+    bindProjectPanel();
 });
 
 var list = [];
-var contributors
+var contributors;
 
-function openImportWin() {
-    let import_activity = Metro.activity.open({
-        type: 'square',
-        overlayColor: '#fff',
-        overlayAlpha: 0,
-        text: '<div class=\'mt-2 text-small\'>请稍候, 正在加载项目列表...</div>',
-        overlayClickClose: false
-    });
-
-    // if user does not oauth other account,show dialog for binding accounts
-
+function bindProjectPanel() {
     // get project List from other platform like github and render template
     $.ajax({
         type: "GET",
@@ -45,11 +66,21 @@ function openImportWin() {
             });
 
             renderTemplate($("#projectListTemplate").html(), $("#projectList"), map);
-
-            Metro.activity.close(import_activity);
-            Metro.window.toggle("#win_import");
         }
     });
+}
+
+function openImportWin() {
+    let import_activity = Metro.activity.open({
+        type: 'square',
+        overlayColor: '#fff',
+        overlayAlpha: 0,
+        text: '<div class=\'mt-2 text-small\'>请稍候, 正在加载项目列表...</div>',
+        overlayClickClose: false
+    });
+
+    Metro.activity.close(import_activity);
+    Metro.window.toggle("#win_import");
 }
 
 function renderTemplate(template, target, data) {
