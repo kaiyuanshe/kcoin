@@ -35,6 +35,10 @@ function openImportWin() {
         success: function (res) {
             // initPager();
             list = JSON.parse(res);
+            if(list.login){
+                window.location.href = list.login;
+                return;
+            }
             let map = new Map();
             list.forEach(function (item) {
                 if (map.has(item.owner.id)) {

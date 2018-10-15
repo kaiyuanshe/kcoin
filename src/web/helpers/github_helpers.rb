@@ -106,7 +106,9 @@ module GithubHelpers
   def list_projects(user_id)
     github_account = Oauth.where(user_id: user_id, oauth_provider: GITHUB).first
     unless github_account
-      return redirect '/github/login?redirect_uri=/project'
+      return {
+        login: '/auth/github/login?redirect_uri=/project'
+      }.to_json
     end
 
     # TODO improve the repo list

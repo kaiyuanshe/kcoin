@@ -4,7 +4,7 @@ class AdminController < BaseController
 
   before do
     set_current_user
-    redirect '/user/login' unless authenticated?
+    redirect '/auth/login' unless authenticated?
     redirect '/project' unless current_user.is_admin?
   end
 

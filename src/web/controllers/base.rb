@@ -108,4 +108,13 @@ class BaseController < Sinatra::Base
     end
   end
 
+  def enforce_login(redirect_uri = '/')
+    set_current_user
+    auth_params = {
+      redirect_uri: redirect_uri
+    }
+    url = '/auth/login?' + URI.encode_www_form(auth_params)
+    redirect url unless authenticated?
+  end
 end
+

@@ -23,6 +23,7 @@ module UserAppHelpers
   end
 
   def current_user
+    # Avoid reading DB since it might be called repeatedly and frequently in every http call
     unless session[KCOIN_LOGIN_INFO]
       return GuestUser.new
     end
@@ -44,7 +45,7 @@ module UserAppHelpers
   end
 
   def github_authorize(callback_uri)
-    return if authenticated?
+    return if authenticated? and current_user.is_github_user
 
     session['github_oauth_state'] = SecureRandom.hex
     auth_params = {
@@ -189,7 +190,6 @@ module UserAppHelpers
     user
   end
 
-
   def persist_user(user_info)
     oauth = Oauth.first(:oauth_provider => user_info[:oauth_provider], :open_id => user_info[:open_id])
     if oauth
@@ -216,6 +216,27 @@ module UserAppHelpers
     user_info[:id] = user.id
     user_info[:eth_account] = user.eth_account
     session[KCOIN_LOGIN_INFO] = user_info
+  end
+
+  def kcoin_user_login(email_or_login, pwd_digest)
+    user = if email_or_login.include? '@'
+      User.first(email: email_or_login, password_digest: pwd_digest)
+    else
+      User.first(login: email_or_login, password_digest: pwd_digest)
+    end
+    if user
+      user_info = {
+        :id => user.id,
+        :login => user.login,
+        :name => user.name,
+        :oauth_provider => KCOIN,
+        :email => user.email, # primary email
+        :avatar_url => user.avatar_url,
+        :eth_account => user.eth_account
+      }
+      session[KCOIN_LOGIN_INFO] = user_info
+    end
+    true
   end
 
   # find user by userId. If userId is empty,return current_user
@@ -267,6 +288,10 @@ class AuthUser
 
   def is_authenticated?
     true
+  end
+
+  def is_github_user
+    @oauth.eql? UserAppHelpers::GITHUB
   end
 
   def has_role?(role)

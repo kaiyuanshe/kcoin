@@ -1,5 +1,6 @@
 require './controllers/base'
 
+# for pages that cannot be categorized or temporary
 class WebsiteController < BaseController
 
   get '/' do

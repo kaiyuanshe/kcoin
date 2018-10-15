@@ -9,7 +9,7 @@ function validateEmailAndPwd(el) {
     var flag = false;
     $.ajax({
         type: "post",
-        url: "/user/validate/user",
+        url: "/auth/validate/user",
         data: $("form").serialize(),
         async: false,
         success: function (msg) {
