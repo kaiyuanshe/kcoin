@@ -93,7 +93,7 @@ class ProjectController < BaseController
     halt 404, t('project_not_exist') unless project
 
     # fetch data from chaincode
-    token_history = get_history_by_project(project.symbol)
+    token_history = get_history_by_project(project.symbol,project.eth_account)
     kcoin_history = get_kcoin_history(project.eth_account)
 
     # fetch member data form github

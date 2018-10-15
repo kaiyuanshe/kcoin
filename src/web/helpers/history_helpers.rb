@@ -15,47 +15,44 @@ module HistoryHelpers
     result
   end
 
-  def get_history_by_project(symbol)
-    # resp = query_history(symbol)
-    list = JSON.parse(resp['payload'])
+  def get_history_by_project(symbol, account)
+    list = query_history(symbol, account)
     handle_history(list)
+    list
   end
 
   def get_kcoin_history(owner)
     history = query_history(settings.kcoin_symbol, owner)
-    result = {}
-    history['History'].to_enum.with_index.reverse_each do |item, index|
-      event = GithubEvent.first(transaction_id: item['TxId'])
-      next if event.nil?
-      item[:EventName] = event[:github_event]
-      item[:Date] = DateTime.parse(item['Timestamp']).strftime('%m.%d')
-      item[:Year] = DateTime.parse(item['Timestamp']).strftime('%y')
-      item[:Time] = DateTime.parse(item['Timestamp']).strftime('%y.%m.%d')
-
-      item[:ChangeNum] = if index > 0
-                           item['Supply'] - ((history['History'] || {})[index-1] || {})['Supply']
-                         else
-                           item['Supply']
-                         end
-    end
-    result
+    handle_history(history)
+    history
   end
 
   def handle_history(history)
+    symbol = nil
     history['History'].to_enum.with_index.reverse_each do |item, index|
-      event = GithubEvent.first(transaction_id: item['TxId'])
-      next if event.nil?
-      item[:EventName] = event[:github_event]
       item[:Date] = DateTime.parse(item['Timestamp']).strftime('%m.%d')
       item[:Year] = DateTime.parse(item['Timestamp']).strftime('%y')
       item[:Time] = DateTime.parse(item['Timestamp']).strftime('%y.%m.%d')
 
       item[:ChangeNum] = if index > 0
-                           item['Supply'] - ((history['History'] || {})[index-1] || {})['Supply']
+                           item['Supply'] - ((history['History'] || {})[index - 1] || {})['Supply']
                          else
                            item['Supply']
                          end
+      symbol = item['TokenSymbol'] if symbol.nil?
+      event = GithubEvent.first(transaction_id: item['TxId'])
+      item[:EventName] = event.nil? ? 'no github event' : event[:github_event]
     end
+
+    project = Project.first(symbol: symbol)
+    if project.nil?
+      history[:ProjectName] = nil
+      history[:Img] = nil
+    else
+      history[:ProjectName] = project[:name]
+      history[:Img] = project[:img]
+    end
+    history[:TokenSymbol] = symbol
   end
 
   def group_history(history)

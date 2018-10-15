@@ -20,6 +20,7 @@ class UserController < BaseController
     user_detail = find_user(user_id)
     # fetch data from chaincode
     token_history = get_kcoin_history(user_detail.eth_account)
+    token_history[:UserId] = user_id
     project_history = get_project_list_history(user_id)
 
     haml :user, locals: {user_detail: user_detail,
