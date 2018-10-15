@@ -24,6 +24,12 @@ module ProjectHelpers
                                  github_project_id: import_context[:github_project_id])
         User[current_user.id].add_project(project)
       end
+    else
+      project = Project.get_by_github_project_id(import_context[:github_project_id])
+      project.update(custom_name: import_context[:custom_name],
+                     token_name: import_context[:token_name],
+                     init_supply: import_context[:init_supply],
+                     discuss_method: import_context[:discuss_method])
     end
 
 
@@ -84,9 +90,14 @@ module ProjectHelpers
                    last_login_at: Time.now) unless oauth
 
       # send supply to blackchain
-      transfer(context[:symbol], context[:eth_account], user_eth_account, item[:init_supply])
-      # send email
-      !item['login'].eql?(current_user.login) ? send_project_import_email(context, item) : next
+      user_init_supply = item['init_supply'] ||= item[:init_supply]
+      if user_init_supply.to_i <= 0
+        puts "init supply for user #{item['id']} is invalid or 0"
+        return
+      end
+      transfer(context[:symbol], context[:eth_account], user_eth_account, user_init_supply.to_i)
+      # TODO send email. Temporarily disabled due to email issue
+      # !item['login'].eql?(current_user.login) ? send_project_import_email(context, item) : next
     end
   end
 
@@ -103,16 +114,16 @@ module ProjectHelpers
       #TODO: add batch query here? Or at least AJAX. To query server in a loop is bad
       token = query_balance(p.symbol, p.eth_account)
       project_hashes.push(
-          id: p.id,
-          name: p.name,
-          owner: p.owner,
-          github_project_id: p.github_project_id,
-          first_word: p.first_word,
-          description: p.description,
-          img: p.img,
-          created_at: p.created_at,
-          project_token: token,
-          kcoin: 0
+        id: p.id,
+        name: p.name,
+        owner: p.owner,
+        github_project_id: p.github_project_id,
+        first_word: p.first_word,
+        description: p.description,
+        img: p.img,
+        created_at: p.created_at,
+        project_token: token,
+        kcoin: 0
       )
 
     end
