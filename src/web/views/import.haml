@@ -1,8 +1,6 @@
-.pt-2#win_import{"data-role"=>"window",
-"data-height"=>"100%",
-"data-width"=>"100%",
-"data-place"=>"center",
-"data-draggable"=>"true",
+#win_import{"data-role"=>"window",
+-#"data-place"=>"center",
+"data-draggable"=>"false",
 "data-btn-min"=>"false",
 "data-btn-max"=>"false",
 "data-resizable"=>"false",
@@ -10,9 +8,11 @@
 "data-close-action"=>"Metro.actions.HIDE",
 "data-cls-caption"=>"kcoin-win-title",
 "data-cls-master"=>"px-3",
-"data-cls-window"=>"no-visible kcoin-win",
+"data-on-caption-dbl-click"=>"",
+"data-cls-window"=>"kcoin-win",
+"data-top"=>"20",
+"data-left"=>"calc( 50% - 375px)",
 "data-on-close-click"=>"closeWin"}
-
   #kcoin_stepper{"data-role"=>"stepper",
   "data-steps"=>"3",
   "data-cls-step"=>"kcoin-step",
@@ -20,13 +20,12 @@
   "data-cls-complete"=>"kcoin-stepper-complete",
   "data-cls-current"=>"kcoin-stepper-complete",
   "data-view"=>"cycle"}
-  %form.kcoin-win-panel#import_form{:onsubmit=>"return false;",
-  :enctype=>"multipart/form-data"}
+  %form.kcoin-win-panel#import_form{:onsubmit=>"return false;",:enctype=>"multipart/form-data"}
     #kcoin_master{"data-role"=>"master",
-    "data-effect"=>"fade",
-    "data-cls-controls"=>"d-none",
-    "data-cls-pages"=>"border-none",
-    "data-cls-control-title"=>"d-none"}
+                  "data-effect"=>"fade",
+                  "data-cls-controls"=>"d-none",
+                  "data-cls-pages"=>"border-none",
+                  "data-cls-control-title"=>"d-none"}
       .page
         .row.mx-0
           .cell-12.form-group.px-0
