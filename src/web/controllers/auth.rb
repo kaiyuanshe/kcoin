@@ -77,7 +77,8 @@ class AuthController < BaseController
     end
 
     user = User[session[:user_id]]
-    send_register_email(user)
+    # TODO temporarily disable email since it doesn't work
+    # send_register_email(user)
     redirect auth_redirect_uri
   end
 
