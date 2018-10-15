@@ -473,6 +473,7 @@ span {
     background: #ffffff;
     border: 1px solid #cfd2d6;
     box-shadow: 0 0 4px 0 #9c9c9c;
+    display: none;
 }
 
 #import_form .page {
