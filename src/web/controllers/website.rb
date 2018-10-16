@@ -32,10 +32,20 @@ class WebsiteController < BaseController
         symbol = settings.kcoin_symbol
         owner = settings.kcoin_owner
         puts "issue KCoin for user #{current_user.id.to_s} for coscon2018 poll"
-        transfer(symbol, owner, current_user.eth_account, 100)
+        bc_resp = transfer(symbol, owner, current_user.eth_account, 100)
         first_record.update(
           kcoin_issued: true,
           issued_at: Time.now
+        )
+        KCoinTransaction.insert(
+          eth_account_from: owner,
+          eth_account_to: current_user.eth_account,
+          transaction_id: bc_resp['transactionId'],
+          transaction_type: 'coscon2018',
+          message: '开源社问卷调查',
+          correlation_id: current_user.id,
+          correlation_table: 'users',
+          created_at: Time.now
         )
       end
 

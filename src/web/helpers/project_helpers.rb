@@ -46,20 +46,15 @@ module ProjectHelpers
     # so that we can get the detail of the event by block chain transaction id
     unless ledger_ready(import_context[:symbol], import_context[:eth_account])
       bc_resp = init_ledger import_context
-      GithubEvent.insert(github_delivery_id: project.symbol,
-                         github_event: PROJECT_IMPORT_EVENT,
-                         sender_login: current_user.login,
-                         sender_id: current_user.id,
-                         repository_name: project.name,
-                         repository_id: project.github_project_id,
-                         repository_full_name: project.name,
-                         repository_owner_login: current_user.login,
-                         repository_owner_id: current_user.id,
-                         received_at: Time.now,
-                         payload: bc_resp.to_s,
-                         transaction_id: bc_resp['transactionId'],
-                         processing_time: Time.now,
-                         processing_state: WEBHOOK_EVENT_STATUS_PERSISTED)
+      KCoinTransaction.insert(
+        eth_account_to: project.eth_account,
+        transaction_id: bc_resp['transactionId'],
+        transaction_type: PROJECT_IMPORT_EVENT,
+        message: '项目导入',
+        correlation_id: project.id,
+        correlation_table: 'projects',
+        created_at: Time.now
+      )
     end
 
     # send email to other member from project
@@ -95,7 +90,18 @@ module ProjectHelpers
         puts "init supply for user #{item['id']} is invalid or 0"
         return
       end
-      transfer(context[:symbol], context[:eth_account], user_eth_account, user_init_supply.to_i)
+      bc_resp = transfer(context[:symbol], context[:eth_account], user_eth_account, user_init_supply.to_i)
+      KCoinTransaction.insert(
+        eth_account_from: context[:symbol],
+        eth_account_to: user_eth_account,
+        transaction_id: bc_resp['transactionId'],
+        transaction_type: 'project_import',
+        message: '项目导入',
+        correlation_id: event.id,
+        correlation_table: 'github_events',
+        created_at: Time.now
+      )
+
       # TODO send email. Temporarily disabled due to email issue
       # !item['login'].eql?(current_user.login) ? send_project_import_email(context, item) : next
     end
@@ -130,8 +136,8 @@ module ProjectHelpers
     end
 
     puts "query kcoin/token of user's project, user_id=#{user_id.to_s}, accounts=#{accounts.to_s}"
-    payload = query_balance_list(kcoin_symbol, accounts)
-    payload.each do |acc, bal|
+    bc_resp = query_balance_list(kcoin_symbol, accounts)
+    JSON.parse(bc_resp['payload']).each do |acc, bal|
       ind = accounts.find_index acc
       project_hashes[ind][:kcoin] = bal.to_i if ind
     end

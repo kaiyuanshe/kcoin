@@ -35,13 +35,13 @@ module HistoryHelpers
       item[:Time] = DateTime.parse(item['Timestamp']).strftime('%y.%m.%d')
 
       item[:ChangeNum] = if index > 0
-                           item['Supply'] - ((history['History'] || {})[index - 1] || {})['Supply']
-                         else
-                           item['Supply']
-                         end
+        item['Supply'] - ((history['History'] || {})[index - 1] || {})['Supply']
+      else
+        item['Supply']
+      end
       symbol = item['TokenSymbol'] if symbol.nil?
-      event = GithubEvent.first(transaction_id: item['TxId'])
-      item[:EventName] = event.nil? ? 'no github event' : event[:github_event]
+      event = KCoinTransaction.first(transaction_id: item['TxId'])
+      item[:EventName] = event.nil? ? '其他' : event.message
     end
 
     project = Project.first(symbol: symbol)
