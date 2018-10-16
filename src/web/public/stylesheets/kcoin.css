@@ -824,13 +824,18 @@ span {
     padding: 0;
 }
 
+.coscon-rectangle {
+    background:#ffffff;
+    border:1px solid #cfd2d6;
+    box-shadow:0 4px 10px 0 #e2e9f5;
+    border-radius:10px;
+    width:748px;
+    height:548px;
+}
 .coscon-title-rectangle {
     background: #333333;
     border: 1px solid #cfd2d6;
-    width: 748px;
     height: 48px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
     text-align: center;
 }
 

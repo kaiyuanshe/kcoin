@@ -22,7 +22,7 @@ $(function () {
         }
         fullName = fullName[1].replace(".git", "");
 
-        if (fullName.split("/").length > 2) {
+        if (fullName.split("/").length !== 1) {
             Metro.toast.create("无法匹配到该项目，请重新输入!", null, 3000, "alert");
             return
         }
