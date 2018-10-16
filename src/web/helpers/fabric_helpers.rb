@@ -70,7 +70,7 @@ module FabricHelpers
 
   def query_history(symbol, eth_account)
     resp = query_server(FINCTION_HISTORY_QUERY, [symbol, eth_account])
-    resp['payload']
+    JSON.parse(resp['payload'])
   end
 
   # @param [symbol_account,symbol_account] args
