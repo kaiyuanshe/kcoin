@@ -55,20 +55,4 @@ module HistoryHelpers
     history[:TokenSymbol] = symbol
   end
 
-  def group_history(history)
-    result = []
-    array = history[:History].group_by {|h| h[:TokenSymbol]}.values
-    array.each do |item|
-      record = {}
-      record[:KCoin] = (item[0] || {})[:KCoin]
-      record[:TokenSymbol] = (item[0] || {})[:TokenSymbol]
-      record[:History] = item
-      project = Project.first(symbol: record[:TokenSymbol])
-      next if project.nil?
-      record[:ProjectName] = project[:name]
-      record[:Img] = project[:img]
-      result << record
-    end
-    result
-  end
 end
