@@ -97,7 +97,7 @@ module ProjectHelpers
       end
       transfer(context[:symbol], context[:eth_account], user_eth_account, user_init_supply.to_i)
       # TODO send email. Temporarily disabled due to email issue
-      !item['login'].eql?(current_user.login) ? send_project_import_email(context, item) : next
+      # !item['login'].eql?(current_user.login) ? send_project_import_email(context, item) : next
     end
   end
 
