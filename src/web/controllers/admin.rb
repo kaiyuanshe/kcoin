@@ -32,7 +32,14 @@ class AdminController < BaseController
         :eth_account => owner,
         :init_supply => amount
       }
-      init_ledger kcoin_context
+      bc_resp = init_ledger kcoin_context
+      KCoinTransaction.insert(
+        eth_account_to: owner,
+        transaction_id: bc_resp['transactionId'],
+        transaction_type: 'kcoin',
+        message: '创建KCoin',
+        created_at: Time.now
+      )
     end
 
     redirect '/admin'
@@ -53,8 +60,18 @@ class AdminController < BaseController
     elsif kcoin_balance < amount
       error_msg = '余额不足'
     else
-      transfer(symbol, owner, project.eth_account, amount)
+      bc_resp = transfer(symbol, owner, project.eth_account, amount)
       error_msg = ''
+      KCoinTransaction.insert(
+        eth_account_from: owner,
+        eth_account_to: project.eth_account,
+        transaction_id: bc_resp['transactionId'],
+        transaction_type: 'invest',
+        message: '注资KCoin',
+        correlation_id: project.id,
+        correlation_table: 'projects',
+        created_at: Time.now
+      )
     end
 
     if error_msg.length > 0

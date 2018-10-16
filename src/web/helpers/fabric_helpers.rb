@@ -83,4 +83,5 @@ module FabricHelpers
   def transfer(symbol, from, to, amount)
     invoke_server(FINCTION_TRANSFER, [symbol, from, to, amount.to_i.to_s]) if amount.to_i > 0
   end
+
 end

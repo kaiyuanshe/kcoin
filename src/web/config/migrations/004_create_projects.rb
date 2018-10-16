@@ -12,5 +12,9 @@ migration 'create the projects table' do
     String :symbol, :null => false # symbol of ledger
     String :eth_account, :null => false # address of project
     Timestamp :created_at, :null => false
+    String :custom_name, null => true
+    String :token_name, null => true
+    String :init_supply, null => true
+    String :discuss_method, null => true
   end
 end

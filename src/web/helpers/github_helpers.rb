@@ -4,7 +4,7 @@ module GithubHelpers
   include FabricHelpers
 
   # all supported events: https://developer.github.com/webhooks/#events
-  SUPPORTED_EVENTS = %w(fork milestone pull_request push watch)
+  SUPPORTED_EVENTS = %w(pull_request push)
   PROJECT_IMPORT_EVENT = 'project_import' # special event while importing a new project in kcoin
   WEBHOOK_NAME = 'web'
   WEBHOOK_EVENTS = ['*']
@@ -80,6 +80,22 @@ module GithubHelpers
     halt 200, "event #{github_delivery} already processed" if event_processed(event)
     puts "sending transaction to block chain for event #{github_delivery}"
     bc_resp = transfer(project.symbol, project.eth_account, user_eth_account, 5)
+    #TODO support more, pull_request and push only for now
+    message = if github_event.eql? 'push'
+      '提交代码(Push)'
+    else
+      '提交代码(Pull Request)'
+    end
+    KCoinTransaction.insert(
+      eth_account_from: project.eth_account,
+      eth_account_to: user_eth_account,
+      transaction_id: bc_resp['transactionId'],
+      transaction_type: github_event,
+      message: message,
+      correlation_id: event.id,
+      correlation_table: 'github_events',
+      created_at: Time.now
+    )
     event.update(processing_state: WEBHOOK_EVENT_STATUS_PERSISTED,
                  transaction_id: bc_resp['transactionId'],
                  processing_time: Time.now)
