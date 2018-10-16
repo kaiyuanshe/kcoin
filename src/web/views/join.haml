@@ -24,7 +24,7 @@
         .grid
           .row
             .cell.login-context
-              %form{:action=>"/user/join", :method=>'post',"data-role"=>'validator', "data-interactive-check" => "true"}
+              %form{:action=>"/auth/join", :method=>'post',"data-role"=>'validator', "data-interactive-check" => "true"}
                 .form-group
                   %label
                     = t('join_email')
@@ -70,7 +70,7 @@
                          :placeholder => "#{ t('join_nickname_placeholder') }"}
                 .form-group
                   %input.button.info.kcoin-button-flex{:type=>'submit',:value => "#{ t('join_submit') }" }
-                  .link= link_to("#{ t('join_signin') }", '/user/login')
+                  .link= link_to("#{ t('join_signin') }", '/auth/login')
           .row
             .cell.login-context
               %a.button.dark.kcoin-button-flex.mt-10{:href => '/auth/github/login'}

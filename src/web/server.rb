@@ -1,7 +1,6 @@
 class KCoinApp
   Dir.glob('./controllers/*.rb').each {|file| require file}
   require './lib/config'
-  require './lib/email_params'
 
   attr_reader :app
 

@@ -18,6 +18,9 @@ GEM
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     jwt (2.1.0)
+    mail (2.7.1)
+      mini_mime (>= 0.1.1)
+    mini_mime (1.0.1)
     minitest (5.11.3)
     multi_json (1.13.1)
     multi_xml (0.6.0)
@@ -72,6 +75,7 @@ DEPENDENCIES
   httparty
   i18n
   jwt
+  mail
   multi_json
   puma
   rack-contrib
@@ -87,4 +91,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   1.16.4
+   1.16.6

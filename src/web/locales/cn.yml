@@ -33,7 +33,8 @@ cn:
   project_header_my_projects: "我的项目"
   project_header_user_center: "个人中心"
   project_header_exchange: "兑换商城"
-  project_header_faq: "常见问题"
+  project_header_doc: "文档中心"
+  project_header_contribute: "参与贡献"
   project_header_admin: "管理员专用"
   project_logout: "退出登录"
 
@@ -48,6 +49,7 @@ cn:
   user_edit_btn_cancel: "取消"
   user_edit_btn_edit: "编辑"
   user_edit_btn_save: "保存"
+  user_no_brief: "这个人很懒，什么也没有留下"
   
   # project import
   project_import_dup: "您已经导入了该项目，请重新选择"

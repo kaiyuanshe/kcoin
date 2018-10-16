@@ -368,6 +368,10 @@ span {
     height: 100%;
 }
 
+.kcoin-figure:hover{
+    cursor: pointer;
+}
+
 .kcoin-figure-token-div {
     display: inline-block;
     width: 100px;

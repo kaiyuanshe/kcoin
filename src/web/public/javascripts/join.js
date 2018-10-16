@@ -5,7 +5,7 @@ function validateExistEmail(val) {
     var flag = true;
     $.ajax({
         type: "post",
-        url: "/user/validate/email",
+        url: "/auth/validate/email",
         data: $("form").serialize(),
         async: false,
         success: function (msg) {

@@ -3,6 +3,7 @@ require './controllers/base'
 require './helpers/email_helpers'
 require 'digest/sha1'
 
+# controller to manager login user profile, login user only
 class UserController < BaseController
   helpers EmailHelpers
   helpers UserAppHelpers
@@ -10,7 +11,7 @@ class UserController < BaseController
   KCOIN = 'kcoin'
 
   before do
-    set_current_user
+    enforce_login '/user'
   end
 
   # user profile page

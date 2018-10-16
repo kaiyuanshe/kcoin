@@ -26,8 +26,7 @@
         .grid
           .row
             .cell
-              %form.login-context{:action=>"/user/login", :method=>'post',"data-role"=>'validator',
-              "data-interactive-check" => "true"}
+              %form.login-context{:action=>"/auth/login", :method=>'post',"data-role"=>'validator'}
                 .form-group
                   %label
                     = t('login_login')
@@ -52,7 +51,7 @@
                     =t('login_invalid_login_info')
                 .form-group
                   %input.button.info.kcoin-button-flex{:type=>'submit',:value=> "#{ t('login_submit') }"}
-                  .link= link_to("#{ t('login_signup')}", '/user/join')
+                  .link= link_to("#{ t('login_signup')}", '/auth/join')
           .row
             .cell
               %a.login-context#auth_login.button.dark.kcoin-button-flex.mt-3{:href => '/auth/github/login'}
