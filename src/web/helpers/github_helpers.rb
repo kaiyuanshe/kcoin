@@ -115,7 +115,7 @@ module GithubHelpers
     repo_path = github_v3_api "users/#{github_account.login}/repos?type=all&page=1&per_page=100";
     user_projects = HTTParty.get(repo_path)
     if user_projects.code/100 != 2
-      halt user_projects.code '[]'
+      halt user_projects.code
     end
     user_projects.body
   end

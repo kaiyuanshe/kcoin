@@ -1,14 +1,25 @@
 module EmailHelpers
-  require 'net/smtp'
-  require 'base64'
+  require 'mail'
 
-  def send_mail(message, to)
-    Net::SMTP.start(CONFIG[:email][:address],
-                    CONFIG[:email][:port],
-                    CONFIG[:email][:helo],
-                    CONFIG[:email][:user],
-                    CONFIG[:email][:secret], :plain) do |smtp|
-      smtp.send_message message, CONFIG[:email][:account], to
+  def send_mail(message)
+    Mail.defaults do
+      delivery_method :smtp,
+                      address: CONFIG[:email][:address],
+                      port: CONFIG[:email][:port],
+                      domain: CONFIG[:email][:helo],
+                      user_name: CONFIG[:email][:user],
+                      password: CONFIG[:email][:secret],
+                      authentication: :plain,
+                      openssl_verify_mode: 'none',
+                      enable_starttls_auto: true
+    end
+
+    mail = Mail.read_from_string(message.to_s)
+
+    begin
+      mail.deliver!
+    rescue Exception => e
+      puts "fail to send register email #{ex.to_s}"
     end
   end
 
@@ -56,7 +67,7 @@ Subject: kcoin 帐号激活
                 <tr bgcolor="#17212e">
                     <td style="padding-top: 32px;">
 					<span style="padding-top: 16px; padding-bottom: 16px; font-size: 24px; color: #66c0f4; font-family: Microsoft YaHei, sans-serif; font-weight: bold;">
-						尊敬的 #{_user.name}：
+						尊敬的 #{_user.login}：
 					</span><br>
                     </td>
                 </tr>
@@ -109,11 +120,8 @@ Subject: kcoin 帐号激活
 
 MESSAGE_END
 
-    begin
-      send_mail(message, _user.email.to_s)
-    rescue Exception => ex
-      puts "fail to send register email #{ex.to_s}"
-    end
+    send_mail(message)
+
 
   end
 
@@ -206,6 +214,6 @@ Subject: KCoin 项目导入提醒
 
 MESSAGE_END
 
-    send_mail(message, user.email.to_s)
+    send_mail(message)
   end
 end
