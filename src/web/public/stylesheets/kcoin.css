@@ -360,16 +360,26 @@ span {
 
 /* figure style */
 .kcoin-figure {
-    /* max-width: 220px; */
-    /* max-height: 220px; */
-    /* width: 200px; */
-    /* height: 200px; */
     width: 100%;
     height: 100%;
 }
 
 .kcoin-figure:hover{
     cursor: pointer;
+}
+
+.kcoin-figure:hover:before {
+    content: "";
+}
+
+.kcoin-figure:before {
+    background: none;
+    border: 3px solid #00a3d9;
+    position: absolute;
+    top: -12px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
 }
 
 .kcoin-figure-token-div {
@@ -1127,4 +1137,8 @@ label.select.input.dropdown-toggle {
 }
 .window-content{
     overflow: hidden;
+}
+
+.app-bar .app-bar-menu>li>a {
+    font-size: 16px;
 }
