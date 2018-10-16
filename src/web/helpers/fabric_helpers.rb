@@ -47,7 +47,7 @@ module FabricHelpers
     invoke_server(FINCTION_INIT_LEDGER, args)
   end
 
-  def query_balance(_symbol, _eth_account)
+  def query_balance(symbol, eth_account)
     resp = query_server(FINCTION_BALANCE, [symbol, eth_account])
     resp['payload'].to_i
   end
@@ -68,13 +68,13 @@ module FabricHelpers
     owner_balance > 0
   end
 
-  def query_history(_symbol, _eth_account)
+  def query_history(symbol, eth_account)
     resp = query_server(FINCTION_HISTORY_QUERY, [symbol, eth_account])
     resp['payload']
   end
 
   # @param [symbol_account,symbol_account] args
-  def batch_query_history(_args)
+  def batch_query_history(args)
     resp = query_server(FINCTION_HISTORY_QUERY, args)
     resp['payload']
   end
