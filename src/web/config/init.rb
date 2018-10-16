@@ -33,6 +33,6 @@ Role.find_role_or_create('admin')
 filename = "#{File.dirname(__FILE__)}/coscon18.tmp"
 if File.exist? filename
   File.readlines(filename).each do |line|
-    CosconPoll2018.import line
+    CosconPoll2018.import line.strip
   end
 end
