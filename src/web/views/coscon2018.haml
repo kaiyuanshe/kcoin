@@ -53,7 +53,7 @@
   .row.pt-6
     - if not current_user.is_authenticated?
       .cell-5.offset-4.pl-10
-        %a.coscon-award-submit-a{:href=>'/user/login?redirect_uri=/coscon2018'}
+        %a.coscon-award-submit-a{:href=>'/auth/login?redirect_uri=/coscon2018'}
           立即登陆领取 >>
     - elsif poll
       .cell-12.pl-10
