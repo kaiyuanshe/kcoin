@@ -4,6 +4,7 @@ module FabricHelpers
   FINCTION_BALANCE = 'balance'.freeze
   FINCTION_BATCH_BALANCE = 'batchBalance'.freeze
   FINCTION_HISTORY_QUERY = 'historyQuery'.freeze
+  FINCTION_BATCH_HISTORY_QUERY = 'batchHistoryQuery'.freeze
 
   def query_url
     "#{CONFIG[:server][:url].chomp('/')}/fabric/query"
@@ -55,7 +56,7 @@ module FabricHelpers
   def query_balance_list(symbol, eth_account_list)
     if eth_account_list.is_a? Array
       args = [symbol.to_s]
-      eth_account_list.each { |x| args.push x.to_s }
+      eth_account_list.each {|x| args.push x.to_s}
     else
       args = [symbol.to_s, eth_account_list.to_s]
     end
@@ -75,8 +76,8 @@ module FabricHelpers
 
   # @param [symbol_account,symbol_account] args
   def batch_query_history(args)
-    resp = query_server(FINCTION_HISTORY_QUERY, args)
-    resp['payload']
+    resp = query_server(FINCTION_BATCH_HISTORY_QUERY, args)
+    JSON.parse(resp['payload'])
   end
 
   def transfer(symbol, from, to, amount)
