@@ -14,7 +14,7 @@ $(function () {
     });
     $("#search_input").on("change", function () {
         var fullName = $("#search_input").val();
-        fullName = fullName.match(/github.com[\:/]?(\S*)(\.git)?/);
+        fullName = fullName.match(/github\.com[\:/]?(\S*)(\.git)?/);
 
         if (fullName === undefined || fullName == null) {
             Metro.toast.create("无法解析该URL，请重新输入!", null, 3000, "alert");
@@ -22,25 +22,40 @@ $(function () {
         }
         fullName = fullName[1].replace(".git", "");
 
-        if (fullName.split("/").length !== 1) {
-            Metro.toast.create("无法匹配到该项目，请重新输入!", null, 3000, "alert");
+        if (fullName.split("/").length !== 2) {
+            Metro.toast.create("URL格式不正确，请重新输入!", null, 3000, "alert");
             return
         }
 
         $.ajax({
             type: "GET",
-            url: "https://api.github.com/repos/" + fullName,
+            url: "/project/search_github?repo=" + fullName,
             success: function (res) {
-                $("#project_title").html(res.name);
-                $(".project_name").val(res.name);
-                $("#github_project_id").val(res.id);
+                $("#github_project_id").data({});
+                data = JSON.parse(res)
+                if(data.error){
+                    Metro.toast.create(data.error.message, null, 3000, "alert");
+                    return
+                }
+
+                if (data.permissions.admin) {
+                    $("#project_title").html(data.name);
+                    $(".project_name").val(data.name);
+                    $("#github_project_id").val(data.id);
+                    $("#github_project_id").data(data);
+
+                    $("#kcoin_stepper").data('stepper')['next']();
+                    $("#kcoin_master").data('master').next();
+
+                    bindingContributors(fullName);
+                } else {
+                    Metro.toast.create("您无权导入该项目，请尝试联系项目管理员", null, 3000, "alert");
+                }
+            },
+            error: function (res) {
+                Metro.toast.create(res.responseText, null, 3000, "alert");
             }
         });
-
-        $("#kcoin_stepper").data('stepper')['next']();
-        $("#kcoin_master").data('master').next();
-
-        bindingContributors(fullName);
     });
     bindProjectPanel();
 });
@@ -56,7 +71,7 @@ function bindProjectPanel() {
         success: function (res) {
             // initPager();
             list = JSON.parse(res);
-            if(list.login){
+            if (list.login) {
                 window.location.href = list.login;
                 return;
             }
@@ -218,13 +233,14 @@ function saveForm() {
     if (!validateForm()) {
         return;
     }
-    let github_project_id = $("#github_project_id").val();
-    let index = findElem(list, "id", github_project_id);
-    let formData = new FormData($("#import_form")[0]);
-    formData.append("owner", list[index].owner.login);
+    var github_project_id = $("#github_project_id").val();
+    var index = findElem(list, "id", github_project_id);
+    var formData = new FormData($("#import_form")[0]);
+    var repo = index>=0 ? list[index] : $("#github_project_id").data()
+    formData.append("owner", repo.owner.login);
 
     $("[name='member_token']").each(function () {
-        let id = $(this).attr('data-member-id');
+        var id = $(this).attr('data-member-id');
         var tmp = contributors.find(x => x.id === Number(id));
         tmp["init_supply"] = $(this)[0].value
     });
@@ -236,12 +252,17 @@ function saveForm() {
         processData: false,
         contentType: false,
         url: "/project/saveProject",
+        beforeSend: function () {
+            $('#btn_submit').prop("disabled", "disabled");
+        },
         success: function (res) {
             res = JSON.parse(res);
+            console.log(res)
             if (res.code === 601) {
                 $("#container").load("/project/projectListsView");
             } else if (res.code === 602) {
                 Metro.toast.create(res.msg, null, 3000, "alert");
+                $('#btn_submit').prop("disabled", false);
             }
         }
     });
