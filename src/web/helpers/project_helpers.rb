@@ -122,7 +122,7 @@ module ProjectHelpers
       project_hashes.push(
         id: p.id,
         name: p.name,
-        custom_name: p.name,
+        custom_name: p.custom_name ||= "#{p.owner}/#{p.name}",
         owner: p.owner,
         github_project_id: p.github_project_id,
         first_word: p.first_word,

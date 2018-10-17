@@ -160,7 +160,7 @@
           %input#project_name{:type=>"text",
               :name=>"custom_name",
               maxlength: 120,
-              "value"=>"#{project.name}",
+              "value"=>"#{project.custom_name ||= project.name}",
               "data-validate" => "required"}
           %span.invalid_feedback
             项目名称不能为空
