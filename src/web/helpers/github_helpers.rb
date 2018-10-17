@@ -116,6 +116,8 @@ module GithubHelpers
     access_token = current_user.access_token
     headers[:Authorization] = "token #{access_token}"
     headers['User-Agent'] = 'Kaiyuanshe KCoin project'
+    headers[:Accept] = 'application/json'
+    headers['Content-Type'] = 'application/json'
     headers
   end
 
@@ -178,4 +180,15 @@ module GithubHelpers
     true
   end
 
+  def query_github_project(repo)
+    puts "pull repo info #{repo}"
+    repo_uri = github_v3_api "/repos/#{repo.sub(/^\//, '')}"
+    options = {
+      :headers => authorize_github_v3_api
+    }
+    resp = HTTParty.get(repo_uri, options)
+    puts "pull repo info #{repo}: #{resp.code}, #{resp.body}"
+    raise "Github project #{repo} not found" if resp.code == 404
+    resp.body
+  end
 end

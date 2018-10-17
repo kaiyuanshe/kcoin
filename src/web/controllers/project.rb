@@ -16,6 +16,19 @@ class ProjectController < BaseController
     haml :import
   end
 
+  get '/search_github' do
+    begin
+      query_github_project params[:repo].strip
+    rescue Exception => ex
+      {
+        :error => {
+          :code => 404,
+          :message => ex.message
+        }
+      }.to_json
+    end
+  end
+
   get '/projectLists' do
     projects = list_user_project(current_user.id, settings.kcoin_symbol)
     projects.to_json

@@ -97,8 +97,8 @@ module ProjectHelpers
         transaction_id: bc_resp['transactionId'],
         transaction_type: 'project_import',
         message: '项目导入',
-        correlation_id: event.id,
-        correlation_table: 'github_events',
+        correlation_id: current_user.id,
+        correlation_table: 'users',
         created_at: Time.now
       )
 
