@@ -71,14 +71,15 @@
               %a.app-bar-item.marker-light.pl-1.pr-5{:href => '/auth/login'}
                 =t('login_title')
 
-    .container-fluid.px-0{:style=>"overflow: auto;height:100%"}
-      -# contents
-      .container-fluid.pt-13.bg-white.px-0{:style=>"padding-bottom:41px;height:100%;"}
+
+    -# contents
+    .container-fluid.px-0.pt-13{:style=>"overflow: auto;"}
+      .container-fluid.bg-white.px-0.pb-10{:style=>"min-height: calc(100vh - 52px);overflow: auto;"}
         .bg-white.px-2.container#container
           = yield
 
       -# footer
-      %footer.container-fluid.pos-absolute.mt-10{:style=>'background-color:#333333;bottom:0;height:41px;'}
+      %footer.container-fluid.pos-absolute{:style=>'background-color:#333333;bottom:0;height:41px;'}
         .container.border-top.bd-default
           .row.pt-4{:style=>'text-align: center'}
             .cell-12

@@ -224,6 +224,7 @@
     height: 100%;
     margin-left: auto;
     margin-right: auto;
+    /* min-height: calc(100vh - 93px); */
 }
 
 .login-sub-title {
@@ -554,6 +555,7 @@ span {
     width: 100% !important;
     height: 100% !important;
     max-height: 604px;
+    min-height: 604px;
     max-width: 750px;
     background: #ffffff;
     border: 1px solid #cfd2d6;
