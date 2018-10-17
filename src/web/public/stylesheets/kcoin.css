@@ -1217,3 +1217,6 @@ label.select.input.dropdown-toggle {
 .app-bar .app-bar-menu > li > a {
     font-size: 16px;
 }
+.overflow-unset{
+    overflow: unset !important;
+}
