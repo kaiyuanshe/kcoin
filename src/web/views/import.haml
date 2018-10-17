@@ -1,5 +1,7 @@
 #win_import{"data-role"=>"window",
 -#"data-place"=>"center",
+"data-top"=>"20",
+"data-left"=>"calc( 50% - 375px)",
 "data-draggable"=>"false",
 "data-btn-min"=>"false",
 "data-btn-max"=>"false",
@@ -8,10 +10,8 @@
 "data-close-action"=>"Metro.actions.HIDE",
 "data-cls-caption"=>"kcoin-win-title",
 "data-cls-master"=>"px-3",
-"data-on-caption-dbl-click"=>"",
 "data-cls-window"=>"kcoin-win",
-"data-top"=>"20",
-"data-left"=>"calc( 50% - 375px)",
+"data-on-caption-dbl-click"=>"",
 "data-on-close-click"=>"closeWin"}
   #kcoin_stepper{"data-role"=>"stepper",
   "data-steps"=>"3",
@@ -29,8 +29,9 @@
       .page
         .row.mx-0
           .cell-12.form-group.px-0
-            %input#search_input{type: "text",
-              placeholder: "快速导入：请在此处复制 GithHub 项目的 URL"}
+            .px-5
+              %input#search_input{type: "text",
+                placeholder: "快速导入：请在此处复制 GithHub 项目的 URL"}
             .kcoin-win-panel#projectList{"data-role"=>"panel",
             "data-width"=>"100%",
             "data-height"=>"100%",
@@ -50,11 +51,11 @@
                 <% } %>
               <% } %>
       .page
+        .cell-12.form-group.px-0
+          .import_title
+            %img.pos-absolute.pos-left-center.ml-5{:src=>"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAABTRJREFUSA3FV0tsVWUQnvnP87ZgW0tcVMFXjGlEYUGswSi5BcRWXRkaoILRyitRTEzYSIAGgiQsQI0JKiFE6MNIYGEoiIVeysKIcYHGhASCiQ8gMZDyaO95n3HmwGlPT4q8VP7FPTP/P/N9/3NmLsJNtq96a6pCy5kKhC8SYTPE8aOJq1KnEWk/IH2je4XjLbMHLt0MJN7IqOtQ5VNoxG1s9zIRPGKYwJys0TVPRlAKIPABEOFX7t1Hgdq+YNbQz9csxvxcl3jnwXH3aVa0SiG0mRZUircQ+h64LJ5n5msrwyrWJ7CNLROQxjZDMcH2yNM2LJoz+NfV3tG/YxJ3lArP6Dpt0w2cLCvzPAiA6BAo2KPF+rFLofGHFwzIBMAyauwqPZgYQdjA6qu87FmWBQYwchjQL2GIi18rOt+PpuXdyXd8ebjyBTLiLl2HWuIVhhEdRMB182c43+Vtx9K7+wvTCWiNruEc5B0IQ7iAgVowb+bQt1n7UcTdfYUG0KFHSKOQOWNaW0fupmIRwqzTjeRSCfRzaK9UCtdpOuhCzggvzW90jqW+w8RdpfETAKOjhkn1UQRBFNLy1qK7PTW8nW9nyW7TdNyqaWAEPp4A0p5fULzC94MvZApIFK62bKqX7Y0Car9TUsEVjICxBDPBZo6ULyHu6DWfVBq8xc8F2LC3Dt1NqcGdfk8zlmAKtnAIl2AmxMrQFvNzqAh98Ahwza2eaTq5z34EgwmGj0/62/l+KMLVgi0cwiX9uKNUXW2Cd9wuwIOugwdai+VmGbid1lGq2KoU3RuE8N7rM50zWQwe218oUJPrwG8+WFN1i9wpqOEkCQ6I8e6s8a3InX32Ik2jZQUONUOX6TL7JitLMRTi7jimJg4yk6zIncK7gE06P3cOeQ6Hph9Sw1v5fsFhVWlqMz8dGBqEc2EYb8776yo4JhzCJZyKT6QpjpLQe+FK5P+Zd9jZO66+o78yuRD5MdE79sM9hkaf6wbVMk5IUfT2otn+ibztgFd5hs//QhLnmVNBTFezDNGlmjpedaZ1lyqmGWbUo0Hc09VnPpEZGhHtwkbTpga5UUEQb2lt9PeODI5INXUDjM3xXZILcw6/4xGTESkmmm6a8DBvz0Sla3s6+63HRkYBOg/bCzlbLZM+TgxHTNtbmx3/J1mBwtOJAWLVwFkoZI1PHXU+8RzcKG+Qz+9xPpy9O0r2Q2LT0c9v38DNfFmU78M5UvGSlumjdyyLNXC2hrE5k8nWMKfipR/ghy167XjNfCBr3N4O8fxieVXgwRbZItPEySbg7l19xhSMta2GDhPkXDnEvtM6wzuV9c3LNdbQ/Zyva5PUKZxIdCDkpMdbVuCM/nTegY3JOO+s9H36VI6HVz5NoX6EM8+zood+/OHCRmdP3i+vh7HRIBzCJZzKQ/snvmm/y0yI1Ny8g+gtLRANnnRXcKDfwZlLKo5qw5Bzpf7B8s2dK9+XucIhXMKp3ihevMir+loINEWNUgSInG9Ll0JQXS4v50vUbfFpBQGc1XRasvQVKOdt87qkW52xpV+4hDO51XEQbWPAsm6CxTu7TvJp3ln05mYuRsh503VpYRCopnnPeSfHssv2tTNWjLResIVDuGR8OKB39hU+sitgBRcAXLjRqtZG94MswO3Ku/rs9y0TN0hUc8vwcWuj865gJSsWAVFf77l4QsoVzcB2SeLSfydtJ2MYjCWYCTZzpHjDK5aOu1L6pDO5K8VeSn7d8ha4vIX/qLxNye9KQZ+Sy/d//wuTJRf53/7T9jfsGK6Qj03SVQAAAABJRU5ErkJggg=="}
+            %span#project_title.pos-absolute.pos-left-center.ml-15
         .row.mx-0{"style"=>"overflow:auto;"}
-          .cell-12.form-group.px-0
-            .import_title
-              %img.pos-absolute.pos-left-center.ml-5{:src=>"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAABTRJREFUSA3FV0tsVWUQnvnP87ZgW0tcVMFXjGlEYUGswSi5BcRWXRkaoILRyitRTEzYSIAGgiQsQI0JKiFE6MNIYGEoiIVeysKIcYHGhASCiQ8gMZDyaO95n3HmwGlPT4q8VP7FPTP/P/N9/3NmLsJNtq96a6pCy5kKhC8SYTPE8aOJq1KnEWk/IH2je4XjLbMHLt0MJN7IqOtQ5VNoxG1s9zIRPGKYwJys0TVPRlAKIPABEOFX7t1Hgdq+YNbQz9csxvxcl3jnwXH3aVa0SiG0mRZUircQ+h64LJ5n5msrwyrWJ7CNLROQxjZDMcH2yNM2LJoz+NfV3tG/YxJ3lArP6Dpt0w2cLCvzPAiA6BAo2KPF+rFLofGHFwzIBMAyauwqPZgYQdjA6qu87FmWBQYwchjQL2GIi18rOt+PpuXdyXd8ebjyBTLiLl2HWuIVhhEdRMB182c43+Vtx9K7+wvTCWiNruEc5B0IQ7iAgVowb+bQt1n7UcTdfYUG0KFHSKOQOWNaW0fupmIRwqzTjeRSCfRzaK9UCtdpOuhCzggvzW90jqW+w8RdpfETAKOjhkn1UQRBFNLy1qK7PTW8nW9nyW7TdNyqaWAEPp4A0p5fULzC94MvZApIFK62bKqX7Y0Car9TUsEVjICxBDPBZo6ULyHu6DWfVBq8xc8F2LC3Dt1NqcGdfk8zlmAKtnAIl2AmxMrQFvNzqAh98Ahwza2eaTq5z34EgwmGj0/62/l+KMLVgi0cwiX9uKNUXW2Cd9wuwIOugwdai+VmGbid1lGq2KoU3RuE8N7rM50zWQwe218oUJPrwG8+WFN1i9wpqOEkCQ6I8e6s8a3InX32Ik2jZQUONUOX6TL7JitLMRTi7jimJg4yk6zIncK7gE06P3cOeQ6Hph9Sw1v5fsFhVWlqMz8dGBqEc2EYb8776yo4JhzCJZyKT6QpjpLQe+FK5P+Zd9jZO66+o78yuRD5MdE79sM9hkaf6wbVMk5IUfT2otn+ibztgFd5hs//QhLnmVNBTFezDNGlmjpedaZ1lyqmGWbUo0Hc09VnPpEZGhHtwkbTpga5UUEQb2lt9PeODI5INXUDjM3xXZILcw6/4xGTESkmmm6a8DBvz0Sla3s6+63HRkYBOg/bCzlbLZM+TgxHTNtbmx3/J1mBwtOJAWLVwFkoZI1PHXU+8RzcKG+Qz+9xPpy9O0r2Q2LT0c9v38DNfFmU78M5UvGSlumjdyyLNXC2hrE5k8nWMKfipR/ghy167XjNfCBr3N4O8fxieVXgwRbZItPEySbg7l19xhSMta2GDhPkXDnEvtM6wzuV9c3LNdbQ/Zyva5PUKZxIdCDkpMdbVuCM/nTegY3JOO+s9H36VI6HVz5NoX6EM8+zood+/OHCRmdP3i+vh7HRIBzCJZzKQ/snvmm/y0yI1Ny8g+gtLRANnnRXcKDfwZlLKo5qw5Bzpf7B8s2dK9+XucIhXMKp3ihevMir+loINEWNUgSInG9Ll0JQXS4v50vUbfFpBQGc1XRasvQVKOdt87qkW52xpV+4hDO51XEQbWPAsm6CxTu7TvJp3ln05mYuRsh503VpYRCopnnPeSfHssv2tTNWjLResIVDuGR8OKB39hU+sitgBRcAXLjRqtZG94MswO3Ku/rs9y0TN0hUc8vwcWuj865gJSsWAVFf77l4QsoVzcB2SeLSfydtJ2MYjCWYCTZzpHjDK5aOu1L6pDO5K8VeSn7d8ha4vIX/qLxNye9KQZ+Sy/d//wuTJRf53/7T9jfsGK6Qj03SVQAAAABJRU5ErkJggg=="}
-              %span#project_title.pos-absolute.pos-left-center.ml-15
           .cell-12.form-group.px-5
             %label 1. 填写项目名称
             %input.project_name{:type=>"text",
@@ -111,45 +112,45 @@
             "data-caption"=>"选择文件",
             "dir"=>"rtl",
             "data-validate"=>"custom=validateFileSize"}
-        .row.mx-0
+        .row.mx-0.pt-5
           .cell-12.text-center.px-0.pos-bottom-center.mb-5
             %button.btn_prev.button.info.outline.mr-0-fs.mr-5-md.kcoin-button-normal 上一步
             %button.btn_next.button.info.ml-0-fs.ml-5-md.kcoin-button-normal 下一步
       .page
+        .cell-12.form-group.px-0
+          %div.ml-5
+            %span 给所有成员分配初始
+            %span.tokenName
+            %span 值，当前剩余
+            %span#tokenNum
+            %span.tokenName
         .row.mx-0{"style"=>"overflow:auto;"}
-          .cell-12.form-group.px-0
-            %div.ml-5
-              %span 给所有成员分配初始
-              %span.tokenName
-              %span 值，当前剩余
-              %span#tokenNum
-              %span.tokenName
-            .kcoin-win-member-panel{"data-role"=>"panel",
-            "data-width"=>"100%",
-            "data-height"=>"100%",
-            "data-cls-content"=>"px-5",
-            "data-cls-panel"=>"border-none"}
-              .row#memberList
-              %template#memberListTemplate
-                <% for(let item of data.values()){ %>
-                %li.py-5.cell-6.px-0
-                  .row.mx-5
-                    .member-img.stub.px-0{:style=>"width:81px"}
-                      %img{:src=>"<%item.avatar_url%>"}
-                    .member-msg.cell.px-0
-                      .cell-12
-                        %span
-                          <%item.login%>
-                      .cell-12
-                        %input{:type=>"text",
-                        :name=>"member_token",
-                        maxlength: 120,
-                        "data-member-id"=>"<%item.id%>",
-                        :placeholder => "请填写初始 token 值"}
-                        %span.invalid_feedback
-                          token 值不能为空
-                <% } %>
-        .row.mx-0
+          .kcoin-win-member-panel{"data-role"=>"panel",
+          "data-width"=>"100%",
+          "data-height"=>"100%",
+          "data-cls-content"=>"px-5",
+          "data-cls-panel"=>"border-none"}
+            .row#memberList
+            %template#memberListTemplate
+              <% for(let item of data.values()){ %>
+              %li.py-5.cell-6.px-0
+                .row.mx-5
+                  .member-img.stub.px-0{:style=>"width:81px"}
+                    %img{:src=>"<%item.avatar_url%>"}
+                  .member-msg.cell.px-0
+                    .cell-12
+                      %span
+                        <%item.login%>
+                    .cell-12
+                      %input{:type=>"text",
+                      :name=>"member_token",
+                      maxlength: 120,
+                      "data-member-id"=>"<%item.id%>",
+                      :placeholder => "请填写初始 token 值"}
+                      %span.invalid_feedback
+                        token 值不能为空
+              <% } %>
+        .row.mx-0.pt-5
           .cell-12.text-center.px-0.pos-bottom-center.mb-5
             %button.btn_prev.button.info.outline.mr-0-fs.mr-5-md.kcoin-button-normal 上一步
             %button#btn_submit.button.info.ml-0-fs.ml-5-md.kcoin-button-normal 导入

@@ -61,7 +61,8 @@ module FabricHelpers
       args = [symbol.to_s, eth_account_list.to_s]
     end
 
-    query_server(FINCTION_BATCH_BALANCE, args)
+    resp = query_server(FINCTION_BATCH_BALANCE, args)
+    JSON.parse(resp['payload'])
   end
 
   def ledger_ready(symbol, owner)

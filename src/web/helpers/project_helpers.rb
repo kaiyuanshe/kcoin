@@ -137,7 +137,7 @@ module ProjectHelpers
 
     puts "query kcoin/token of user's project, user_id=#{user_id.to_s}, accounts=#{accounts.to_s}"
     bc_resp = query_balance_list(kcoin_symbol, accounts)
-    JSON.parse(bc_resp['payload']).each do |acc, bal|
+    bc_resp.each do |acc, bal|
       ind = accounts.find_index acc
       project_hashes[ind][:kcoin] = bal.to_i if ind
     end
