@@ -65,7 +65,7 @@ class ProjectController < BaseController
       # project.img = img
     end
     # User[current_user.id].update_project(project)
-    project.update(name: params[:name], img: img)
+    project.update(custom_name: params[:custom_name], img: img)
     {code: 601, msg: '项目信息修改完成'}.to_json
   end
 
@@ -87,7 +87,7 @@ class ProjectController < BaseController
     halt 404, t('project_not_exist') unless project
 
     # fetch data from chaincode
-    token_history = get_history_by_project(project.symbol,project.eth_account)
+    token_history = get_history_by_project(project.symbol, project.eth_account)
     kcoin_history = get_kcoin_history(project.eth_account)
 
     # fetch member data form github
@@ -105,9 +105,9 @@ class ProjectController < BaseController
 
   get '/history' do
     history = if params[:uId].nil?
-    #   get_history_by_project(params[:symbol])
-    # else
-    #   get_history(params[:uId])
+      #   get_history_by_project(params[:symbol])
+      # else
+      #   get_history(params[:uId])
     end
     haml :history, locals: {history: history}
   end
