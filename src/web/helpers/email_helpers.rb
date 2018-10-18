@@ -15,11 +15,12 @@ module EmailHelpers
     end
 
     mail = Mail.read_from_string(message.to_s)
+    puts message.to_s
 
     begin
       mail.deliver!
     rescue Exception => e
-      puts "fail to send register email #{ex.to_s}"
+      puts "fail to send register email #{e.to_s}"
     end
   end
 
@@ -125,12 +126,12 @@ MESSAGE_END
 
   end
 
-  def send_project_import_email(project, user)
+  def send_project_import_email(project, user,mail)
     action_url = request.base_url + '/project'
 
     message = <<MESSAGE_END
 From: #{CONFIG[:email][:form]}
-To: 1054602234@qq.com
+To: #{mail}
 MIME-Version: 1.0
 Content-type: text/html;charset=utf-8
 Subject: KCoin 项目导入提醒
