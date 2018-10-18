@@ -39,6 +39,7 @@ class ProjectController < BaseController
   end
 
   post '/saveProject' do
+    # fetch data from request params
     import_context = {
       :user_id => current_user.id,
       :name => params[:name],
@@ -53,6 +54,7 @@ class ProjectController < BaseController
       :contributors => JSON.parse(params[:contributors])
     }
 
+    # encode img to base64
     if import_context[:tmpfile]
       f = import_context[:tmpfile]
       img_type = f[:type]
@@ -62,10 +64,10 @@ class ProjectController < BaseController
 
     begin
       import_project import_context
-      {code: 601, msg: t('project_import_dup')}.to_json
+      { code: 601, msg: t('project_import_dup') }.to_json
     rescue Exception => e
       puts e.to_s
-      {code: 602, msg: "#{t('project_import_fail')}#{e.message}"}.to_json
+      { code: 602, msg: "#{t('project_import_fail')}#{e.message}" }.to_json
     end
   end
 
@@ -79,7 +81,7 @@ class ProjectController < BaseController
     end
     # User[current_user.id].update_project(project)
     project.update(custom_name: params[:custom_name], img: img)
-    {code: 601, msg: '项目信息修改完成'}.to_json
+    { code: 601, msg: '项目信息修改完成' }.to_json
   end
 
   get '/projectListsView' do
@@ -105,10 +107,10 @@ class ProjectController < BaseController
 
     # fetch member data form github
     collaborators = list_contributors(project.owner, project.name)
-    haml :project_detail, layout: false, locals: {token_history: token_history,
+    haml :project_detail, layout: false, locals: { token_history: token_history,
                                                   kcoin_history: kcoin_history,
                                                   collaborators: collaborators,
-                                                  project: project}
+                                                  project: project }
   end
 
   get '/getProjectState' do
@@ -122,7 +124,7 @@ class ProjectController < BaseController
       # else
       #   get_history(params[:uId])
     end
-    haml :history, locals: {history: history}
+    haml :history, locals: { history: history }
   end
 
   get '/back' do
