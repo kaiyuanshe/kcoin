@@ -32,8 +32,8 @@ $(function () {
             url: "/project/search_github?repo=" + fullName,
             success: function (res) {
                 $("#github_project_id").data({});
-                data = JSON.parse(res)
-                if(data.error){
+                data = JSON.parse(res);
+                if (data.error) {
                     Metro.toast.create(data.error.message, null, 3000, "alert");
                     return
                 }
@@ -62,6 +62,8 @@ $(function () {
 
 var list = [];
 var contributors;
+var projectListRenderFlag = false;
+var import_activity;
 
 function bindProjectPanel() {
     // get project List from other platform like github and render template
@@ -85,20 +87,25 @@ function bindProjectPanel() {
             });
 
             renderTemplate($("#projectListTemplate").html(), $("#projectList"), map);
+            projectListRenderFlag = true;
+            if(projectListRenderFlag){
+                Metro.activity.close(import_activity);
+            }
         }
     });
 }
 
 function openImportWin() {
-    let import_activity = Metro.activity.open({
-        type: 'square',
-        overlayColor: '#fff',
-        overlayAlpha: 0,
-        text: '<div class=\'mt-2 text-small\'>请稍候, 正在加载项目列表...</div>',
-        overlayClickClose: false
-    });
+    if (!projectListRenderFlag) {
+        import_activity = Metro.activity.open({
+            type: 'square',
+            overlayColor: '#fff',
+            overlayAlpha: 0,
+            text: '<div class=\'mt-2 text-small\'>请稍候, 正在加载项目列表...</div>',
+            overlayClickClose: false
+        });
+    }
 
-    Metro.activity.close(import_activity);
     Metro.window.toggle("#win_import");
 }
 
@@ -236,7 +243,7 @@ function saveForm() {
     var github_project_id = $("#github_project_id").val();
     var index = findElem(list, "id", github_project_id);
     var formData = new FormData($("#import_form")[0]);
-    var repo = index>=0 ? list[index] : $("#github_project_id").data()
+    var repo = index >= 0 ? list[index] : $("#github_project_id").data();
     formData.append("owner", repo.owner.login);
 
     $("[name='member_token']").each(function () {
@@ -257,7 +264,7 @@ function saveForm() {
         },
         success: function (res) {
             res = JSON.parse(res);
-            console.log(res)
+            console.log(res);
             if (res.code === 601) {
                 $("#container").load("/project/projectListsView");
             } else if (res.code === 602) {
