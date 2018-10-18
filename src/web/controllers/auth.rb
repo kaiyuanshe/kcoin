@@ -4,7 +4,6 @@ require './controllers/base'
 
 # controller for login/logout, for anonymous user
 class AuthController < BaseController
-
   def auth_redirect_uri
     params['redirect_uri'] ||= params[:redirect_uri] ||= session[:redirect_uri] ||= '/'
   end
@@ -52,32 +51,40 @@ class AuthController < BaseController
   # Registered user
   post '/join' do
     login_value = params[:login]
-    if login_value.empty?
-      login_value = params[:email].split('@')[0]
-    end
+    login_value = params[:email].split('@')[0] if login_value.empty?
 
     DB.transaction do
-      user = User.new(login: login_value,
-                      name: params[:name],
-                      password_digest: Digest::SHA1.hexdigest(params[:password]),
-                      eth_account: Digest::SHA1.hexdigest(params[:email]),
-                      email: params[:email],
-                      avatar_url: nil,
-                      activated: true,
-                      creawted_at: Time.now,
-                      updateed_at: Time.now,
-                      last_login_at: Time.now)
+      exist = User.first(:email => params[:email])
+      if exist.nil?
+        user = User.new(login: login_value,
+                        name: params[:name],
+                        password_digest: Digest::SHA1.hexdigest(params[:password]),
+                        eth_account: Digest::SHA1.hexdigest(params[:email]),
+                        email: params[:email],
+                        avatar_url: nil,
+                        activated: true,
+                        created_at: Time.now,
+                        updated_at: Time.now,
+                        last_login_at: Time.now)
 
-      user.save
-      UserEmail.insert(user_id: user.id,
-                       email: params[:email],
-                       verified: false,
-                       created_at: Time.now)
-      session[:user_id] = user.id
+        user.save
+        UserEmail.insert(user_id: user.id,
+                         email: params[:email],
+                         verified: false,
+                         created_at: Time.now)
+        session[:user_id] = user.id
+      elsif exist.password_digest.nil?
+        exist.update(
+          login: login_value,
+          name: params[:name],
+          password_digest: Digest::SHA1.hexdigest(params[:password])
+        )
+        session[:user_id] = exist.id
+      end
     end
 
     user = User[session[:user_id]]
-    # TODO temporarily disable email since it doesn't work
+    # TODO: temporarily disable email since it doesn't work
     send_register_email(user)
     redirect auth_redirect_uri
   end
@@ -95,11 +102,10 @@ class AuthController < BaseController
     param = params[:email].to_s
     pwd = Digest::SHA1.hexdigest(params[:password])
     user = if param.include? '@'
-      User.first(email: param, password_digest: pwd)
-    else
-      User.first(login: param, password_digest: pwd)
+             User.first(email: param, password_digest: pwd)
+           else
+             User.first(login: param, password_digest: pwd)
     end
-    user ? {flag: true}.to_json : {flag: false}.to_json
+    user ? { flag: true }.to_json : { flag: false }.to_json
   end
-
 end

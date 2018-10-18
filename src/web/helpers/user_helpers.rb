@@ -49,10 +49,10 @@ module UserAppHelpers
 
     session['github_oauth_state'] = SecureRandom.hex
     auth_params = {
-      :client_id => CONFIG[:github][:client_id],
-      :redirect_uri => request.base_url + '/auth/github/callback?redirect_uri=' + callback_uri,
-      :scope => 'user,admin:repo_hook',
-      :state => session['github_oauth_state']
+        :client_id => CONFIG[:github][:client_id],
+        :redirect_uri => request.base_url + '/auth/github/callback?redirect_uri=' + callback_uri,
+        :scope => 'user,admin:repo_hook',
+        :state => session['github_oauth_state']
     }
     redirect 'https://github.com/login/oauth/authorize?' + URI.encode_www_form(auth_params)
   end
@@ -63,14 +63,14 @@ module UserAppHelpers
 
     github_code = params[:code]
     options = {
-      :body => {
-        :client_id => CONFIG[:github][:client_id],
-        :code => github_code,
-        :client_secret => CONFIG[:github][:client_secret]
-      },
-      :headers => {
-        :Accept => 'application/json'
-      }
+        :body => {
+            :client_id => CONFIG[:github][:client_id],
+            :code => github_code,
+            :client_secret => CONFIG[:github][:client_secret]
+        },
+        :headers => {
+            :Accept => 'application/json'
+        }
     }
     github_token_url = 'https://github.com/login/oauth/access_token'
     github_response = HTTParty.post(github_token_url, options)
@@ -79,9 +79,9 @@ module UserAppHelpers
       token_details = JSON.parse(github_response.body)
       if token_details.key?('access_token')
         headers = {
-          :Accept => 'application/json',
-          :Authorization => "token #{token_details['access_token']}",
-          'User-Agent' => 'Kaiyuanshe KCoin project'
+            :Accept => 'application/json',
+            :Authorization => "token #{token_details['access_token']}",
+            'User-Agent' => 'Kaiyuanshe KCoin project'
         }
 
         user_lookup = HTTParty.get('https://api.github.com/user?', headers: headers)
@@ -117,14 +117,14 @@ module UserAppHelpers
     end
 
     user_info = {
-      :login => login,
-      :name => name,
-      :oauth_provider => GITHUB,
-      :open_id => github_user['id'],
-      :email => email, # primary email
-      :email_list => email_list, # all emails
-      :avatar_url => github_user['avatar_url'],
-      :access_token => auth_token
+        :login => login,
+        :name => name,
+        :oauth_provider => GITHUB,
+        :open_id => github_user['id'],
+        :email => email, # primary email
+        :email_list => email_list, # all emails
+        :avatar_url => github_user['avatar_url'],
+        :access_token => auth_token
     }
 
     persist_user user_info
@@ -136,10 +136,10 @@ module UserAppHelpers
     email_list.each do |ne|
       puts "persist email #{ne['email']} for user #{user_id.to_s}"
       UserEmail.insert(
-        user_id: user_id,
-        email: ne['email'],
-        verified: ne['verified'],
-        created_at: Time.now
+          user_id: user_id,
+          email: ne['email'],
+          verified: ne['verified'],
+          created_at: Time.now
       )
     end
   end
@@ -159,9 +159,9 @@ module UserAppHelpers
     if existed_user_emails.length > 0 # email matched existing records
       user = User[existed_user_emails[0].user_id]
       user.update(
-        last_login_at: Time.now,
-        avatar_url: oauth.avatar_url,
-        activated: true
+          last_login_at: Time.now,
+          avatar_url: oauth.avatar_url,
+          activated: true
       )
       persist_emails(user.id, none_existed_user_emails)
     else
@@ -220,19 +220,19 @@ module UserAppHelpers
 
   def kcoin_user_login(email_or_login, pwd_digest)
     user = if email_or_login.include? '@'
-      User.first(email: email_or_login, password_digest: pwd_digest)
-    else
-      User.first(login: email_or_login, password_digest: pwd_digest)
-    end
+             User.first(email: email_or_login, password_digest: pwd_digest)
+           else
+             User.first(login: email_or_login, password_digest: pwd_digest)
+           end
     if user
       user_info = {
-        :id => user.id,
-        :login => user.login,
-        :name => user.name,
-        :oauth_provider => KCOIN,
-        :email => user.email, # primary email
-        :avatar_url => user.avatar_url,
-        :eth_account => user.eth_account
+          :id => user.id,
+          :login => user.login,
+          :name => user.name,
+          :oauth_provider => KCOIN,
+          :email => user.email, # primary email
+          :avatar_url => user.avatar_url,
+          :eth_account => user.eth_account
       }
       session[KCOIN_LOGIN_INFO] = user_info
     end
@@ -249,8 +249,14 @@ module UserAppHelpers
   end
 
   def email_not_registered(email)
-    exist = UserEmail.first(:email => email)
-    exist.nil?
+    exist = User.first(:email => email)
+    if exist.nil?
+      return true
+    elsif exist.password_digest.nil?
+      return true
+    else
+      return false
+    end
   end
 end
 
