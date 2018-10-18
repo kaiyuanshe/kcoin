@@ -147,7 +147,7 @@ module GithubHelpers
 
   def list_contributors(owner, project_name)
     # repo_name: org/project or user/project
-    uri = github_v3_api "repos/#{owner}/#{project_name}/contributors"
+    uri = github_v3_api "repos/#{owner}/#{project_name}/contributors?client_id=#{CONFIG[:github][:client_id]}&client_secret=#{CONFIG[:github][:client_id]}"
     resp = HTTParty.get uri
     raise "failed in list contributors of #{owner}/#{project_name}" unless resp.code / 100 == 2
     JSON.parse(resp.body)

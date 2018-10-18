@@ -1,7 +1,6 @@
 require './controllers/base'
 
 class ProjectController < BaseController
-
   helpers HistoryHelpers
 
   before do
@@ -21,9 +20,9 @@ class ProjectController < BaseController
       query_github_project params[:repo].strip
     rescue Exception => ex
       {
-        :error => {
-          :code => 404,
-          :message => ex.message
+        error: {
+          code: 404,
+          message: ex.message
         }
       }.to_json
     end
@@ -41,17 +40,17 @@ class ProjectController < BaseController
   post '/saveProject' do
     # fetch data from request params
     import_context = {
-      :user_id => current_user.id,
-      :name => params[:name],
-      :first_word => Spinying.parse(word: params[:name])[0].upcase,
-      :tmpfile => params[:images],
-      :github_project_id => params[:github_project_id].to_s,
-      :owner => params[:owner],
-      :custom_name => params[:custom_name],
-      :token_name => params[:token_name],
-      :init_supply => params[:init_supply],
-      :discuss_method => params[:discuss_method],
-      :contributors => JSON.parse(params[:contributors])
+      user_id: current_user.id,
+      name: params[:name],
+      first_word: Spinying.parse(word: params[:name])[0].upcase,
+      tmpfile: params[:images],
+      github_project_id: params[:github_project_id].to_s,
+      owner: params[:owner],
+      custom_name: params[:custom_name],
+      token_name: params[:token_name],
+      init_supply: params[:init_supply],
+      discuss_method: params[:discuss_method],
+      contributors: JSON.parse(params[:contributors])
     }
 
     # encode img to base64
@@ -104,13 +103,15 @@ class ProjectController < BaseController
     # fetch data from chaincode
     token_history = get_history_by_project(project.symbol, project.eth_account)
     kcoin_history = get_kcoin_history(project.eth_account)
+    kcoin_history[:uId] = current_user.id
+    token_history[:pId] = project.id
 
     # fetch member data form github
     collaborators = list_contributors(project.owner, project.name)
     haml :project_detail, layout: false, locals: { token_history: token_history,
-                                                  kcoin_history: kcoin_history,
-                                                  collaborators: collaborators,
-                                                  project: project }
+                                                   kcoin_history: kcoin_history,
+                                                   collaborators: collaborators,
+                                                   project: project }
   end
 
   get '/getProjectState' do
@@ -119,16 +120,16 @@ class ProjectController < BaseController
   end
 
   get '/history' do
-    history = if params[:uId].nil?
-      #   get_history_by_project(params[:symbol])
-      # else
-      #   get_history(params[:uId])
-    end
+    history = if params[:pId].nil?
+                get_kcoin_history((User[params[:uId]] || {})[:eth_account])
+              else
+                project = Project[params[:pId]]
+                get_history_by_project(project[:symbol], project[:eth_account])
+              end
     haml :history, locals: { history: history }
   end
 
   get '/back' do
     redirect back
   end
-
 end

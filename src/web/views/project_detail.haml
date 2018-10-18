@@ -55,7 +55,7 @@
                     = item[:ChangeNum]
             .row
               .cell.text-right.koin-card-link
-                %a{:href=>"/project/history?symbol=#{kcoin_history[:TokenSymbol]}"} 查看更多 >
+                %a{:href=>"/project/history?uId=#{kcoin_history[:uId]}"} 查看更多 >
       .cell-fs-12.cell-md-6.mx-auto
         .card
           .card-header.px-6
@@ -80,7 +80,7 @@
                     = item[:ChangeNum]
             .row
               .cell.text-right.koin-card-link
-                %a{:href=>"/project/history?symbol=#{token_history[:TokenSymbol]}"} 查看更多 >
+                %a{:href=>"/project/history?pId=#{token_history[:pId]}&uId=#{token_history[:uId]}"} 查看更多 >
       .cell-fs-12.cell-md-6.mx-auto
         .card.chart#kcoin-chart
       .cell-fs-12.cell-md-6.mx-auto

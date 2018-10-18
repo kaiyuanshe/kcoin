@@ -21,11 +21,14 @@
         %th content
         %th num
     %tbody
-      - history[:History].each_with_index do |item, index|
-        %tr
-          %td
-            = item[:Date]
-          %td
-            = item[:EventName]
-          %td
-            = item[:ChangeNum]
+      - if !history[:History].nil?
+        - history[:History].each_with_index do |item, index|
+          %tr
+            %td
+              = item[:Date]
+            %td
+              = item[:EventName]
+            %td
+              = item[:ChangeNum]
+      - else
+        = 'no history!'
