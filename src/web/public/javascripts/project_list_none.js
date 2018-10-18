@@ -88,7 +88,8 @@ function bindProjectPanel() {
 
             renderTemplate($("#projectListTemplate").html(), $("#projectList"), map);
             projectListRenderFlag = true;
-            if(projectListRenderFlag){
+            if (projectListRenderFlag) {
+                Metro.window.toggle("#win_import");
                 Metro.activity.close(import_activity);
             }
         }
@@ -98,7 +99,7 @@ function bindProjectPanel() {
 function openImportWin() {
     if (!projectListRenderFlag) {
         import_activity = Metro.activity.open({
-            type: 'square',
+            type: 'ring',
             overlayColor: '#fff',
             overlayAlpha: 0,
             text: '<div class=\'mt-2 text-small\'>请稍候, 正在加载项目列表...</div>',
@@ -106,7 +107,9 @@ function openImportWin() {
         });
     }
 
-    Metro.window.toggle("#win_import");
+    if (projectListRenderFlag) {
+        Metro.window.toggle("#win_import");
+    }
 }
 
 function renderTemplate(template, target, data) {
