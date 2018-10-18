@@ -87,11 +87,11 @@ function bindProjectPanel() {
             });
 
             renderTemplate($("#projectListTemplate").html(), $("#projectList"), map);
-            projectListRenderFlag = true;
-            if (projectListRenderFlag) {
+            if (import_activity) {
                 Metro.window.toggle("#win_import");
                 Metro.activity.close(import_activity);
             }
+            projectListRenderFlag = true;
         }
     });
 }
