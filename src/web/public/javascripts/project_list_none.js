@@ -269,7 +269,8 @@ function saveForm() {
             res = JSON.parse(res);
             console.log(res);
             if (res.code === 601) {
-                $("#container").load("/project/projectListsView");
+                // $("#container").load("/project/projectListsView");
+                window.location.href = "/project";
             } else if (res.code === 602) {
                 Metro.toast.create(res.msg, null, 3000, "alert");
                 $('#btn_submit').prop("disabled", false);

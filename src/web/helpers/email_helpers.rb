@@ -15,7 +15,6 @@ module EmailHelpers
     end
 
     mail = Mail.read_from_string(message.to_s)
-    puts message.to_s
 
     begin
       mail.deliver!
