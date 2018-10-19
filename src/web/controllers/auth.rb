@@ -54,7 +54,7 @@ class AuthController < BaseController
     login_value = params[:email].split('@')[0] if login_value.empty?
 
     DB.transaction do
-      exist = User.first(:email => params[:email])
+      exist = User.first(email: params[:email])
       if exist.nil?
         user = User.new(login: login_value,
                         name: params[:name],
@@ -68,10 +68,12 @@ class AuthController < BaseController
                         last_login_at: Time.now)
 
         user.save
-        UserEmail.insert(user_id: user.id,
-                         email: params[:email],
-                         verified: false,
-                         created_at: Time.now)
+        if UserEmail.first(email: params[:email]).nil?
+          UserEmail.insert(user_id: user.id,
+                           email: params[:email],
+                           verified: false,
+                           created_at: Time.now)
+        end
         session[:user_id] = user.id
       elsif exist.password_digest.nil?
         exist.update(
