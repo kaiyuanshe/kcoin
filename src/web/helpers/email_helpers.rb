@@ -173,7 +173,7 @@ Subject: KCoin 项目导入提醒
 
         .content {
             font-size: 16px;
-            color: #737373;
+            color: #737373 !important;
             text-align: left;
             top: 210px;
             position: relative;
@@ -192,7 +192,7 @@ Subject: KCoin 项目导入提醒
             top: 294px;
             left: 165px;
             display: block;
-            text-decoration: none;
+            text-decoration: none !important;
             text-align: center;
             line-height: 60px;
         }
