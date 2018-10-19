@@ -1040,7 +1040,7 @@ div.chart {
 .user-profile-float {
     max-width: 340px;
     max-height: 760px;
-    height: 100%;
+    /* height: 100%; */
     width: 100%;
     background: #fdfeff;
     border: 1px solid #e2e9f5;
@@ -1104,6 +1104,7 @@ div.chart {
     height: 40px;
     margin-top: 50px;
     margin-left: calc(50% - 50px);
+    margin-bottom: 50px !important;
 }
 
 .brief > textarea {
@@ -1112,6 +1113,7 @@ div.chart {
     font-family: PingFangHK-Regular, serif;
     font-size: 16px;
     color: #404b59;
+    height: 140px;
 }
 
 .user-kcoin-detail {

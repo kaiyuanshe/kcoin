@@ -52,7 +52,7 @@ cn:
   user_edit_btn_edit: "编辑"
   user_edit_btn_save: "保存"
   user_no_brief: "这个人很懒，什么也没有留下"
-  no_projects: "您还没有导入项目！"
+  no_projects_token_history: "没有查询到 Token 记录！"
   projects_title: "我参与的项目"
   no_KCoin_result: "没有查询到 KCoin 记录"
   

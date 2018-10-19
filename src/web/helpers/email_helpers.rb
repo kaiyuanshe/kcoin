@@ -52,7 +52,7 @@ Subject: kcoin 帐号激活
 <table style="width: 600px; background-color: #393836;" align="center" cellspacing="0" cellpadding="0">
     <tr>
         <td style=" height: 65px; background-color: #000000; border-bottom: 1px solid #4d4b48;">
-            <a style="text-decoration: none;" href="http://kcoin.kaiyuanshe.cn/">
+            <a style="text-decoration: none !important;" href="http://kcoin.kaiyuanshe.cn/">
             <span style="font-size: 36px;color: #66c0f4;font-family: Microsoft YaHei, sans-serif;font-weight: bold;padding-left: 10px;padding-left: 10px;">
                 <span style="color: #00a3d9;">K</span>coin
             </span>
