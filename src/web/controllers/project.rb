@@ -1,4 +1,5 @@
 require './controllers/base'
+require 'thread'
 
 class ProjectController < BaseController
   helpers HistoryHelpers
@@ -95,19 +96,37 @@ class ProjectController < BaseController
   end
 
   post '/projectDetailView' do
+    token_history = nil
+    kcoin_history = nil
+    collaborators = nil
+
     # fetch project message
     github_project_id = params[:github_project_id]
     project = Project.get_by_github_project_id(github_project_id)
     halt 404, t('project_not_exist') unless project
 
-    # fetch data from chaincode
-    token_history = get_history_by_project(project.symbol, project.eth_account)
-    kcoin_history = get_kcoin_history(project.eth_account)
-    kcoin_history[:uId] = current_user.id
-    token_history[:pId] = project.id
-
     # fetch member data form github
-    collaborators = list_contributors(project.owner, project.name)
+    t1 = Thread.new do
+      puts 'start fetch data from gitHub'
+      Mutex.new.synchronize do
+        collaborators = list_contributors(project.owner, project.name)
+      end
+      puts 'end fetch data from gitHub'
+    end
+
+    # fetch data from chaincode
+    t2 = Thread.new do
+      puts 'start fetch data from chainCode'
+      token_history = get_history_by_project(project.symbol, project.eth_account)
+      kcoin_history = get_kcoin_history(project.eth_account)
+      kcoin_history[:uId] = current_user.id
+      token_history[:pId] = project.id
+      puts 'end fetch data from chainCode'
+    end
+
+    t1.join
+    t2.join
+
     haml :project_detail, layout: false, locals: { token_history: token_history,
                                                    kcoin_history: kcoin_history,
                                                    collaborators: collaborators,
