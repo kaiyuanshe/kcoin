@@ -29,14 +29,15 @@ module ProjectHelpers
   end
 
   def create_ledger(import_context)
+    puts 'create ledger'
     unless ledger_ready(import_context[:symbol], import_context[:eth_account])
       bc_resp = init_ledger import_context
       KCoinTransaction.insert(
-        eth_account_to: project.eth_account,
+        eth_account_to: import_context[:eth_account],
         transaction_id: bc_resp['transactionId'],
         transaction_type: PROJECT_IMPORT_EVENT,
         message: '项目导入',
-        correlation_id: project.id,
+        correlation_id: import_context[:id],
         correlation_table: 'projects',
         created_at: Time.now
       )
@@ -139,6 +140,7 @@ module ProjectHelpers
         puts "init supply for user #{item['id']} is invalid or 0"
         return
       end
+
       bc_resp = transfer(context[:symbol], context[:eth_account], user_eth_account, user_init_supply.to_i)
       KCoinTransaction.insert(
         eth_account_from: context[:symbol],
