@@ -21,8 +21,10 @@
         %th content
         %th num
     %tbody
-      - if !history[:History].nil?
-        - history[:History].each_with_index do |item, index|
+      - if history['History'].empty?
+        = 'no history!'
+      - else
+        - history['History'].each_with_index do |item, index|
           %tr
             %td
               = item[:Date]
@@ -30,5 +32,3 @@
               = item[:EventName]
             %td
               = item[:ChangeNum]
-      - else
-        = 'no history!'
