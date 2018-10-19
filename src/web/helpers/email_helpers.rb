@@ -25,7 +25,7 @@ module EmailHelpers
   end
 
   def send_register_email(_user)
-    active_url = request.base_url + '/user/activeUser?'
+    active_url = request.base_url
 
     message = <<MESSAGE_END
 From: #{CONFIG[:email][:form]}
@@ -77,7 +77,7 @@ Subject: kcoin 帐号激活
                     <td style="padding-top: 12px;">
 					<span style="font-size: 17px; color: #c6d4df; font-family: Microsoft YaHei, sans-serif; font-weight: bold;">
 						<p>您在 kcoin 上注册了一个新用户，帐号为：#{_user.login}</p>
-                        <p>请点下面链接以激活您的账号：</p>
+                        <p>请点下面链接访问官网：</p>
                         <p><a style="color: #8f98a0;"
                               href="#{active_url}">#{active_url}</a>
                         </p>
@@ -95,7 +95,7 @@ Subject: kcoin 帐号激活
 
                 <tr bgcolor="#121a25">
                     <td style="padding: 20px; font-size: 12px; line-height: 17px; color: #c6d4df; font-family: Microsoft YaHei, sans-serif;">
-                        Kcion 是一个开源项目激励平台，结合区块链技术......
+                        Kcion 是一个基于区块链的社区贡献激励
                     </td>
 
                 </tr>
