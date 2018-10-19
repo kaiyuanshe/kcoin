@@ -14,22 +14,30 @@ module ProjectHelpers
     import_context[:eth_account] = project.eth_account
     import_context[:init_supply] = project.init_supply
 
-    # register webhook
-    register_webhook import_context
+    threads = []
+    threads << Thread.new do
+      # register webhook
+      register_webhook import_context
+    end
 
     # init hyper ledger and create a special event in github_events
     # so that we can get the detail of the event by block chain transaction id
-    create_ledger import_context
+    threads << Thread.new do
+      create_ledger import_context
+    end
 
     # send email to others from project contributors exclude importer self.
-    import_context[:import_user] = current_user.name
-    notify_other_members(import_context, current_user)
+    threads = Thread.new do
+      import_context[:import_user] = current_user.name
+      notify_other_members(import_context, current_user)
+    end
 
+    threads.join
     true
   end
 
   def create_ledger(import_context)
-    puts 'create ledger'
+    puts 'create ledger start'
     unless ledger_ready(import_context[:symbol], import_context[:eth_account])
       bc_resp = init_ledger import_context
       KCoinTransaction.insert(
@@ -42,13 +50,14 @@ module ProjectHelpers
         created_at: Time.now
       )
     end
+    puts 'create ledger end'
   end
 
   # @param [Object] import_context
   # @return [Object]
   def persist_project(import_context)
+    puts "Persisting project #{import_context[:github_project_id]} by user"
     if Project.project_not_exist?(import_context[:github_project_id])
-      puts "Persisting project #{import_context[:github_project_id]} by user"
       DB.transaction do
         project = Project.create(name: import_context[:name],
                                  created_at: Time.now,
@@ -72,11 +81,13 @@ module ProjectHelpers
                      init_supply: import_context[:init_supply],
                      discuss_method: import_context[:discuss_method])
     end
+    puts 'persist project end'
   end
 
   # @param [Object] context
   # @param [Object] current_user
   def notify_other_members(context, current_user)
+    puts 'notify other members start'
     importer = context[:contributors].select do |item|
       item['login'].eql?(current_user.login)
     end
@@ -85,76 +96,94 @@ module ProjectHelpers
     end
     context[:importer_avatar_url] = importer.first['avatar_url']
     context[:importer_user] = importer.first['login']
+
     context[:contributors].each do |item|
+      threads = []
       user_eth_account = Digest::SHA1.hexdigest(UserAppHelpers::GITHUB + item['id'].to_s)
 
       # create oauth
-      oauth = Oauth.first(oauth_provider: UserAppHelpers::GITHUB, open_id: item['id'])
-      unless oauth
-        Oauth.insert(login: item['login'],
-                     name: item['login'],
-                     oauth_provider: UserAppHelpers::GITHUB,
-                     open_id: item['id'],
-                     eth_account: user_eth_account,
-                     avatar_url: item['avatar_url'],
-                     created_at: Time.now,
-                     last_login_at: Time.now)
+      threads << Thread.new do
+        oauth = Oauth.first(oauth_provider: UserAppHelpers::GITHUB, open_id: item['id'])
+        unless oauth
+          Oauth.insert(login: item['login'],
+                       name: item['login'],
+                       oauth_provider: UserAppHelpers::GITHUB,
+                       open_id: item['id'],
+                       eth_account: user_eth_account,
+                       avatar_url: item['avatar_url'],
+                       created_at: Time.now,
+                       last_login_at: Time.now)
+        end
       end
 
       # get user email
-      resp = HTTParty.get('https://api.github.com/users/' + item['login'] + '/events/public')
-      mails = JSON.parse(resp.body)
-      mail = mails.select do |t|
-        if t['type'].eql?('PushEvent')
-          (((t['payload'] || {})['commits'] || []).first['author'] || {})['email']
+      threads << Thread.new do
+        resp = HTTParty.get('https://api.github.com/users/' + item['login'] + '/events/public')
+
+        mails = JSON.parse(resp.body)
+        mail = mails.select do |t|
+          if t['type'].eql?('PushEvent')
+            (((t['payload'] || {})['commits'] || []).first['author'] || {})['email']
+          end
         end
-      end
-      mail = (((mail.first['payload'] || {})['commits'] || []).first['author'] || {})['email']
-      # create user
-      user = User.first(email: mail) || User.first(login: item['login'])
-      if user.nil?
-        User.insert(login: item['login'],
-                    name: item['login'],
-                    eth_account: user_eth_account,
-                    email: mail,
-                    avatar_url: nil,
-                    activated: false,
-                    created_at: Time.now,
-                    updated_at: Time.now,
-                    last_login_at: Time.now)
-      end
+        mail = (((mail.first['payload'] || {})['commits'] || []).first['author'] || {})['email']
+        # create user
+        user = User.first(email: mail) || User.first(login: item['login'])
+        if user.nil?
+          User.insert(login: item['login'],
+                      name: item['login'],
+                      eth_account: user_eth_account,
+                      email: mail,
+                      avatar_url: nil,
+                      activated: false,
+                      created_at: Time.now,
+                      updated_at: Time.now,
+                      last_login_at: Time.now)
+        end
 
-      if UserEmail.first(email: mail).nil?
-        UserEmail.insert(user_id: user.id,
-                         email: mail,
-                         verified: false,
-                         created_at: Time.now)
-      end
-      # bind project to user
-      if UserProject.first(project_id: context[:id], user_id: user[:id]).nil?
-        UserProject.insert(project_id: context[:id], user_id: user[:id])
-      end
-      # send supply to blackchain
-      user_init_supply = item['init_supply'] ||= item[:init_supply]
-      if user_init_supply.to_i <= 0
-        puts "init supply for user #{item['id']} is invalid or 0"
-        return
-      end
+        if UserEmail.first(email: mail).nil?
+          UserEmail.insert(user_id: user.id,
+                           email: mail,
+                           verified: false,
+                           created_at: Time.now)
+        end
+        # bind project to user
+        if UserProject.first(project_id: context[:id], user_id: user[:id]).nil?
+          UserProject.insert(project_id: context[:id], user_id: user[:id])
+        end
 
-      bc_resp = transfer(context[:symbol], context[:eth_account], user_eth_account, user_init_supply.to_i)
-      KCoinTransaction.insert(
-        eth_account_from: context[:symbol],
-        eth_account_to: user_eth_account,
-        transaction_id: bc_resp['transactionId'],
-        transaction_type: 'project_import',
-        message: '项目导入',
-        correlation_id: current_user.id,
-        correlation_table: 'users',
-        created_at: Time.now
-      )
+        # send supply to blackchain
+        t1 = Thread.new do
+          user_init_supply = item['init_supply'] ||= item[:init_supply]
+          if user_init_supply.to_i <= 0
+            puts "init supply for user #{item['id']} is invalid or 0"
+            Thread.kill Thread.current
+          end
 
-      # TODO: send email. Temporarily disabled due to email issue
-      !importer.first[:login].eql?(current_user.login) ? send_project_import_email(context, item, mail) : next
+          puts "transfer to memeber #{context[:eth_account]}"
+          bc_resp = transfer(context[:symbol], context[:eth_account], user_eth_account, user_init_supply.to_i)
+          KCoinTransaction.insert(
+            eth_account_from: context[:symbol],
+            eth_account_to: user_eth_account,
+            transaction_id: bc_resp['transactionId'],
+            transaction_type: 'project_import',
+            message: '项目导入',
+            correlation_id: current_user.id,
+            correlation_table: 'users',
+            created_at: Time.now
+          )
+        end
+
+        # TODO: send email. Temporarily disabled due to email issue
+        t2 = Thread.new do
+          puts "send mail to memeber start, send to #{mail}"
+          !importer.first[:login].eql?(current_user.login) ? send_project_import_email(context, item, mail) : next
+          puts 'send mail to member end'
+        end
+        t1.join
+        t2.join
+      end
+      threads.each(&:join)
     end
   end
 

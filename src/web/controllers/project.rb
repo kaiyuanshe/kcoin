@@ -73,13 +73,10 @@ class ProjectController < BaseController
 
   post '/updateProject' do
     project = User[current_user.id].projects_dataset.where(github_project_id: params[:github_project_id]).first
-    # project.name = params[:name]
     tmpfile = params[:images]
     if tmpfile
       img = 'data:' + tmpfile[:type] + ';base64,' + Sequel.blob(Base64.encode64(File.read(tmpfile[:tempfile])))
-      # project.img = img
     end
-    # User[current_user.id].update_project(project)
     project.update(custom_name: params[:custom_name], img: img)
     { code: 601, msg: '项目信息修改完成' }.to_json
   end

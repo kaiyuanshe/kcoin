@@ -179,6 +179,7 @@ module GithubHelpers
     resp = HTTParty.post(webhook_uri, options)
     puts "register webhook: #{resp.code}, #{resp.body}"
     raise 'Failed to register webhook' unless (resp.code == 422) || (resp.code / 100 == 2)
+    puts 'register webhook end'
     true
   end
 
