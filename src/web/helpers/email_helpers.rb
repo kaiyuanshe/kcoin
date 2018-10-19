@@ -176,8 +176,8 @@ Subject: KCoin 项目导入提醒
             font-size: 16px;
             color: #737373;
             text-align: left;
-            top: 351px;
-            position: sticky;
+            top: 210px;
+            position: relative;
             margin: auto;
             width: 420px;
         }
