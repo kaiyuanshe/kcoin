@@ -1,4 +1,6 @@
 en:
+  # common msg
+  see_more_result: "See more results"
   # index page
   index_home: "Home"
   index_project: "Project"
@@ -29,7 +31,7 @@ en:
   login_signup: "Sign up"
   login_signin_github: "Sign in using Github"
 
- # project nav bar
+  # project nav bar
   project_header_my_projects: "My projects"
   project_header_user_center: "User center"
   project_header_exchange: "Exchange"
@@ -47,13 +49,45 @@ en:
   user_wallet_regenerate: "Regenerate address"
   user_wallet_password: "Wallet password"
   user_edit_btn_cancel: "Cancel"
-  user_edit_btn_edit: "edit"
+  user_edit_btn_edit: "Edit"
   user_edit_btn_save: "Save"
   user_no_brief: "This guy is lazy. Leave nothing here."
-  
+  no_projects: "No project imported!"
+  projects_title: "Projects"
+  no_KCoin_result: "No KCoin results!"
+
   # project import
-  project_import_dup: "You imported this project already. Please select another project"
+  project_import_dup: "You imported this project already. Please select another project."
   project_import_fail: "Failed in importing project："
+  project_token_name: "Define token name and init supply"
+  project_token_name_validate: "Token name invalid!"
+  project_token_name_placeholder: "Please input token name"
+  project_token_supply: "Please input token supply"
+  project_token_supply_validate: "Token supply can`t be empty, and must be number!"
+  project_import_img: "Project cover(Optional, 2M limit)"
+  project_prev_btn: "Prev"
+  project_next_btn: "Next"
+  project_import_btn: "Import"
+  project_token_validate: "Invalid token number"
+  project_member_token_supply: "Please input init token supply"
+  project_assign_token_title: "Assign to all members "
+  project_assign_token_title2: " ,Remaining: "
 
   # project detail
-  project_not_exist: "Project doesn't exist. You need to import the project first"
+  project_not_exist: "Project doesn't exist. You need to import the project first!"
+  project_account_information: "Account_information"
+  project_project_dynamics: "Project dynamics"
+  project_member_list: "Member list"
+  project_project_settings: "Project setting"
+  KCoin_total: "KCoin total"
+  Issue_record: "Issue record"
+  Token_total: "Token total"
+  project_detail_name: "Project name"
+  project_detail_name_validate: "Invalid name!"
+  project_detail_img: "Project cover(Optional, 2M limit)"
+  project_decision: "Decision method"
+  project_detail_btn_save: "Save"
+  chose_files: "Chose file"
+  project_list_title: "My project lists"
+  project_import: "Import project"
+  project_quick_import: "Quick import: copy Github project URL"

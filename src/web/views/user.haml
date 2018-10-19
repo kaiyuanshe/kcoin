@@ -35,13 +35,14 @@
               .cell-fs-6.cell-md-12.order-2.text-left-fs.text-center-md.user-kcoin-detail-title
                 %span.d-block-md.mx-auto KCoin
               .cell-fs-12.d-none-md.d-block-fs.order-3.pos-absolute.pos-bottom-center
-                %a{:href=>"/project/history?uId=#{token_history[:UserId]}"} 查看更多
+                %a{:href=>"/project/history?uId=#{token_history[:UserId]}"} =t('see_more_result')
               .d-inline-block-md.d-none-fs.order-4.user-kcoin-detail-split
 
             -# kcoin history
             .user-kcoin-detail-right-area.d-none-fs.d-inline-block-md
               - if token_history['History'].empty?
-                %span 没有查询到 KCoin 记录
+                %span
+                  = t('no_KCoin_result')
               - else
                 - token_history['History'].each_with_index do |item, index|
                   -if index >= 3
@@ -59,14 +60,18 @@
 
               .row.mx-0
                 .cell-12.px-0.text-right.user-kcoin-detail-link
-                  %a{:href=>"/project/history?uId=#{token_history[:UserId]}"} 查看更多 >
+                  %a{:href=>"/project/history?uId=#{token_history[:UserId]}"}
+                  %span
+                    = t('see_more_result') + ' >'
 
       .row.mx-0-fs.mx-3-md
         .cell-12.px-3
           .pt-15.user-project-detail
-            %span.user-project-detail-title 我参与的项目
+            %span.user-project-detail-title
+              = t('projects_title')
           - if project_list.empty?
-            %span 您还没有导入项目！
+            %span
+              = t('no_projects')
           - else
             - project_list.each_with_index do |list, index|
               .row.pt-5.px-3-fs.px-0-md
@@ -85,7 +90,9 @@
                       %span.order-3.user-project-list-title-num
                         = list['TotalBalance']
                     .cell-12-fs.cell-md.text-right-md.text-left-fs.user-kcoin-detail-link
-                      %a{:href=>"/project/history?symbol=#{list[:TokenSymbol]}"} 查看更多 >
+                      %a{:href=>"/project/history?symbol=#{list[:TokenSymbol]}"}
+                      %span
+                        = t('see_more_result') + ' >'
                   - list['History'].each_with_index do |item, item_index|
                     -if item_index >= 2
                       -break

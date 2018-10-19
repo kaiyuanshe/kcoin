@@ -18,13 +18,17 @@
     .row.tab-menu
       %ul{"data-role"=>"tabs", "data-expand"=>"true"}
         %li
-          %a{:href=>"#_target_info"} 帐号信息
+          %a{:href=>"#_target_info"}
+            = t('project_account_information')
         %li
-          %a{:href=>"#_target_time_line"} 项目动态
+          %a{:href=>"#_target_time_line"}
+            = t('project_project_dynamics')
         %li
-          %a{:href=>"#_target_members"} 成员列表
+          %a{:href=>"#_target_members"}
+            = t('project_member_list')
         %li
-          %a{:href=>"#_target_settings"} 项目设置
+          %a{:href=>"#_target_settings"}
+            = t('project_project_settings')
 
 .container.bd-default.px-0.project-detail-container
   %input#repo_name{:type=>"hidden",:value=>"#{project.name}"}
@@ -36,13 +40,15 @@
           .card-header.px-6
             .row
               .cell.text-left.left-title.left-title.d-flex.flex-align-center
-                %span KCoin 总值
+                %span
+                  = t('KCoin_total')
               .cell.text-right.right-title
                 %span
                   =kcoin_history['TotalBalance']
           .card-content.px-6.pb-4
             .content-title.text-center.py-1
-              %span 发放记录
+              %span
+                = t('Issue_record')
             - kcoin_history['History'].each_with_index do |item, index|
               -if index >= 5
                 -break
@@ -55,19 +61,22 @@
                     = item[:ChangeNum]
             .row
               .cell.text-right.koin-card-link
-                %a{:href=>"/project/history?uId=#{kcoin_history[:uId]}"} 查看更多 >
+                %a{:href=>"/project/history?uId=#{kcoin_history[:uId]}"}
+                = t('see_more_result') + '>'
       .cell-fs-12.cell-md-6.mx-auto
         .card
           .card-header.px-6
             .row
               .cell.text-left.left-title.left-title.d-flex.flex-align-center
-                %span Token 总值
+                %span
+                  = t('KCoin_total')
               .cell.text-right.right-title
                 %span
                   =token_history['TotalBalance']
           .card-content.px-6.pb-4
             .content-title.text-center.py-1
-              %span 发放记录
+              %span
+                = t('Issue_record')
             - token_history['History'].each_with_index do |item, index|
               -if index >= 5
                 -break
@@ -80,7 +89,8 @@
                     = item[:ChangeNum]
             .row
               .cell.text-right.koin-card-link
-                %a{:href=>"/project/history?pId=#{token_history[:pId]}&uId=#{token_history[:uId]}"} 查看更多 >
+                %a{:href=>"/project/history?pId=#{token_history[:pId]}&uId=#{token_history[:uId]}"}
+                = t('see_more_result') + ' >'
       .cell-fs-12.cell-md-6.mx-auto
         .card.chart#kcoin-chart
       .cell-fs-12.cell-md-6.mx-auto
@@ -156,28 +166,31 @@
     :enctype=>"multipart/form-data"}
       .row.mx-0
         .cell-12.form-group.px-3-fs.px-0-sm
-          %label 1. 填写项目名称
+          %label
+            = '1. ' + t('project_detail_name')
           %input#project_name{:type=>"text",
               :name=>"custom_name",
               maxlength: 120,
               "value"=>"#{project.custom_name ||= project.name}",
               "data-validate" => "required"}
           %span.invalid_feedback
-            项目名称不能为空
+            = t('project_detail_name_validate')
           %input#github_project_id{:type=>"hidden",
               :name=>"github_project_id",
               :value=>"#{project.github_project_id}"}
         .cell-12.form-group.px-3-fs.px-0-sm
-          %label 2. 上传项目封面（选填，但只能添加不大于 2M 的图片）
+          %label
+            = '2. ' + t('project_detail_img')
           %input#img{:type=>"file",
             "data-role"=>"file",
             :name=>"images",
-            "data-caption"=>"选择文件",
+            "data-caption"=>"#{t('chose_files')}",
             "dir"=>"rtl",
             "data-validate"=>"custom=validateFileSize"}
       .row.mx-0
         .cell-12.text-left.mt-20.px-3-fs.px-0-sm
-          %button#btn_submit.button.info.kcoin-button-normal 保存
+          %button#btn_submit.button.info.kcoin-button-normal
+            = t('project_detail_btn_save')
 
 %script{:src=>'javascripts/echarts.min.js'}
 %script{:src=>'javascripts/macarons.js'}

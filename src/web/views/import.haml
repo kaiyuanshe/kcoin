@@ -6,7 +6,7 @@
 "data-btn-min"=>"false",
 "data-btn-max"=>"false",
 "data-resizable"=>"false",
-"data-title"=>"导入项目",
+"data-title"=>"#{t('project_import')}",
 "data-close-action"=>"Metro.actions.HIDE",
 "data-cls-caption"=>"kcoin-win-title",
 "data-cls-master"=>"px-3",
@@ -31,7 +31,7 @@
           .cell-12.form-group.px-0
             .px-5
               %input#search_input{type: "text",
-                placeholder: "快速导入：请在此处复制 GithHub 项目的 URL"}
+                placeholder: "#{t('project_quick_import')}"}
             .kcoin-win-panel#projectList{"data-role"=>"panel",
             "data-width"=>"100%",
             "data-height"=>"100%",
@@ -57,20 +57,22 @@
             %span#project_title.pos-absolute.pos-left-center.ml-15
         .row.mx-0{"style"=>"overflow:auto;"}
           .cell-12.form-group.px-5
-            %label 1. 填写项目名称
+            %label
+              = '1. ' + t('project_detail_name')
             %input.project_name{:type=>"text",
             :name=>"custom_name",
             maxlength: 120,
             "data-validate" => "required"}
             %span.invalid_feedback
-              项目名称不能为空
+              =t('project_detail_name_validate')
             %input#github_project_id{:type=>"hidden",:name=>"github_project_id"}
             %input.project_name{:type=>"hidden",:name=>"name"}
           .cell-12.form-group.px-5
             %label
-              2. 选择项目决策方式
+              = '2. '+ t('project_decision')
             .user-kcoin-detail-link.d-inline-block
-              %a{:href=>"/project/history?uId="} 查看更多 >
+              %a{:href=>"/project/history?uId="}
+              = t('see_more_result') + ' >'
             %select#decision_method{"data-role"=>"select",
             :name=>"discuss_method",
             "data-cls-select"=>"input",
@@ -86,42 +88,48 @@
               %option{:name=>"decision_method",:value=>"4"}
                 全体占比制
           .cell-12.form-group.px-5
-            %label 3. 定义项目 token 名称和初始总额（示例：共享币）
+            %label
+              = '3. ' + t('project_token_name')
             .row.mx-0
               .cell-6.px-0
                 %input#token_name{:type=>"text",
                 :name=>"token_name",
                 maxlength: 120,
-                :placeholder => "请填写 token 名称",
+                :placeholder => "#{t('project_token_name_placeholder')}",
                 "data-validate" => "required"}
                 %span.invalid_feedback
-                  token 名称不能为空
+                  = t('project_token_name_validate')
               .cell-6.pl-2.pr-0
                 %input#init_supply{:type=>"text",
                 :name=>"init_supply",
                 maxlength: 120,
-                :placeholder => "请填写初始总额",
+                :placeholder => "#{t('project_token_supply')}",
                 "data-validate" => "required pattern=^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$"}
                 %span.invalid_feedback
-                  初始总额不能为空，切必须为数字
+                  = t('project_token_supply_validate')
           .cell-12.form-group.px-5
-            %label 4. 上传项目封面（选填，但只能添加不大于 2M 的图片）
+            %label
+              = '4. ' + t('project_import_img')
             %input#img{:type=>"file",
             "data-role"=>"file",
             :name=>"images",
-            "data-caption"=>"选择文件",
+            "data-button-title"=>"#{t('chose_files')}",
             "dir"=>"rtl",
             "data-validate"=>"custom=validateFileSize"}
         .row.mx-0.pt-5
           .cell-12.text-center.px-0.pos-bottom-center.mb-5
-            %button.btn_prev.button.info.outline.mr-0-fs.mr-5-md.kcoin-button-normal 上一步
-            %button.btn_next.button.info.ml-0-fs.ml-5-md.kcoin-button-normal 下一步
+            %button.btn_prev.button.info.outline.mr-0-fs.mr-5-md.kcoin-button-normal
+              = t('project_prev_btn')
+            %button.btn_next.button.info.ml-0-fs.ml-5-md.kcoin-button-normal
+              = t('project_next_btn')
       .page{:style=>"height:calc( 100% - 20px )"}
         .cell-12.form-group.px-0
           %div.ml-5
-            %span 给所有成员分配初始
+            %span
+              = t('project_assign_token_title')
             %span.tokenName
-            %span 值，当前剩余
+            %span
+              = t('project_assign_token_title2')
             %span#tokenNum
             %span.tokenName
         .row.mx-0{"style"=>"overflow:auto;height:calc( 100% - 62px )"}
@@ -146,13 +154,15 @@
                       :name=>"member_token",
                       maxlength: 120,
                       "data-member-id"=>"<%item.id%>",
-                      :placeholder => "请填写初始 token 值"}
+                      :placeholder => "#{t('project_member_token_supply')}"}
                       %span.invalid_feedback
-                        token 值不能为空
+                        = t('project_token_validate')
               <% } %>
         .row.mx-0.pt-5
           .cell-12.text-center.px-0.pos-bottom-center.mb-5
-            %button.btn_prev.button.info.outline.mr-0-fs.mr-5-md.kcoin-button-normal 上一步
-            %button#btn_submit.button.info.ml-0-fs.ml-5-md.kcoin-button-normal 导入
+            %button.btn_prev.button.info.outline.mr-0-fs.mr-5-md.kcoin-button-normal
+              = t('project_prev_btn')
+            %button#btn_submit.button.info.ml-0-fs.ml-5-md.kcoin-button-normal
+              = t('project_import_btn')
 
 = include_javascript 'project_list_none'

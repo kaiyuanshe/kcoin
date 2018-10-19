@@ -1,9 +1,11 @@
 .pt-5
   .row
     .cell-sm-6.cell-fs-12.text-left.d-flex.flex-align-center
-      %span#list-num.pl-2 我的项目列表
+      %span#list-num.pl-2
+        = t('project_list_title')
     .cell-sm-6.cell-fs-12.text-right.mt-3-fs.mt-0-sm.text-center-fs.text-right-sm
-      %button#btn_import.button.info.my-0.kcoin-button-normal 导入项目
+      %button#btn_import.button.info.my-0.kcoin-button-normal
+        = t('project_import')
 
 = haml :import
 
@@ -29,7 +31,7 @@
           <%}%>
           %div.kcoin-figure-token-div.pos-absolute
             %div.kcoin-figure-token-span
-              %p.text-ellipsis.mt-1.ml-1 Kcoin: <%list[i].kcoin%>
+              %p.text-ellipsis.mt-1.ml-1 KCoin: <%list[i].kcoin%>
               %p.text-ellipsis.mt-0.ml-1 Token: <%list[i].project_token%>
           <%if(!list[i].img) {%>
           %div.kcoin-figure-title-letter-div.pos-absolute
