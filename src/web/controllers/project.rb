@@ -142,10 +142,12 @@ class ProjectController < BaseController
                 project = Project[params[:pId]]
                 get_history_by_project(project[:symbol], project[:eth_account])
               end
-    haml :history, locals: { history: history }
+    path = URI(request.referer || '').path
+    path[0] = ''
+    haml :history, locals: { history: history, referrer: path }
   end
 
   get '/back' do
-    redirect back
+    redirect '/' + params[:referrer]
   end
 end

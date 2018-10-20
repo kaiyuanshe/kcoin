@@ -1,15 +1,10 @@
-
 @font-face {
     font-family: "PingFangHK-Semibold";
     src: url(/fonts/53faa9276001397f57e3dec8cafa2205.eot); /* IE9 */
-    src: url(/fonts/53faa9276001397f57e3dec8cafa2205.eot?#iefix) format("embedded-opentype"), /* IE6-IE8 */
-    url(/fonts/53faa9276001397f57e3dec8cafa2205.woff) format("woff"), /* chrome, firefox */
-    url(/fonts/53faa9276001397f57e3dec8cafa2205.ttf) format("truetype"), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
-    url(/fonts/53faa9276001397f57e3dec8cafa2205.svg#PingFangHK-Semibold-Proportional) format("svg"); /* iOS 4.1- */
+    src: url(/fonts/53faa9276001397f57e3dec8cafa2205.eot?#iefix) format("embedded-opentype"), /* IE6-IE8 */ url(/fonts/53faa9276001397f57e3dec8cafa2205.woff) format("woff"), /* chrome, firefox */ url(/fonts/53faa9276001397f57e3dec8cafa2205.ttf) format("truetype"), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */ url(/fonts/53faa9276001397f57e3dec8cafa2205.svg#PingFangHK-Semibold-Proportional) format("svg"); /* iOS 4.1- */
     font-style: normal;
     font-weight: normal;
 }
-
 
 @media screen and (min-width: 992px) {
     /*@media screen and (min-width: 577px) {*/
@@ -447,37 +442,32 @@ span {
     left: -17px;
 }
 
-
 .step.kcoin-step.current.kcoin-stepper-complete:first-child:after {
-    color:  #FF5C5D;
+    color: #FF5C5D;
 }
-
 
 .step.kcoin-step.current.kcoin-stepper-complete:nth-child(2):after {
-    color:  #FF5C5D;
+    color: #FF5C5D;
 }
 
-
 .step.kcoin-step.current.kcoin-stepper-complete:last-child:after {
-    color:  #FF5C5D;
+    color: #FF5C5D;
 }
 
 .step.kcoin-step.complete.kcoin-stepper-complete:first-child:after {
-    color:  #FF5C5D;
+    color: #FF5C5D;
     top: 22px;
     left: -15px;
 }
-
 
 .step.kcoin-step.complete.kcoin-stepper-complete:nth-child(2):after {
-    color:  #FF5C5D;
+    color: #FF5C5D;
     top: 22px;
     left: -15px;
 }
 
-
 .step.kcoin-step.complete.kcoin-stepper-complete:last-child:after {
-    color:  #FF5C5D;
+    color: #FF5C5D;
     top: 22px;
     left: -15px;
 }
@@ -1220,6 +1210,12 @@ label.select.input.dropdown-toggle {
 .app-bar .app-bar-menu > li > a {
     font-size: 16px;
 }
-.overflow-unset{
+
+.overflow-unset {
     overflow: unset !important;
+}
+
+tr td:last-child {
+    width: 1%;
+    white-space: nowrap;
 }

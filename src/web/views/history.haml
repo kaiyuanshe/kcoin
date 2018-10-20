@@ -1,28 +1,29 @@
-.row.mx-2
-  .cell-12.px-0.user-kcoin-detail-link
-    %a{:href=>"/project/back"} < 返回
-.row.mx-2
-  %table.table.striped.mt-4{"data-role"=>"table",
-    "data-cls-table-top"=>"row flex-nowrap",
-    "data-cls-component"=>"history-table",
-    "data-cls-head"=>"history-head",
-    "data-cls-rows-count"=>"cell-md-4",
-    "data-rows-steps"=>"10",
-    "data-show-rows-steps"=>"false",
-    "data-show-search"=>"false",
-    "data-show-table-info"=>"false",
-    "data-cls-pagination"=>"flex-justify-center",
-    "data-pagination-prev-title"=>"◂",
-    "data-pagination-next-title"=>"▸",
-    "data-rows"=>"10"}
-    %thead
-      %tr
-        %th time
-        %th content
-        %th num
-    %tbody
+.grid.mt-5
+  .row.mx-2
+    .cell-12.px-0.user-kcoin-detail-link
+      %a{:href=>"/project/back?referrer=#{referrer}"} < 返回
+  .row.mx-2
+    %table.table.striped.mt-4{"data-role"=>"table",
+      "data-cls-table-top"=>"row flex-nowrap",
+      "data-cls-component"=>"history-table",
+      "data-cls-head"=>"history-head",
+      "data-cls-rows-count"=>"cell-md-4",
+      "data-rows-steps"=>"10",
+      "data-show-rows-steps"=>"false",
+      "data-show-search"=>"false",
+      "data-show-table-info"=>"false",
+      "data-cls-pagination"=>"flex-justify-center",
+      "data-pagination-prev-title"=>"◂",
+      "data-pagination-next-title"=>"▸",
+      "data-rows"=>"10"}
+      %thead
+        %tr
+          %th time
+          %th content
+          %th num
+      %tbody
       - if history['History'].empty?
-        = 'no history!'
+        = t('no_history')
       - else
         - history['History'].each_with_index do |item, index|
           %tr
@@ -30,5 +31,5 @@
               = item[:Date]
             %td
               = item[:EventName]
-            %td
+            %td{:style=>"width: 1% !important;white-space: nowrap !important;"}
               = item[:ChangeNum]
