@@ -33,6 +33,7 @@
 .container.bd-default.px-0.project-detail-container
   %input#repo_name{:type=>"hidden",:value=>"#{project.name}"}
   %input#repo_owner{:type=>"hidden",:value=>"#{project.owner}"}
+  %input#repo_id{:type=>"hidden",:value=>"#{project.id}"}
   #_target_info
     .row.project-detail
       .cell-fs-12.cell-md-6.mx-auto
@@ -69,7 +70,7 @@
             .row
               .cell.text-left.left-title.left-title.d-flex.flex-align-center
                 %span
-                  = t('KCoin_total')
+                  = t('Token_total')
               .cell.text-right.right-title
                 %span
                   =token_history['TotalBalance']

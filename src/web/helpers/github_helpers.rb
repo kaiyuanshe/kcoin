@@ -131,7 +131,7 @@ module GithubHelpers
     end
 
     # TODO: improve the repo list
-    repo_path = github_v3_api "users/#{github_account.login}/repos?type=all&page=1&per_page=100"
+    repo_path = github_v3_api "users/#{github_account.login}/repos?type=all&page=1&per_page=100?client_id=#{CONFIG[:github][:client_id]}&client_secret=#{CONFIG[:github][:client_secret]}"
     user_projects = HTTParty.get(repo_path)
     halt user_projects.code if user_projects.code / 100 != 2
     user_projects.body
@@ -139,15 +139,21 @@ module GithubHelpers
 
   def state_contributors(owner, project_name)
     # repo_name: org/project or user/project
-    uri = github_v3_api "repos/#{owner}/#{project_name}/stats/contributors"
+    uri = github_v3_api "repos/#{owner}/#{project_name}/stats/contributors?client_id=#{CONFIG[:github][:client_id]}&client_secret=#{CONFIG[:github][:client_secret]}"
     resp = HTTParty.get uri
     raise "failed in state contributors of #{owner}/#{project_name}" unless resp.code / 100 == 2
-    JSON.parse(resp.body)
+    resp = JSON.parse(resp.body)
+    result = resp.map do |item|
+      [(item['author'] || {})['login'], item['total']]
+    end
+
+    # Hash.new((item['author'] || {})['login'] => item['total'])
+    result
   end
 
   def list_contributors(owner, project_name)
     # repo_name: org/project or user/project
-    uri = github_v3_api "repos/#{owner}/#{project_name}/contributors?client_id=#{CONFIG[:github][:client_id]}&client_secret=#{CONFIG[:github][:client_id]}"
+    uri = github_v3_api "repos/#{owner}/#{project_name}/contributors?client_id=#{CONFIG[:github][:client_id]}&client_secret=#{CONFIG[:github][:client_secret]}"
     resp = HTTParty.get uri
     raise "failed in list contributors of #{owner}/#{project_name}" unless resp.code / 100 == 2
     JSON.parse(resp.body)

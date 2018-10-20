@@ -4,19 +4,22 @@ $(document).ready(function () {
     });
     initCharts();
 });
+
+
+var kcoinChart = echarts.init($('#kcoin-chart')[0], 'macarons');
+var tokenChart = echarts.init($('#token-chart')[0], 'macarons');
+
 function initCharts() {
-    var kcoinChart = echarts.init($('#kcoin-chart')[0], 'macarons');
-    var tokenChart = echarts.init($('#token-chart')[0], 'macarons');
-    var option = genOption('KCoin 分配情况', genData("kcoin"));
-    kcoinChart.setOption(option);
-    var option2 = genOption('Token 贡献分布', genData("token"));
-    tokenChart.setOption(option2);
+
+    genData();
+
     window.onresize = function () {
         kcoinChart.resize();
         tokenChart.resize();
     }
 }
-function genOption(title, data) {
+
+function genOption(title, seriesData) {
     return {
         title: {
             text: title,
@@ -35,7 +38,7 @@ function genOption(title, data) {
             type: 'pie',
             radius: '55%',
             center: ['50%', '50%'],
-            data: data.seriesData,
+            data: seriesData,
             itemStyle: {
                 emphasis: {
                     shadowBlur: 10,
@@ -46,41 +49,45 @@ function genOption(title, data) {
         }]
     };
 }
-function genData(key) {
+
+
+function genData() {
     let url = "/project/getProjectState";
-    let data;
-    if (key === "kcoin") {
-        // url = "";
-    } else if (key === "token") {
-        // url = ""
-    } else {
-        return {
-            seriesData: [],
-        };
-    }
     $.ajax({
         type: "get",
         url: url,
         data: {
             "repo_name": $("#repo_name").val(),
+            "repo_id": $("#repo_id").val(),
             "repo_owner": $("#repo_owner").val()
         },
-        async: false,
         success: function (res) {
-            data = JSON.parse(res);
+            let data = JSON.parse(res);
+            let seriesData = [];
+
+            for (let i = 0; i < data.stats.length; i++) {
+                seriesData.push({
+                    name: data.stats[i][0],
+                    value: data.stats[i][1]
+                });
+            }
+
+            // init KCoin state
+            kcoinChart.setOption(genOption('KCoin 分配情况', seriesData));
+
+
+            // init Token state
+            tokenChart.setOption(genOption('Token 贡献分布', seriesData));
+
+            // regist resize event
+            window.onresize = function () {
+                kcoinChart.resize();
+                tokenChart.resize();
+            }
         }
     });
-    var seriesData = [];
-    for (let i = 0; i < data.length; i++) {
-        seriesData.push({
-            name: data[i].author.login,
-            value: data[i].total
-        });
-    }
-    return {
-        seriesData: seriesData,
-    };
 }
+
 function saveForm() {
     if (!Metro.validator.validate($("#project_name"))) {
         return;
@@ -106,6 +113,7 @@ function saveForm() {
         }
     });
 }
+
 function validateFileSize() {
     if ($("#img")[0].files[0].size < (1024 * 1024 * 2)) {
         return true;

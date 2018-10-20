@@ -131,8 +131,9 @@ class ProjectController < BaseController
   end
 
   get '/getProjectState' do
-    state = state_contributors(params[:repo_owner], params[:repo_name])
-    state.to_json
+    result = {}
+    result[:stats] = state_contributors(params[:repo_owner], params[:repo_name])
+    result.to_json
   end
 
   get '/history' do
