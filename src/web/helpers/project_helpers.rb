@@ -32,7 +32,7 @@ module ProjectHelpers
       notify_other_members(import_context, current_user)
     end
 
-    threads.join
+    threads.each(&:join)
     true
   end
 
@@ -192,27 +192,33 @@ module ProjectHelpers
     db_data = User[user_id].projects
     return [] if db_data.empty?
 
-    # TODO: ideally the balances should be read asynchronously via AJAX
     accounts = []
     project_hashes = [] # filter columns, fields like `secret` should be removed from response
+    threads = []
     db_data.each do |p|
-      accounts.push p.eth_account
-      # TODO: add batch query here? Or at least AJAX. To query server in a loop is bad
-      token = query_balance(p.symbol, p.eth_account)
-      project_hashes.push(
-        id: p.id,
-        name: p.name,
-        custom_name: p.custom_name ||= "#{p.owner}/#{p.name}",
-        owner: p.owner,
-        github_project_id: p.github_project_id,
-        first_word: p.first_word,
-        description: p.description,
-        img: p.img,
-        created_at: p.created_at,
-        project_token: token,
-        kcoin: 0
-      )
+      threads << Thread.new do
+        Mutex.new.synchronize do
+          accounts.push p.eth_account
+          # TODO: add batch query here? Or at least AJAX. To query server in a loop is bad
+          token = query_balance(p.symbol, p.eth_account)
+          project_hashes.push(
+            id: p.id,
+            name: p.name,
+            custom_name: p.custom_name ||= "#{p.owner}/#{p.name}",
+            owner: p.owner,
+            github_project_id: p.github_project_id,
+            first_word: p.first_word,
+            description: p.description,
+            img: p.img,
+            created_at: p.created_at,
+            project_token: token,
+            kcoin: 0
+          )
+        end
+      end
     end
+
+    threads.each(&:join)
 
     puts "query kcoin/token of user's project, user_id=#{user_id}, accounts=#{accounts}"
     bc_resp = query_balance_list(kcoin_symbol, accounts)

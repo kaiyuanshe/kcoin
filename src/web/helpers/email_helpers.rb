@@ -23,6 +23,7 @@ module EmailHelpers
     end
   end
 
+  # @param [Object] _user
   def send_register_email(_user)
     active_url = request.base_url
 
