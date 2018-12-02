@@ -14,6 +14,11 @@ bundle install
 cp lib/config-sample.rb lib/config.rb
 ```
 - Open config file `lib/config.rb` and update config values like github oauth secret.
+```
+When you apply for github oauth,you need to set callback url:
+http://localhost:9292/auth/github/callback
+If you forget it,plese delete 'src/web/kcoin.sqlite' and try again'
+```
 - Start the server: `puma -C config/puma_local.rb`
 - browse [http://127.0.0.1:9292/](http://127.0.0.1:9292/)
 
