@@ -15,7 +15,7 @@ cp lib/config-sample.rb lib/config.rb
 ```
 - Open config file `lib/config.rb` and update config values like github oauth secret.
    - github oauth setting: 
-	![image](https://github.com/yiranblade/kcoin/img/github_oauth.png)
+	![image](https://github.com/yiranblade/kcoin/blob/master/img/github_oauth.png)
    - config.rb setting:
 	```
 CONFIG = {
