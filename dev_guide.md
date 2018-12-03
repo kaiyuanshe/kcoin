@@ -17,7 +17,7 @@ cp lib/config-sample.rb lib/config.rb
    - github oauth setting: 
 	![image](https://github.com/yiranblade/kcoin/blob/master/img/github_oauth.png)
    - config.rb setting:
-	```
+```
 CONFIG = {
   github: {
     client_id: '067295f33545d712270e',
@@ -37,7 +37,7 @@ CONFIG = {
     account: 'kcoin@kaiyuanshe.cn'
   }
 }.freeze
-	```
+```
 ```
 When you apply for github oauth,you need to set callback url:
 'http://localhost:9292/auth/github/callback'
