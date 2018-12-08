@@ -32,19 +32,19 @@ cp lib/config-sample.rb lib/config.rb
 - Open config file `lib/config.rb` and update config values like github oauth secret.
 - For quick test: `puma -C config/puma_local.rb` and browse [http://127.0.0.1:9292/](http://127.0.0.1:9292/)
 
-#### IDE
+### IDE
 
 Install RubyMine or VS Code, or any other preferred IDE first. Open `<repo>\src\web`.
 To start/debug in RubyMime, add a new Rack configuration with default parameters.
 
-#### Conventions
+### Conventions
 
 - file `lib/config-sample.rb` is just a sample. Changing values in this file makes no difference. You need to copy the contents to `lib/config.rb` and update config values to adapt your local environment. In case you add any new config item, add to the sample file first. Don't push `lib/config.rb` to github. It's ignored by default.
 - Don't push any confidentials to github like oauth key/secret and HyperLedger certificates.
 - In case any database schema changes, add new migration file in directory `config/migrations`. Never alter table schema directly in existing migration files. That's because migration of the same name only gets executed once. 
 - While requesting HyperLedger, user `invoke` API if you need to write any data into blockchain,  or `query` API if read data only. See `src/web/helpers/fabric_helpers.rb` for example. 
 
-#### Components
+### Components
 KCoin is built on several popular ruby frameworks:
 - [Sinatra](http://sinatrarb.com/documentation.html): web framework on top of rack.
 - [Sqlite](https://www.sqlite.org/docs.html): database
@@ -53,7 +53,7 @@ KCoin is built on several popular ruby frameworks:
 - [metroui](https://metroui.org.ua/intro.html): CSS library to build Metro-style UI.
 You don't need to install them one by one manually. All required tools/gems are included in Gemfile.
 
-#### Database
+### Database
 
 KCoin uses HyperLedger to persist token and token history. At the same time uses sqlite to store user profile, github project metadata and so on. Data in sqlite can be edited and deleted. But data in HyperLedger cannot be revoked or deleted.
 
@@ -63,9 +63,7 @@ In your local dev environment, you can download **DB Browser for SQLite** or CLI
 
 The JFinal-based backend server is only a proxy for HyperLedger because HyperLedger doesn't have a Ruby SDK. In most cases, you only want to run the server without changing any Java source codes. But if you want learn about the details, about the hierarchy of backend server, see [KCoin Server Guide](https://github.com/kaiyuanshe/kcoin/tree/master/src/server)
 
-#### To run the server
-
-## how to setup local dev env for hyperLedger
+### To run the server
 
 - Firstly you need to get HyperLedger client certificates, contact dev team for the certificates. Create an issue on Github if needed. 
 - Unzip and place the certificates to `<repo>/src/server/src/main/resources/fabric`. **Never push the certificates to github**
@@ -79,7 +77,7 @@ The JFinal-based backend server is only a proxy for HyperLedger because HyperLed
 - Test HyperLedger: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/kcoin/fabric/query`. It works if http status code 200 responded. Otherwise you may need to debug in IDE or call for dev team for help.
 - [Optional]Instead of issue `curl ...` in commandline, you can download API test tool such as PostMan for easier testing.
 
-#### chaincode development
+### chaincode development
 
 Chaincode is one of key concepts in HyperLedger which is written in GO language. See https://hyperledger-fabric.readthedocs.io/en/release-1.2/chaincode4ade.html for more.
 
