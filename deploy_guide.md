@@ -70,7 +70,7 @@ git clone https://github.com/kaiyuanshe/kcoin.git
 cd /var/www/kcoin/src/web
 bundle install
 cp lib/config-sample.rb lib/config.rb # update config file if needed
-puma -C config/puma.rb -d
+puma -C config/puma_prod.rb -d
 ```
 Run `pumactl -P /var/run/puma.pid stop` to stop puma. And run `puma -C config/puma_prod.rb -d` again to start it.
 
@@ -92,7 +92,7 @@ in case you want to test the rotation, try `logrotate /etc/logrotate.d/kcoin -f`
 
 
 # Deploy KCoin Server
-Kcoin server is a JFinal-based java web application. Build it a WAR file(make sure including proper config settings) and run it in tomcat
+Kcoin server is a JFinal-based java web application. Build it a WAR file(make sure including proper config settings) and run it in tomcat. See `server\deploy.md` to understand how to build it as a WAR file.
 
 ### Logs Rotation
 `catalina.out` is rotated by default where kcoin server logs goes. However, other logs of tomcat is not rotated. Try replace `/etc/logrotate.d/tomcat` with the cusomized one:
