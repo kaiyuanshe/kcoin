@@ -23,6 +23,17 @@ KCoin consists of two components, a standard ruby web server and a java-based ba
 
 Below are quick steps to setup dev environment for the web:
 
+- Install Ruby if you haven't and `rvm` is recommended.
+
+```
+curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+curl -L get.rvm.io | bash -s stable
+source /etc/profile.d/rvm.sh
+rvm install 2.4.0
+rvm list
+```
+Run `ruby -version` to make sure it's ready
+
 - Initialize project:
 ```
 cd kcoin/src/web
@@ -30,7 +41,7 @@ bundle install
 cp lib/config-sample.rb lib/config.rb
 ```
 - Open config file `lib/config.rb` and update config values like github oauth secret.
-- For quick test: `puma -C config/puma_local.rb` and browse [http://127.0.0.1:9292/](http://127.0.0.1:9292/)
+- For quick test: `puma -C config/puma_local.rb` and browse [http://localhost:9292/](http://localhost:9292/)
 
 ### IDE
 
@@ -39,7 +50,7 @@ To start/debug in RubyMime, add a new Rack configuration with default parameters
 
 ### Conventions
 
-- file `lib/config-sample.rb` is just a sample. Changing values in this file makes no difference. You need to copy the contents to `lib/config.rb` and update config values to adapt your local environment. In case you add any new config item, add to the sample file first. Don't push `lib/config.rb` to github. It's ignored by default.
+- file `lib/config-sample.rb` is just a sample. Changing values in this file makes no difference to your running app. You need to copy the contents to `lib/config.rb` and update config values to adapt your local environment. In case you add any new config item, add to the sample file first. Don't push `lib/config.rb` to github. It's ignored by default.
 - Don't push any confidentials to github like oauth key/secret and HyperLedger certificates.
 - In case any database schema changes, add new migration file in directory `config/migrations`. Never alter table schema directly in existing migration files. That's because migration of the same name only gets executed once. 
 - While requesting HyperLedger, user `invoke` API if you need to write any data into blockchain,  or `query` API if read data only. See `src/web/helpers/fabric_helpers.rb` for example. 
@@ -49,7 +60,7 @@ KCoin is built on several popular ruby frameworks:
 - [Sinatra](http://sinatrarb.com/documentation.html): web framework on top of rack.
 - [Sqlite](https://www.sqlite.org/docs.html): database
 - [sequel](https://sequel.jeremyevans.net/documentation.html): database toolkit for ruby
-- [Haml](http://haml.info/docs/yardoc/): Html template engine ofr presentation layer
+- [Haml](http://haml.info/docs/yardoc/): Html template engine for presentation layer
 - [metroui](https://metroui.org.ua/intro.html): CSS library to build Metro-style UI.
 You don't need to install them one by one manually. All required tools/gems are included in Gemfile.
 
@@ -63,6 +74,10 @@ In your local dev environment, you can download **DB Browser for SQLite** or CLI
 
 The JFinal-based backend server is only a proxy for HyperLedger because HyperLedger doesn't have a Ruby SDK. In most cases, you only want to run the server without changing any Java source codes. But if you want learn about the details, about the hierarchy of backend server, see [KCoin Server Guide](https://github.com/kaiyuanshe/kcoin/tree/master/src/server)
 
+### prerequisite
+- JDK8
+- Maven(mvn3 is recommended)
+
 ### To run the server
 
 - Firstly you need to get HyperLedger client certificates, contact dev team for the certificates. Create an issue on Github if needed. 
@@ -74,7 +89,7 @@ The JFinal-based backend server is only a proxy for HyperLedger because HyperLed
 117.78.39.82 orderer-3c0590126a6d4cb3aff24f854f92329b265c36cd-0.orderer-3c0590126a6d4cb3aff24f854f92329b265c36cd.default.svc.cluster.local
 ```
 - Run `mvn jetty:run` in command line. Or run Maven task in inteliJ IDEA or Eclipse.
-- Test HyperLedger: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/kcoin/fabric/query`. It works if http status code 200 responded. Otherwise you may need to debug in IDE or call for dev team for help.
+- Test HyperLedger: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/kcoin/fabric/query`. If responded http status code is 200, it's working and running as expected. Otherwise you may need to debug in IDE or call for dev team for help.
 - [Optional]Instead of issue `curl ...` in commandline, you can download API test tool such as PostMan for easier testing.
 
 ### chaincode development
@@ -87,6 +102,13 @@ KCoin deploys chaincode to Huawei BCS. The process of develop and deploy chainco
 - Make changes to `kctoken.go` and **have it well tested** in your local environment.
 - Submit changes to the main repo via PR
 - After PR merged, Dev team will upload the lasted chaincode to Huawei cloud and update chaincode version in `<repo>/src/server/src/main/resources/config.properties`
+
+## Things to know
+
+Some other things to be aware of:
+- Never use tab charactor in source code no matter language/IDE. Use spaces instead. Please update your IDE settings, to replace tab with 4 spaces for Java/GO code, 2 spaces in Ruby/JavaScript code
+- Follow common best practices for programming: https://practicingruby.com/
+- TBD
 
 # Author
 [Kaiyuanshe](http://www.kaiyuanshe.cn)
