@@ -1,6 +1,6 @@
 module RegexPattern
 
-  Username = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i
+  Username = /^[\w\-]{1,120}$/
 
   URL = /(\A\z)|(\A(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z)/ix
 
