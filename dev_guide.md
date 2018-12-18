@@ -41,10 +41,10 @@ cp lib/config-sample.rb lib/config.rb
 ```
 - Open config file `lib/config.rb` and update config values like github oauth secret.
    - github oauth setting: 
-	![image](https://github.com/ButBueatiful/dotvim/raw/master/screenshots/vim-screenshot.jpg)
-   - 'config.rb' setting:
-	```
-	CONFIG = {
+	![image](https://github.com/yiranblade/kcoin/blob/master/img/github_oauth.png)
+   - config.rb setting:
+```
+CONFIG = {
   github: {
     client_id: 'xxxxxxxxxxxxx',
     client_secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx',
@@ -63,7 +63,7 @@ cp lib/config-sample.rb lib/config.rb
     account: 'kcoin@kaiyuanshe.cn'
   }
 }.freeze
-	```
+```
 ```
 When you apply for github oauth,you need to set callback url:
 'http://localhost:9292/auth/github/callback'
