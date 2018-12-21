@@ -119,7 +119,7 @@ The JFinal-based backend server is only a proxy for HyperLedger because HyperLed
 117.78.39.82 orderer-3c0590126a6d4cb3aff24f854f92329b265c36cd-0.orderer-3c0590126a6d4cb3aff24f854f92329b265c36cd.default.svc.cluster.local
 ```
 - Run `mvn jetty:run` in command line. Or run Maven task in inteliJ IDEA or Eclipse.
-- Test HyperLedger: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/kcoin/fabric/query`. If responded http status code is 200, it's working and running as expected. Otherwise you may need to debug in IDE or call for dev team for help.
+- Test HyperLedger: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/fabric/query`. If responded http status code is 200, it's working and running as expected. Otherwise you may need to debug in IDE or call for dev team for help.
 - [Optional]Instead of issue `curl ...` in commandline, you can download API test tool such as PostMan for easier testing.
 
 ### chaincode development
