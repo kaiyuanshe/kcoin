@@ -1,4 +1,4 @@
-source 'https://anonymous:devcloud@mirrors.huaweicloud.com/repository/rubygems/'
+source 'https://rubygems.org/'
 
 gem 'haml'
 gem 'httparty'
@@ -12,6 +12,7 @@ gem 'sinatra-contrib'
 gem 'sinatra-initializers'
 gem 'sinatra-reloader'
 gem 'sinatra-sequel'
+gem 'rack', '~> 2.0.6'
 gem 'rack-contrib'
 gem 'spinying', '~> 0.9'
 gem 'sprockets'
