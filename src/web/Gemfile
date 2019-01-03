@@ -1,4 +1,4 @@
-source 'https://rubygems.org/'
+source 'https://anonymous:devcloud@mirrors.huaweicloud.com/repository/rubygems/'
 
 gem 'haml'
 gem 'httparty'
