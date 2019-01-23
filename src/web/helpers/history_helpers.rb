@@ -6,10 +6,13 @@ module HistoryHelpers
 
   def get_project_list_history(user_id)
     project_list = User[user_id].projects
-    args = project_list.map {|x| x[:symbol] + '_' + x[:eth_account]}
-    result = batch_query_history(args)
-    result.each do |project_history|
-      handle_history(project_history)
+    result = {}
+    unless project_list.empty?
+      args = project_list.map {|x| x[:symbol] + '_' + x[:eth_account]}
+      result = batch_query_history(args)
+      result.each do |project_history|
+        handle_history(project_history)
+      end
     end
 
     result
