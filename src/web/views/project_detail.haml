@@ -158,9 +158,11 @@
                     = item["login"]
                   .row
                     .cell-12-fs.cell-6-sm.pl-3
-                      %span 贡献度：560
+                      %span 贡献度：
+                      = item["contributions"]
                     .cell-12-fs.cell-6-sm.pl-3
-                      %span 收益：2345
+                      %span 收益：
+                      = item["balance"]
 
   #_target_settings
     %form#form{:onsubmit=>"return false;",
