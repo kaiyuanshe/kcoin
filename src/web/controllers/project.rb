@@ -107,6 +107,14 @@ class ProjectController < BaseController
       puts 'start fetch data from gitHub'
       Mutex.new.synchronize do
         collaborators = list_contributors(project.owner, project.name)
+        collaborators.each do |contributor|
+          t = User.first(login: contributor["login"])
+          if t.nil?
+            contributor["balance"] = "0"
+          else
+            contributor["balance"] = get_member_balance_by_project(project.symbol, t.eth_account)
+          end
+        end
       end
       puts 'end fetch data from gitHub'
     end

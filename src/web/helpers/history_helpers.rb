@@ -24,6 +24,11 @@ module HistoryHelpers
     list
   end
 
+
+  def get_member_balance_by_project(symbol, account)
+    query_balance(symbol, account)
+  end
+
   def get_kcoin_history(owner)
     history = query_history(settings.kcoin_symbol, owner)
     handle_history(history)
