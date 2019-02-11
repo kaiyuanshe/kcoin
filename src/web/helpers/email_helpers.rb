@@ -28,7 +28,7 @@ module EmailHelpers
     active_url = request.base_url
 
     message = <<MESSAGE_END
-From: #{CONFIG[:email][:form]}
+From: #{CONFIG[:email][:from]}
 To: #{_user.email}
 MIME-Version: 1.0
 Content-type: text/html;charset=utf-8
@@ -130,7 +130,7 @@ MESSAGE_END
     action_url = request.base_url + '/project'
 
     message = <<MESSAGE_END
-From: #{CONFIG[:email][:form]}
+From: #{CONFIG[:email][:from]}
 To: #{mail}
 MIME-Version: 1.0
 Content-type: text/html;charset=utf-8
