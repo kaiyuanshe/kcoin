@@ -8,12 +8,12 @@ CONFIG = {
     url: 'http://localhost:8080'
   },
   email: {
-    from: 'notification@kaiyuanshe.org',
+    from: 'XXX@kaiyuanshe.org',
     address: 'smtp.exmail.qq.com',
     port: 587,
     helo: 'qq.com',
-    user: 'notification@kaiyuanshe.org',
+    user: 'XXX@kaiyuanshe.org',
     secret: '<Your email password here>',
-    account: 'notification@kaiyuanshe.org'
+    account: 'XXX@kaiyuanshe.org'
   }
 }.freeze
