@@ -54,13 +54,13 @@ CONFIG = {
     url: 'http://localhost:8080'
   },
   email: {
-    form: 'kcoin@kaiyuanshe.cn',
+    form: 'notification@kaiyuanshe.org',
     address: 'smtp.exmail.qq.com',
     port: 587,
     helo: 'qq.com',
-    user: 'kcoin@kaiyuanshe.cn',
+    user: 'notification@kaiyuanshe.org',
     secret: '<Your email password here>',
-    account: 'kcoin@kaiyuanshe.cn'
+    account: 'notification@kaiyuanshe.org'
   }
 }.freeze
 ```
@@ -111,12 +111,13 @@ The JFinal-based backend server is only a proxy for HyperLedger because HyperLed
 ### To run the server
 
 - Firstly you need to get HyperLedger client certificates, contact dev team for the certificates. Create an issue on Github if needed. 
-- Unzip and place the certificates to `<repo>/src/server/src/main/resources/fabric`. **Never push the certificates to github**
-- Resolve HyperLedger dns locally by adding following records to `/etc/hosts`(Linux) or `C:\Windows\System32\drivers\etc\hosts`(Windows). Note that the IP `117.78.39.82` and DNS might change in future when time goes by. Update hosts file if needed. See `<repo>/src/server/src/main/resources/config.properties` for the latest IP address, and `kcoin-sdk-config.yaml` for latest DNS(usually part of `url` config).
+- Unzip and place the certificates to `<repo>/src/server/src/main/resources/fabric`. **Never push the certificates to github in any form**
+- Resolve HyperLedger dns locally by adding following records to `/etc/hosts`(Linux) or `C:\Windows\System32\drivers\etc\hosts`(Windows). Note that the IP `117.78.50.99` and DNS might change in future when time goes by. Update hosts file if needed. See `<repo>/src/server/src/main/resources/config.properties` for the latest IP address, and `kcoin-sdk-config-dev.yaml` for latest DNS(usually part of `url` config).
 
 ```
-117.78.39.82 peer-4428b63567b14b99db5ebb50d254b06e895c7aeb-0.peer-4428b63567b14b99db5ebb50d254b06e895c7aeb.default.svc.cluster.local
-117.78.39.82 orderer-3c0590126a6d4cb3aff24f854f92329b265c36cd-0.orderer-3c0590126a6d4cb3aff24f854f92329b265c36cd.default.svc.cluster.local
+117.78.50.99 peer-f21978d3b246501d0a16012a93d6bdc82985679d-0.peer-f21978d3b246501d0a16012a93d6bdc82985679d.default.svc.cluster.local
+117.78.50.99 peer-f21978d3b246501d0117.78.50.99a16012a93d6bdc82985679d-1.peer-f21978d3b246501d0a16012a93d6bdc82985679d.default.svc.cluster.local
+117.78.50.99 orderer-f20a094ea4932c1d4e5c135c81752050c2176f3f-0.orderer-f20a094ea4932c1d4e5c135c81752050c2176f3f.default.svc.cluster.local
 ```
 - Run `mvn jetty:run` in command line. Or run Maven task in inteliJ IDEA or Eclipse.
 - Test HyperLedger: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/fabric/query`. If responded http status code is 200, it's working and running as expected. Otherwise you may need to debug in IDE or call for dev team for help.
