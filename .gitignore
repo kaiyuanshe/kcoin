@@ -19,5 +19,5 @@ src/**/*.log
 # KCoin
 *.sqlite
 src/web/lib/config.rb
-src/server/src/main/resources/fabric/
+src/server/src/main/resources/fabric*/
 src/server/out/
