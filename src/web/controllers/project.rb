@@ -1,4 +1,5 @@
 require './controllers/base'
+require 'thread'
 
 class ProjectController < BaseController
   helpers HistoryHelpers
@@ -72,13 +73,10 @@ class ProjectController < BaseController
 
   post '/updateProject' do
     project = User[current_user.id].projects_dataset.where(github_project_id: params[:github_project_id]).first
-    # project.name = params[:name]
     tmpfile = params[:images]
     if tmpfile
       img = 'data:' + tmpfile[:type] + ';base64,' + Sequel.blob(Base64.encode64(File.read(tmpfile[:tempfile])))
-      # project.img = img
     end
-    # User[current_user.id].update_project(project)
     project.update(custom_name: params[:custom_name], img: img)
     { code: 601, msg: '项目信息修改完成' }.to_json
   end
@@ -95,19 +93,45 @@ class ProjectController < BaseController
   end
 
   post '/projectDetailView' do
+    token_history = nil
+    kcoin_history = nil
+    collaborators = nil
+
     # fetch project message
     github_project_id = params[:github_project_id]
     project = Project.get_by_github_project_id(github_project_id)
     halt 404, t('project_not_exist') unless project
 
-    # fetch data from chaincode
-    token_history = get_history_by_project(project.symbol, project.eth_account)
-    kcoin_history = get_kcoin_history(project.eth_account)
-    kcoin_history[:uId] = current_user.id
-    token_history[:pId] = project.id
-
     # fetch member data form github
-    collaborators = list_contributors(project.owner, project.name)
+    t1 = Thread.new do
+      puts 'start fetch data from gitHub'
+      Mutex.new.synchronize do
+        collaborators = list_contributors(project.owner, project.name)
+        collaborators.each do |contributor|
+          t = User.first(login: contributor["login"])
+          if t.nil?
+            contributor["balance"] = "0"
+          else
+            contributor["balance"] = get_member_balance_by_project(project.symbol, t.eth_account)
+          end
+        end
+      end
+      puts 'end fetch data from gitHub'
+    end
+
+    # fetch data from chaincode
+    t2 = Thread.new do
+      puts 'start fetch data from chainCode'
+      token_history = get_history_by_project(project.symbol, project.eth_account)
+      kcoin_history = get_kcoin_history(project.eth_account)
+      kcoin_history[:uId] = current_user.id
+      token_history[:pId] = project.id
+      puts 'end fetch data from chainCode'
+    end
+
+    t1.join
+    t2.join
+
     haml :project_detail, layout: false, locals: { token_history: token_history,
                                                    kcoin_history: kcoin_history,
                                                    collaborators: collaborators,
@@ -115,8 +139,9 @@ class ProjectController < BaseController
   end
 
   get '/getProjectState' do
-    state = state_contributors(params[:repo_owner], params[:repo_name])
-    state.to_json
+    result = {}
+    result[:stats] = state_contributors(params[:repo_owner], params[:repo_name])
+    result.to_json
   end
 
   get '/history' do
@@ -126,10 +151,12 @@ class ProjectController < BaseController
                 project = Project[params[:pId]]
                 get_history_by_project(project[:symbol], project[:eth_account])
               end
-    haml :history, locals: { history: history }
+    path = URI(request.referer || '').path
+    path[0] = ''
+    haml :history, locals: { history: history, referrer: path }
   end
 
   get '/back' do
-    redirect back
+    redirect '/' + params[:referrer]
   end
 end

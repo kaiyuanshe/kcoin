@@ -52,7 +52,8 @@ en:
   user_edit_btn_edit: "Edit"
   user_edit_btn_save: "Save"
   user_no_brief: "This guy is lazy. Leave nothing here."
-  no_projects: "No project imported!"
+  no_projects_token_history: "No project`s token history!"
+  no_history: "No history!"
   projects_title: "Projects"
   no_KCoin_result: "No KCoin results!"
 

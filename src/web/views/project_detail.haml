@@ -33,6 +33,7 @@
 .container.bd-default.px-0.project-detail-container
   %input#repo_name{:type=>"hidden",:value=>"#{project.name}"}
   %input#repo_owner{:type=>"hidden",:value=>"#{project.owner}"}
+  %input#repo_id{:type=>"hidden",:value=>"#{project.id}"}
   #_target_info
     .row.project-detail
       .cell-fs-12.cell-md-6.mx-auto
@@ -53,23 +54,23 @@
               -if index >= 5
                 -break
               .row.py-1
-                .cell-10.text-left.content-item
+                .cell.text-left.content-item
                   %span
                     = item[:EventName]
-                .cell.text-right.content-item-num
+                .stub.text-right.content-item-num
                   %span
                     = item[:ChangeNum]
             .row
               .cell.text-right.koin-card-link
                 %a{:href=>"/project/history?uId=#{kcoin_history[:uId]}"}
-                = t('see_more_result') + '>'
+                  = t('see_more_result') + '>'
       .cell-fs-12.cell-md-6.mx-auto
         .card
           .card-header.px-6
             .row
               .cell.text-left.left-title.left-title.d-flex.flex-align-center
                 %span
-                  = t('KCoin_total')
+                  = t('Token_total')
               .cell.text-right.right-title
                 %span
                   =token_history['TotalBalance']
@@ -81,16 +82,16 @@
               -if index >= 5
                 -break
               .row.py-1
-                .cell-10.text-left.content-item
+                .cell.text-left.content-item
                   %span
                     = item[:EventName]
-                .cell.text-right.content-item-num
+                .stub.text-right.content-item-num
                   %span
                     = item[:ChangeNum]
             .row
               .cell.text-right.koin-card-link
                 %a{:href=>"/project/history?pId=#{token_history[:pId]}&uId=#{token_history[:uId]}"}
-                = t('see_more_result') + ' >'
+                  = t('see_more_result') + ' >'
       .cell-fs-12.cell-md-6.mx-auto
         .card.chart#kcoin-chart
       .cell-fs-12.cell-md-6.mx-auto
@@ -157,9 +158,11 @@
                     = item["login"]
                   .row
                     .cell-12-fs.cell-6-sm.pl-3
-                      %span 贡献度：560
+                      %span 贡献度：
+                      = item["contributions"]
                     .cell-12-fs.cell-6-sm.pl-3
-                      %span 收益：2345
+                      %span 收益：
+                      = item["balance"]
 
   #_target_settings
     %form#form{:onsubmit=>"return false;",
@@ -184,7 +187,7 @@
           %input#img{:type=>"file",
             "data-role"=>"file",
             :name=>"images",
-            "data-caption"=>"#{t('chose_files')}",
+            "data-button-title"=>"#{t('chose_files')}",
             "dir"=>"rtl",
             "data-validate"=>"custom=validateFileSize"}
       .row.mx-0

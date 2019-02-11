@@ -36,7 +36,7 @@ source /etc/profile.d/rvm.sh
 rvm install 2.4.0
 rvm list
 ```
-Run `ruby -version` to make sure it's ready
+Run `ruby -v` to make sure it's ready
 
 ### Install bundler
 ```

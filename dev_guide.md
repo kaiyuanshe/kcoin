@@ -1,5 +1,4 @@
 KCoin Project
-========
 
 # Contribute
 Pull request is welcome and appreciated.
@@ -41,6 +40,37 @@ bundle install
 cp lib/config-sample.rb lib/config.rb
 ```
 - Open config file `lib/config.rb` and update config values like github oauth secret.
+   - github oauth setting: 
+	![image](https://github.com/yiranblade/kcoin/blob/master/img/github_oauth.png)
+   - config.rb setting:
+```
+CONFIG = {
+  github: {
+    client_id: 'xxxxxxxxxxxxx',
+    client_secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    sign_event: true
+  },
+  server: {
+    url: 'http://localhost:8080'
+  },
+  email: {
+    form: 'kcoin@kaiyuanshe.cn',
+    address: 'smtp.exmail.qq.com',
+    port: 587,
+    helo: 'qq.com',
+    user: 'kcoin@kaiyuanshe.cn',
+    secret: '<Your email password here>',
+    account: 'kcoin@kaiyuanshe.cn'
+  }
+}.freeze
+```
+```
+When you apply for github oauth,you need to set callback url:
+'http://localhost:9292/auth/github/callback'
+If you forget it,plese delete 'src/web/kcoin.sqlite' and try again.
+```
+- Start the server: `puma -C config/puma_local.rb`
+- browse [http://127.0.0.1:9292/](http://127.0.0.1:9292/)
 - For quick test: `puma -C config/puma_local.rb` and browse [http://localhost:9292/](http://localhost:9292/)
 
 ### IDE
@@ -89,7 +119,7 @@ The JFinal-based backend server is only a proxy for HyperLedger because HyperLed
 117.78.39.82 orderer-3c0590126a6d4cb3aff24f854f92329b265c36cd-0.orderer-3c0590126a6d4cb3aff24f854f92329b265c36cd.default.svc.cluster.local
 ```
 - Run `mvn jetty:run` in command line. Or run Maven task in inteliJ IDEA or Eclipse.
-- Test HyperLedger: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/kcoin/fabric/query`. If responded http status code is 200, it's working and running as expected. Otherwise you may need to debug in IDE or call for dev team for help.
+- Test HyperLedger: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/fabric/query`. If responded http status code is 200, it's working and running as expected. Otherwise you may need to debug in IDE or call for dev team for help.
 - [Optional]Instead of issue `curl ...` in commandline, you can download API test tool such as PostMan for easier testing.
 
 ### chaincode development

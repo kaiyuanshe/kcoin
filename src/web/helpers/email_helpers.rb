@@ -15,7 +15,6 @@ module EmailHelpers
     end
 
     mail = Mail.read_from_string(message.to_s)
-    puts message.to_s
 
     begin
       mail.deliver!
@@ -24,6 +23,7 @@ module EmailHelpers
     end
   end
 
+  # @param [Object] _user
   def send_register_email(_user)
     active_url = request.base_url
 
@@ -53,7 +53,7 @@ Subject: kcoin 帐号激活
 <table style="width: 600px; background-color: #393836;" align="center" cellspacing="0" cellpadding="0">
     <tr>
         <td style=" height: 65px; background-color: #000000; border-bottom: 1px solid #4d4b48;">
-            <a style="text-decoration: none;" href="http://kcoin.kaiyuanshe.cn/">
+            <a style="text-decoration: none !important;" href="http://kcoin.kaiyuanshe.cn/">
             <span style="font-size: 36px;color: #66c0f4;font-family: Microsoft YaHei, sans-serif;font-weight: bold;padding-left: 10px;padding-left: 10px;">
                 <span style="color: #00a3d9;">K</span>coin
             </span>
@@ -174,10 +174,10 @@ Subject: KCoin 项目导入提醒
 
         .content {
             font-size: 16px;
-            color: #737373;
+            color: #737373 !important;
             text-align: left;
-            top: 351px;
-            position: sticky;
+            top: 210px;
+            position: relative;
             margin: auto;
             width: 420px;
         }
@@ -193,7 +193,7 @@ Subject: KCoin 项目导入提醒
             top: 294px;
             left: 165px;
             display: block;
-            text-decoration: none;
+            text-decoration: none !important;
             text-align: center;
             line-height: 60px;
         }
