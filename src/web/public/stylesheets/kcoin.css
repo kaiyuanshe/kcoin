@@ -1027,6 +1027,12 @@ div.chart {
     width: 100%;
 }
 
+.user-profile .field-title {
+    font-family: PingFangHK-Semibold;
+    font-size: 20px;
+    color: #323a45;
+}
+
 .user-profile-float {
     max-width: 340px;
     max-height: 760px;
@@ -1148,12 +1154,6 @@ div.chart {
     font-family: PingFangHK-Semibold, serif;
     font-size: 16px;
     color: #60a8f0 !important;
-}
-
-.user-project-detail-title {
-    font-family: PingFangHK-Semibold;
-    font-size: 20px;
-    color: #323a45;
 }
 
 .user-project-detail-image {
