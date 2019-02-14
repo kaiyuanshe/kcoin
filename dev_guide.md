@@ -116,7 +116,7 @@ The JFinal-based backend server is only a proxy for HyperLedger because HyperLed
 
 ```
 117.78.50.99 peer-f21978d3b246501d0a16012a93d6bdc82985679d-0.peer-f21978d3b246501d0a16012a93d6bdc82985679d.default.svc.cluster.local
-117.78.50.99 peer-f21978d3b246501d0117.78.50.99a16012a93d6bdc82985679d-1.peer-f21978d3b246501d0a16012a93d6bdc82985679d.default.svc.cluster.local
+117.78.50.99 peer-f21978d3b246501d0a16012a93d6bdc82985679d-1.peer-f21978d3b246501d0a16012a93d6bdc82985679d.default.svc.cluster.local
 117.78.50.99 orderer-f20a094ea4932c1d4e5c135c81752050c2176f3f-0.orderer-f20a094ea4932c1d4e5c135c81752050c2176f3f.default.svc.cluster.local
 ```
 - Run `mvn jetty:run` in command line. Or run Maven task in inteliJ IDEA or Eclipse.
