@@ -1,5 +1,4 @@
 @font-face {
-    font-family: "PingFangHK-Semibold";
     src: url(/fonts/53faa9276001397f57e3dec8cafa2205.eot); /* IE9 */
     src: url(/fonts/53faa9276001397f57e3dec8cafa2205.eot?#iefix) format("embedded-opentype"), /* IE6-IE8 */ url(/fonts/53faa9276001397f57e3dec8cafa2205.woff) format("woff"), /* chrome, firefox */ url(/fonts/53faa9276001397f57e3dec8cafa2205.ttf) format("truetype"), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */ url(/fonts/53faa9276001397f57e3dec8cafa2205.svg#PingFangHK-Semibold-Proportional) format("svg"); /* iOS 4.1- */
     font-style: normal;
@@ -30,20 +29,17 @@
     .login-form .login-sub-title {
         margin-top: 20px;
         margin-bottom: 10px;
-        font-family: PingFangHK-Semibold;
         font-size: 28px;
         color: #323a45;
         text-align: center;
     }
 
     .login-form .login-context .form-group > label {
-        font-family: PingFangHK-Semibold;
         font-size: 13px;
         color: #323a45 !important;
     }
 
     .login-form .login-context .form-group .link > a {
-        font-family: PingFangHK-Semibold;
         font-size: 13px;
     }
 }
@@ -188,7 +184,6 @@
     }
 
     .user-kcoin-detail-title {
-        font-family: PingFangHK-Semibold;
         font-size: 30px;
         color: #8b939e;
         order: 1 !important;
@@ -225,7 +220,6 @@
 .login-sub-title {
     margin-top: 0px;
     margin-bottom: 20px;
-    font-family: PingFangHK-Semibold;
     font-size: 20px;
     color: #ffffff;
 }
@@ -249,7 +243,16 @@
 }
 
 body {
-    font-family: PingFangHK-Semibold;
+    font-family:
+            PingFangHK-Semibold,
+            -apple-system,
+            system-ui,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            Ubuntu,
+            "Helvetica Neue",
+            sans-serif;
     font-size: 1em;
     /* color: #ffffff; */
 }
@@ -630,7 +633,6 @@ div#project-detail-menu {
     margin-left: 130px;
     top: 20px;
     position: absolute;
-    font-family: PingFangHK-Semibold;
     font-size: 18px;
     color: #323a45;
 }
@@ -668,7 +670,6 @@ div#project-detail-menu {
 
 #project-detail-menu .tabs > ul > li.active {
     border: 0px;
-    font-family: PingFangHK-Semibold;
     font-size: 16px;
     color: #60a8f0;
     border-bottom: 8px solid #60a8f0;
@@ -709,13 +710,11 @@ div#project-detail-menu {
 }
 
 .project-detail .left-title > span {
-    font-family: PingFangHK-Semibold;
     font-size: 20px;
     color: #404b59;
 }
 
 .project-detail .right-title > span {
-    font-family: PingFangHK-Semibold;
     font-size: 35px;
     color: #f27370;
 }
@@ -732,7 +731,6 @@ div#project-detail-menu {
 }
 
 .project-detail .content-title > span {
-    font-family: PingFangHK-Semibold;
     font-size: 16px;
     color: #89919c;
 }
@@ -778,7 +776,6 @@ div#project-detail-menu {
 }
 
 .member-flag > span {
-    font-family: PingFangHK-Semibold;
     font-size: 13px;
 }
 
@@ -920,21 +917,18 @@ span {
 }
 
 .coscon-mt-tille {
-    font-family: PingFangHK-Semibold;
     font-size: 18px;
     color: #404b59;
     text-align: left;
 }
 
 .coscon-mt-detail {
-    font-family: PingFangHK-Semibold;
     font-size: 13px;
     color: #404b59;
     text-align: left;
 }
 
 .coscon-mt-a {
-    font-family: PingFangHK-Semibold;
     font-size: 13px;
     color: #60a8f0;
     text-align: left;
@@ -948,7 +942,6 @@ span {
 }
 
 .coscon-award-label {
-    font-family: PingFangHK-Semibold;
     font-size: 16px;
     color: #404b59;
     text-align: left;
@@ -963,21 +956,18 @@ span {
 }
 
 .coscon-award-detail {
-    font-family: PingFangHK-Semibold;
     font-size: 16px;
     color: #ff5a59;
     text-align: left;
 }
 
 .coscon-award-tip {
-    font-family: PingFangHK-Semibold;
     font-size: 13px;
     color: #8b939e;
     text-align: left;
 }
 
 .coscon-award-submit-a {
-    font-family: PingFangHK-Semibold;
     font-size: 18px;
     color: #60a8f0;
     text-align: left;
@@ -998,7 +988,6 @@ div.chart {
     width: 110px;
     height: 36px;
     margin-right: 10px !important;
-    font-family: PingFangHK-Semibold;
     font-size: 13px;
     color: #60a8f0;
 }
@@ -1028,7 +1017,6 @@ div.chart {
 }
 
 .user-profile .field-title {
-    font-family: PingFangHK-Semibold;
     font-size: 20px;
     color: #323a45;
 }
@@ -1056,32 +1044,19 @@ div.chart {
     border: none;
 }
 
-.brief-title {
-    font-family: PingFangHK-Semibold, serif;
-    font-size: 20px;
-    color: #323a45;
-}
-
-.wallet-address-title {
-    font-family: PingFangHK-Semibold, serif;
-    font-size: 20px;
-    color: #323a45;
-}
-
 .wallet-address {
     background: #edf0f5;
     /* width: 300px; */
     height: 40px;
     padding-top: 9px;
     padding-left: 10px;
-    font-family: PingFangHK-Regular, serif;
+    font-family: PingFangHK-Regular;
     font-size: 16px;
     color: #323a45;
     margin-top: 5px;
 }
 
 .user-name {
-    font-family: PingFangHK-Semibold, serif;
     font-size: 20px;
     color: #404b59;
 }
@@ -1151,7 +1126,6 @@ div.chart {
 }
 
 .user-kcoin-detail-link {
-    font-family: PingFangHK-Semibold, serif;
     font-size: 16px;
     color: #60a8f0 !important;
 }
@@ -1162,13 +1136,11 @@ div.chart {
 }
 
 .user-project-list-title {
-    font-family: PingFangHK-Semibold;
     font-size: 20px;
     color: #5e6d81;
 }
 
 .user-project-list-title-num {
-    font-family: PingFangHK-Semibold;
     font-size: 20px;
     color: #f27370;
 }
