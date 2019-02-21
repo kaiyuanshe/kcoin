@@ -8,7 +8,7 @@ CONFIG = {
     url: ENV['SERVER_URL']
   },
   email: {
-    form: ENV['EMAIL_FROM'],
+    from: ENV['EMAIL_FROM'],
     address: ENV['EMAIL_ADDRESS'],
     port: 587,
     helo: ENV['EMAIL_HELO'],
