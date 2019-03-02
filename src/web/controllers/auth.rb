@@ -72,6 +72,7 @@ class AuthController < BaseController
           UserEmail.insert(user_id: user.id,
                            email: params[:email],
                            verified: false,
+                           verification_code: SecureRandom.urlsafe_base64(32).to_s,
                            created_at: Time.now)
         end
         session[:user_id] = user.id
@@ -91,6 +92,24 @@ class AuthController < BaseController
     send_register_email(user)
 
     redirect auth_redirect_uri
+  end
+
+  # Email verification
+  get '/join/verification/:token' do
+    token = params['token']
+    if token =~ /^[\w\-]+$/
+      DB.transaction do
+        user_email = UserEmail.first(verification_code: token)
+        if !user_email.nil?
+          user_email.update(verified: true, verification_code: nil)
+          'Your email has been verified'
+        else
+          'Invalid verification code'
+        end
+      end
+    else
+      'Invalid verification code'
+    end
   end
 
   # Verify email is registered
