@@ -7,7 +7,8 @@ import com.jfinal.aop.Invocation;
 public class CorsInterceptor implements Interceptor {
     @Override
     public void intercept(Invocation invocation) {
-        invocation.getController().getResponse().addHeader("Access-Control-Allow-Origin", "*");
+        javax.servlet.http.HttpServletResponse response = invocation.getController().getResponse();
+        response.addHeader("Access-Control-Allow-Origin", "*");
         invocation.invoke();
     }
 }
