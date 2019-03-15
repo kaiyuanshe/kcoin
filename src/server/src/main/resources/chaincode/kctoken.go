@@ -29,8 +29,8 @@ func (token *Token) initialSupply() {
 }
 
 func (token *Token) add (_to string, _value int) {
-	token.BalanceOf[_to] += _value
-	token.TotalSupply += _value
+    token.BalanceOf[_to] += _value
+    token.TotalSupply += _value
 }
 
 func (token *Token) transfer(_from string, _to string, _value int) bool {
@@ -321,42 +321,42 @@ func getHistoryListResult(resultsIterator shim.HistoryQueryIteratorInterface, et
 
 func (s *SmartContract) add (stub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-	if len(args) != 3 {
-		return shim.Error("Incorrect number of arguments. Expecting 5")
-	}
-	
-	_to := args[1]
-	_amount, _ := strconv.Atoi(args[2])
-	
-	if (_amount <= 0) {
-		return shim.Error("Incorrect number of amount: " + args[2])
-	}
-	
-	if len(_to) == 0 {
-		return shim.Error("Incorrect address. The address must not be null or empty.")
-	}
+    if len(args) != 3 {
+        return shim.Error("Incorrect number of arguments. Expecting 5")
+    }
 
-	tokenAsBytes, err := stub.GetState(args[0])
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	fmt.Printf("addToken - begin %s \n", string(tokenAsBytes))
-	
-	token := Token{}
-	json.Unmarshal(tokenAsBytes, &token)
-	token.add(_to, _amount)
-	
-	tokenAsBytes, err =  json.Marshal(token)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	err = stub.PutState(args[0], tokenAsBytes)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	fmt.Printf("addToken - end %s \n", string(tokenAsBytes))
+    _to := args[1]
+    _amount, _ := strconv.Atoi(args[2])
 
-	return shim.Success(nil)
+    if (_amount <= 0) {
+        return shim.Error("Incorrect number of amount: " + args[2])
+    }
+
+    if len(_to) == 0 {
+        return shim.Error("Incorrect address. The address must not be null or empty.")
+    }
+
+    tokenAsBytes, err := stub.GetState(args[0])
+    if err != nil {
+        return shim.Error(err.Error())
+    }
+    fmt.Printf("addToken - begin %s \n", string(tokenAsBytes))
+
+    token := Token{}
+    json.Unmarshal(tokenAsBytes, &token)
+    token.add(_to, _amount)
+
+    tokenAsBytes, err =  json.Marshal(token)
+    if err != nil {
+        return shim.Error(err.Error())
+    }
+    err = stub.PutState(args[0], tokenAsBytes)
+    if err != nil {
+        return shim.Error(err.Error())
+    }
+    fmt.Printf("addToken - end %s \n", string(tokenAsBytes))
+
+    return shim.Success(nil)
 }
 
 func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
@@ -379,8 +379,8 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
     } else if function == "historyQuery" {
         result = s.historyQuery(stub, args)
     } else if function == "add" {
-		result = s.add(stub, args)
-	} else if function == "batchHistoryQuery" {
+        result = s.add(stub, args)
+    } else if function == "batchHistoryQuery" {
         result = s.batchHistoryQuery(stub, args)
     } else {
         return shim.Error("Invalid Smart Contract function name.")
