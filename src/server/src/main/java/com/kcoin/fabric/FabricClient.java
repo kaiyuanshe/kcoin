@@ -21,6 +21,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
@@ -274,6 +275,13 @@ public class FabricClient {
      * @throws URISyntaxException
      */
     private String handlePlaceHolders(String content) throws Exception {
+        if (configFile.startsWith("/")) {
+            final String ccName = System.getenv("fabricChainCodeName");
+            final String ccVersion = System.getenv("fabricChainCodeVersion");
+            this.chaincodeID = ChaincodeID.newBuilder().setName(ccName).setVersion(ccVersion).build();
+            return content;
+	}
+
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         URL yaml = classloader.getResource(configFile);
         String resourcesPath = Paths.get(yaml.toURI()).getParent().toAbsolutePath().toString();
@@ -310,8 +318,18 @@ public class FabricClient {
      * @return
      */
     private String readYamlAsString() {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        InputStream is = classloader.getResourceAsStream(configFile);
+        InputStream is;
+        if (configFile.startsWith("/")) {
+            try {
+                is = new FileInputStream(configFile);
+            } catch (Exception e) {
+                return "";
+            }
+        }
+        else {
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            is = classloader.getResourceAsStream(configFile);
+        }
         return new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
     }
 
