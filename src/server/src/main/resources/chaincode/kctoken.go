@@ -320,6 +320,7 @@ func getHistoryListResult(resultsIterator shim.HistoryQueryIteratorInterface, et
 }
 
 func (s *SmartContract) add (stub shim.ChaincodeStubInterface, args []string) sc.Response {
+
 	if len(args) != 3 {
 		return shim.Error("Incorrect number of arguments. Expecting 5")
 	}
