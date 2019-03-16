@@ -1,0 +1,3 @@
+# hyperLedger config which will fill the placeholders in the YAML file
+# Intend to fill the gap between VMs
+fabricSDKConfig=/etc/kcoin/kcoin-sdk-config.yaml
