@@ -115,13 +115,12 @@ The JFinal-based backend server is only a proxy for HyperLedger because HyperLed
 - Resolve HyperLedger dns locally by adding following records to `/etc/hosts`(Linux) or `C:\Windows\System32\drivers\etc\hosts`(Windows). Note that the IP `117.78.50.99` and DNS might change in future when time goes by. Update hosts file if needed. See `<repo>/src/server/src/main/resources/config.properties` for the latest IP address, and `kcoin-sdk-config-dev.yaml` for latest DNS(usually part of `url` config).
 
 ```
-117.78.50.99 peer-f21978d3b246501d0a16012a93d6bdc82985679d-0.peer-f21978d3b246501d0a16012a93d6bdc82985679d.default.svc.cluster.local
-117.78.50.99 peer-f21978d3b246501d0117.78.50.99a16012a93d6bdc82985679d-1.peer-f21978d3b246501d0a16012a93d6bdc82985679d.default.svc.cluster.local
-117.78.50.99 orderer-f20a094ea4932c1d4e5c135c81752050c2176f3f-0.orderer-f20a094ea4932c1d4e5c135c81752050c2176f3f.default.svc.cluster.local
+117.78.48.87 orderer-81efaa2f8ec402ad2c8743d99c0609550d4ca2f0-0.orderer-81efaa2f8ec402ad2c8743d99c0609550d4ca2f0.default.svc.cluster.local
+117.78.48.87 peer-51809cd89ab98256de47e9908c70c588a8e4db01-0.peer-51809cd89ab98256de47e9908c70c588a8e4db01.default.svc.cluster.local
 ```
 - Run `mvn jetty:run` in command line. Or run Maven task in inteliJ IDEA or Eclipse.
 - Test HyperLedger: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/fabric/query`. If responded http status code is 200, it's working and running as expected. Otherwise you may need to debug in IDE or call for dev team for help.
-- [Optional]Instead of issue `curl ...` in commandline, you can download API test tool such as PostMan for easier testing.
+- [Optional]Instead of issue `curl ...` in commandline, you can download API test tool such as PostMan for easier testing
 
 ### chaincode development
 

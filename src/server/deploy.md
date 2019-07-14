@@ -1,14 +1,11 @@
 ## Deployment
 
 1. Follow the dev guide to download certificates from cloud
-2. package
-  - In Intellij IDEA, Build -> Build Artifacts -> Edit:
-    - Add 3rd party libraries to WEB-INF/lib
-    - Add kcoin output in classes
-    - Add Directory content for /src/main/webapp
-  - Build Artifacts
-3. upload package to server /usr/share/tomcat/webapps
-4. restart tomcat `service tomcat7 restart`
+2. create fabric folder and unzip certificates to it
+3. replace `fabricAdminPrivateKeyFileName` value by certificates in Dockerfile
+4. build image and run container:
+  - docker build -t kcoin:0.1 .
+  - docker run -ti -p 8080:8080 kcoin:0.1
 5. quick validation that it works:
   - `curl -vvv http://localhost:8080/kcoin/user` which should respond "Hello Kcoin"
   - Test fabric API: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["s  - Test fabric API: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/kcoin/fabric/query`

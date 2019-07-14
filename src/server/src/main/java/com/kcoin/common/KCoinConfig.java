@@ -1,39 +1,26 @@
 package com.kcoin.common;
 
-import com.jfinal.aop.Interceptor;
 import com.jfinal.config.*;
-import com.jfinal.core.JFinal;
 import com.jfinal.json.MixedJsonFactory;
+import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
-import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
-import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
-import com.jfinal.template.source.ClassPathSourceFactory;
 import com.kcoin.common.interceptor.CorsInterceptor;
-import com.kcoin.common.model._MappingKit;
 
 /**
  * KCoin Config
  */
 public class KCoinConfig extends JFinalConfig {
 
+    static Prop p;
 
-    /**
-     * Start or Debug by right click
-     *
-     * @param args
-     */
     public static void main(String[] args) {
-        /**
-         * For Eclipse
-         */
-        //JFinal.start("src/main/webapp", 80, "/", 5);
+    }
 
-        /**
-         * For IDEA
-         */
-        JFinal.start("src/main/webapp", 8089, "/");
+    static void loadConfig() {
+        if (p == null) {
+            p = PropKit.use("configs.properties");
+        }
     }
 
     /**
@@ -42,8 +29,8 @@ public class KCoinConfig extends JFinalConfig {
      * Get value by PropKit.get(...)
      */
     public void configConstant(Constants constants) {
-        PropKit.use("configs.properties");
-        constants.setDevMode(PropKit.getBoolean("devMode", false));
+        loadConfig();
+        constants.setDevMode(p.getBoolean("devMode", false));
         constants.setJsonFactory(MixedJsonFactory.me());
     }
 

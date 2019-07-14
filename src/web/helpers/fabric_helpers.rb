@@ -5,6 +5,7 @@ module FabricHelpers
   FINCTION_BATCH_BALANCE = 'batchBalance'.freeze
   FINCTION_HISTORY_QUERY = 'historyQuery'.freeze
   FINCTION_BATCH_HISTORY_QUERY = 'batchHistoryQuery'.freeze
+  FINCTION_ADD = 'add'.freeze
 
   def query_url
     "#{CONFIG[:server][:url].chomp('/')}/fabric/query"
@@ -83,6 +84,10 @@ module FabricHelpers
 
   def transfer(symbol, from, to, amount)
     invoke_server(FINCTION_TRANSFER, [symbol, from, to, amount.to_i.to_s]) if amount.to_i > 0
+  end
+
+  def add(symbol, to, amount)
+    invoke_server(FINCTION_ADD, [symbol, to, amount.to_i.to_s]) if amount.to_i > 0
   end
 
 end

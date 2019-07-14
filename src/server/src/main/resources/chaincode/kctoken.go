@@ -28,6 +28,11 @@ func (token *Token) initialSupply() {
     token.BalanceOf[token.Owner] = token.TotalSupply;
 }
 
+func (token *Token) add (_to string, _value int) {
+    token.BalanceOf[_to] += _value
+    token.TotalSupply += _value
+}
+
 func (token *Token) transfer(_from string, _to string, _value int) bool {
     if (token.BalanceOf[_from] >= _value) {
         token.BalanceOf[_from] -= _value;
@@ -36,6 +41,7 @@ func (token *Token) transfer(_from string, _to string, _value int) bool {
     }
     return false
 }
+
 
 func (token *Token) balance(_from string) int {
     return token.BalanceOf[_from]
@@ -313,6 +319,46 @@ func getHistoryListResult(resultsIterator shim.HistoryQueryIteratorInterface, et
     return buffer.Bytes(), nil
 }
 
+func (s *SmartContract) add (stub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+    if len(args) != 3 {
+        return shim.Error("Incorrect number of arguments. Expecting 5")
+    }
+
+    _to := args[1]
+    _amount, _ := strconv.Atoi(args[2])
+
+    if (_amount <= 0) {
+        return shim.Error("Incorrect number of amount: " + args[2])
+    }
+
+    if len(_to) == 0 {
+        return shim.Error("Incorrect address. The address must not be null or empty.")
+    }
+
+    tokenAsBytes, err := stub.GetState(args[0])
+    if err != nil {
+        return shim.Error(err.Error())
+    }
+    fmt.Printf("addToken - begin %s \n", string(tokenAsBytes))
+
+    token := Token{}
+    json.Unmarshal(tokenAsBytes, &token)
+    token.add(_to, _amount)
+
+    tokenAsBytes, err =  json.Marshal(token)
+    if err != nil {
+        return shim.Error(err.Error())
+    }
+    err = stub.PutState(args[0], tokenAsBytes)
+    if err != nil {
+        return shim.Error(err.Error())
+    }
+    fmt.Printf("addToken - end %s \n", string(tokenAsBytes))
+
+    return shim.Success(nil)
+}
+
 func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 
     // etrieve the requested Smart Contract function and arguments
@@ -332,6 +378,8 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
         result = s.getBalanceList(stub, args)
     } else if function == "historyQuery" {
         result = s.historyQuery(stub, args)
+    } else if function == "add" {
+        result = s.add(stub, args)
     } else if function == "batchHistoryQuery" {
         result = s.batchHistoryQuery(stub, args)
     } else {
