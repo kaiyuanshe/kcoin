@@ -8,5 +8,6 @@
   - docker run -ti -p 8080:8080 kcoin:0.1
 5. quick validation that it works:
   - `curl -vvv http://localhost:8080/kcoin/user` which should respond "Hello Kcoin"
-  - Test fabric API: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/kcoin/fabric/query`
+  - Test fabric API: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["s  - Test fabric API: `curl -vvv -H "Content-Type:application/json"  -X POST --data '{"fn":"balance", "args":["symbol","owner"]}' http://localhost:8080/kcoin/fabric/query`
+ymbol","owner"]}' http://localhost:8080/kcoin/fabric/query`
 6. logs can be found at `/var/logs/tomcat/kcoin-server.log`
