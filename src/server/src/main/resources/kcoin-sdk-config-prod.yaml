@@ -9,7 +9,7 @@ version: 1.0.0
 
 client:
 
-  organization: bcaff64c017816974bec6e774c0b2f52b3fb1aee
+  organization: c5f27b9534bd12287e0bbe0a00d21b5d96e62691
 
   logging:
     level: info
@@ -51,14 +51,20 @@ client:
 
 channels:
 
-  kcoinprodch:
+  kcoinchprod:
     orderers:
 
-      - orderer-40819b875a240ee1c36fd4062361fba18476e82e-0.orderer-40819b875a240ee1c36fd4062361fba18476e82e.default.svc.cluster.local
+      - orderer-2fbb657e4c127d6f42c0989d1c3b1168c8683f3e-0.orderer-2fbb657e4c127d6f42c0989d1c3b1168c8683f3e.default.svc.cluster.local
 
     peers:
 
-      peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee-0.peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee.default.svc.cluster.local:
+      peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-0.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-1.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
@@ -70,66 +76,89 @@ channels:
 
 organizations:
 
-  bcaff64c017816974bec6e774c0b2f52b3fb1aee:
-    mspid: bcaff64c017816974bec6e774c0b2f52b3fb1aeeMSP
+  c5f27b9534bd12287e0bbe0a00d21b5d96e62691:
+    mspid: c5f27b9534bd12287e0bbe0a00d21b5d96e62691MSP
 
-    cryptoPath:  ${fabricCertificatesPath}/bcaff64c017816974bec6e774c0b2f52b3fb1aee.peer/msp
-    tlsCryptoKeyPath: ${fabricCertificatesPath}/bcaff64c017816974bec6e774c0b2f52b3fb1aee.peer/tls/server.key
-    tlsCryptoCertPath: ${fabricCertificatesPath}/bcaff64c017816974bec6e774c0b2f52b3fb1aee.peer/tls/server.crt
+    cryptoPath:  ${fabricCertificatesPath}/c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer/msp
+    tlsCryptoKeyPath: ${fabricCertificatesPath}/c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer/tls/server.key
+    tlsCryptoCertPath: ${fabricCertificatesPath}/c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer/tls/server.crt
 
     peers:
 
-      - peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee-0.peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee.default.svc.cluster.local
+      - peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-0.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local
+
+      - peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-1.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local
 
     certificateAuthorities:
       - ca-org1
 
     signedCert:
-      path: ${fabricCertificatesPath}/bcaff64c017816974bec6e774c0b2f52b3fb1aee.peer/msp/signcerts/User1@bcaff64c017816974bec6e774c0b2f52b3fb1aee.peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee.default.svc.cluster.local-cert.pem
+      path: ${fabricCertificatesPath}/c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer/msp/signcerts/User1@c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local-cert.pem
 
     adminPrivateKey:
-      path: ${fabricCertificatesPath}/bcaff64c017816974bec6e774c0b2f52b3fb1aee.peer/msp/keystore/${adminPrivateKeyFile}
+      path: ${fabricCertificatesPath}/c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer/msp/keystore/${adminPrivateKeyFile}
 
   ordererorg:
-      mspID: "40819b875a240ee1c36fd4062361fba18476e82eMSP"
+      mspID: "2fbb657e4c127d6f42c0989d1c3b1168c8683f3eMSP"
 
-      cryptoPath: ${fabricCertificatesPath}/40819b875a240ee1c36fd4062361fba18476e82e.orderer/msp
+      cryptoPath: ${fabricCertificatesPath}/2fbb657e4c127d6f42c0989d1c3b1168c8683f3e.orderer/msp
 # orderer-eip: 49.4.7.166
 orderers:
 
-  orderer-40819b875a240ee1c36fd4062361fba18476e82e-0.orderer-40819b875a240ee1c36fd4062361fba18476e82e.default.svc.cluster.local:
-    url: grpcs://orderer-40819b875a240ee1c36fd4062361fba18476e82e-0.orderer-40819b875a240ee1c36fd4062361fba18476e82e.default.svc.cluster.local:30805
+  orderer-2fbb657e4c127d6f42c0989d1c3b1168c8683f3e-0.orderer-2fbb657e4c127d6f42c0989d1c3b1168c8683f3e.default.svc.cluster.local:
+    url: grpcs://orderer-2fbb657e4c127d6f42c0989d1c3b1168c8683f3e-0.orderer-2fbb657e4c127d6f42c0989d1c3b1168c8683f3e.default.svc.cluster.local:30805
 
     grpcOptions:
-      ssl-target-name-override: orderer-40819b875a240ee1c36fd4062361fba18476e82e-0.orderer-40819b875a240ee1c36fd4062361fba18476e82e.default.svc.cluster.local
+      ssl-target-name-override: orderer-2fbb657e4c127d6f42c0989d1c3b1168c8683f3e-0.orderer-2fbb657e4c127d6f42c0989d1c3b1168c8683f3e.default.svc.cluster.local
       grpc-max-send-message-length: 15
       sslProvider: openSSL
       negotiationType: TLS
-      hostnameOverride: orderer-40819b875a240ee1c36fd4062361fba18476e82e-0.orderer-40819b875a240ee1c36fd4062361fba18476e82e.default.svc.cluster.local
+      hostnameOverride: orderer-2fbb657e4c127d6f42c0989d1c3b1168c8683f3e-0.orderer-2fbb657e4c127d6f42c0989d1c3b1168c8683f3e.default.svc.cluster.local
 
     tlsCACerts:
-      path: ${fabricCertificatesPath}/40819b875a240ee1c36fd4062361fba18476e82e.orderer/msp/tlscacerts/tlsca.40819b875a240ee1c36fd4062361fba18476e82e-cert.pem
+      path: ${fabricCertificatesPath}/2fbb657e4c127d6f42c0989d1c3b1168c8683f3e.orderer/msp/tlscacerts/tlsca.2fbb657e4c127d6f42c0989d1c3b1168c8683f3e-cert.pem
 
 peers:
 
 
-  peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee-0.peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee.default.svc.cluster.local:
+  peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-0.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local:
 
-    url: grpcs://peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee-0.peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee.default.svc.cluster.local:30605
 
-    eventUrl: grpcs://peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee-0.peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee.default.svc.cluster.local:30705
+    url: grpcs://peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-0.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local:30605
+    eventUrl: grpcs://peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-0.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local:30705
 
     grpcOptions:
-      ssl-target-name-override: peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee-0.peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee.default.svc.cluster.local
+      ssl-target-name-override: peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-0.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local
       grpc.http2.keepalive_time: 15
       sslProvider: openSSL
       negotiationType: TLS
-      clientKeyFile: ${fabricCertificatesPath}/bcaff64c017816974bec6e774c0b2f52b3fb1aee.peer/tls/server.key
-      clientCertFile: ${fabricCertificatesPath}/bcaff64c017816974bec6e774c0b2f52b3fb1aee.peer/tls/server.crt
-      hostnameOverride: peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee-0.peer-bcaff64c017816974bec6e774c0b2f52b3fb1aee.default.svc.cluster.local
+      clientKeyFile: ${fabricCertificatesPath}/c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer/tls/server.key
+      clientCertFile: ${fabricCertificatesPath}/c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer/tls/server.crt
+      hostnameOverride: peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-0.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local
+
 
     tlsCACerts:
-      path: ${fabricCertificatesPath}/bcaff64c017816974bec6e774c0b2f52b3fb1aee.peer/msp/tlscacerts/tlsca.bcaff64c017816974bec6e774c0b2f52b3fb1aee-cert.pem
+      path: ${fabricCertificatesPath}/c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer/msp/tlscacerts/tlsca.c5f27b9534bd12287e0bbe0a00d21b5d96e62691-cert.pem
+
+
+  peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-1.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local:
+
+
+    url: grpcs://peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-1.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local:30606
+    eventUrl: grpcs://peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-1.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local:30706
+
+    grpcOptions:
+      ssl-target-name-override: peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-1.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local
+      grpc.http2.keepalive_time: 15
+      sslProvider: openSSL
+      negotiationType: TLS
+      clientKeyFile: ${fabricCertificatesPath}/c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer/tls/server.key
+      clientCertFile: ${fabricCertificatesPath}/c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer/tls/server.crt
+      hostnameOverride: peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691-1.peer-c5f27b9534bd12287e0bbe0a00d21b5d96e62691.default.svc.cluster.local
+
+
+    tlsCACerts:
+      path: ${fabricCertificatesPath}/c5f27b9534bd12287e0bbe0a00d21b5d96e62691.peer/msp/tlscacerts/tlsca.c5f27b9534bd12287e0bbe0a00d21b5d96e62691-cert.pem
 
 certificateAuthorities:
   ca-org1:
