@@ -27,7 +27,7 @@ module ProjectHelpers
     end
 
     # send email to others from project contributors exclude importer self.
-    threads = Thread.new do
+    threads << Thread.new do
       import_context[:import_user] = current_user.name
       notify_other_members(import_context, current_user)
     end
