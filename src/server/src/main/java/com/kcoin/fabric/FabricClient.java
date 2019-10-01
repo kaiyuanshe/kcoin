@@ -291,9 +291,12 @@ public class FabricClient {
         replacements.put("fabricCertificatesPath", certPath);
         replacements.put("ordererEIP", PropKit.get("fabricOrdererEIP"));
         replacements.put("peerEIP", PropKit.get("fabricPeerEIP"));
+	/**
         replacements.put("adminPrivateKeyFile",
                 System.getenv("fabricAdminPrivateKeyFileName").isEmpty() ?
                         PropKit.get("fabricAdminPrivateKeyFileName") : System.getenv("fabricAdminPrivateKeyFileName"));
+	*/
+	replacements.put("adminPrivateKeyFile", PropKit.get("fabricAdminPrivateKeyFileName"));
 
         final String ccName = PropKit.get("fabricChainCodeName");
         final String ccVersion = PropKit.get("fabricChainCodeVersion");
