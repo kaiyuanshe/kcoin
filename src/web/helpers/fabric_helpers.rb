@@ -8,39 +8,34 @@ module FabricHelpers
   FINCTION_ADD = 'add'.freeze
 
   def query_url
-    "#{CONFIG[:server][:url].chomp('/')}/fabric/query"
+    "./fabric_proxy query"
   end
 
   def invoke_url
-    "#{CONFIG[:server][:url].chomp('/')}/fabric/invoke"
+    "./fabric_proxy invoke"
   end
 
   def query_server(fn, args)
-    # query only without writing any data to block chain
     call_server(query_url, fn, args)
   end
 
   def invoke_server(fn, args)
-    # call invoke whenever you need to write any data to block chain
     call_server(invoke_url, fn, args)
   end
 
   def call_server(url, fn, args)
-    options = {
-      body: {
-        fn: fn,
-        args: args
-      }.to_json,
-      headers: {
-        :Accept => 'application/json',
-        'Content-Type' => 'application/json'
-      },
-      timeout: 120 # 2 minutes
-    }
-    resp = HTTParty.post(url, options)
-    puts "invoke #{fn} with args #{args}, response #{resp.code}, #{resp.body}"
-    raise 'Communication error with the block chain' unless resp.code / 100 == 2
-    JSON.parse(resp.body)
+    command = url + " " + fn + " " + args.join(" ")
+    puts command+"\n"
+    data = `#{command}`
+    if data.index("\"")
+      data = data.gsub("\\\"","\"")
+      if data.index("\"")==0
+        data = data [1..-3] 
+      end
+    end
+    puts data+"\n"
+    puts "========"
+    JSON.parse(data)
   end
 
   def init_ledger(context)
@@ -51,7 +46,6 @@ module FabricHelpers
 
   def query_balance(symbol, eth_account)
     resp = query_server(FINCTION_BALANCE, [symbol, eth_account])
-    resp['payload'].to_i
   end
 
   def query_balance_list(symbol, eth_account_list)
@@ -63,7 +57,6 @@ module FabricHelpers
     end
 
     resp = query_server(FINCTION_BATCH_BALANCE, args)
-    JSON.parse(resp['payload'])
   end
 
   def ledger_ready(symbol, owner)
@@ -73,13 +66,11 @@ module FabricHelpers
 
   def query_history(symbol, eth_account)
     resp = query_server(FINCTION_HISTORY_QUERY, [symbol, eth_account])
-    JSON.parse(resp['payload'])
   end
 
   # @param [symbol_account,symbol_account] args
   def batch_query_history(args)
     resp = query_server(FINCTION_BATCH_HISTORY_QUERY, args)
-    JSON.parse(resp['payload'])
   end
 
   def transfer(symbol, from, to, amount)
