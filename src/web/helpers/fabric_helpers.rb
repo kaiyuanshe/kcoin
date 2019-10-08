@@ -16,10 +16,12 @@ module FabricHelpers
   end
 
   def query_server(fn, args)
+    # query only without writing any data to block chain
     call_server(query_url, fn, args)
   end
 
   def invoke_server(fn, args)
+    # call invoke whenever you need to write any data to block chain
     call_server(invoke_url, fn, args)
   end
 
