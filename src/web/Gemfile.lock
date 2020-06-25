@@ -24,7 +24,7 @@ GEM
     multi_xml (0.6.0)
     mustermann (1.0.3)
     puma (3.12.2)
-    rack (2.0.6)
+    rack (2.1.4)
     rack-contrib (2.1.0)
       rack (~> 2.0)
     rack-protection (2.0.5)
@@ -72,7 +72,7 @@ DEPENDENCIES
   mail
   multi_json
   puma
-  rack (~> 2.0.6)
+  rack (~> 2.1.4)
   rack-contrib
   sequel
   sequel_secure_password
