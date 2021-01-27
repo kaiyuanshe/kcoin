@@ -25,7 +25,8 @@ module EmailHelpers
 
   # @param [Object] _user
   def send_register_email(_user)
-    active_url = request.base_url
+    token = UserEmail.first(user_id: _user.id).verification_code
+    verification_url = request.base_url + '/auth/join/verification/' + token
 
     message = <<MESSAGE_END
 From: #{CONFIG[:email][:from]}
@@ -67,21 +68,19 @@ Subject: kcoin 帐号激活
 
                 <tr bgcolor="#17212e">
                     <td style="padding-top: 32px;">
-					<span style="padding-top: 16px; padding-bottom: 16px; font-size: 24px; color: #66c0f4; font-family: Microsoft YaHei, sans-serif; font-weight: bold;">
-						尊敬的 #{_user.login}：
-					</span><br>
+                    <span style="padding-top: 16px; padding-bottom: 16px; font-size: 24px; color: #66c0f4; font-family: Microsoft YaHei, sans-serif; font-weight: bold;">
+                        尊敬的 #{_user.login}：
+                    </span><br>
                     </td>
                 </tr>
 
                 <tr>
                     <td style="padding-top: 12px;">
-					<span style="font-size: 17px; color: #c6d4df; font-family: Microsoft YaHei, sans-serif; font-weight: bold;">
-						<p>您在 kcoin 上注册了一个新用户，帐号为：#{_user.login}</p>
-                        <p>请点下面链接访问官网：</p>
-                        <p><a style="color: #8f98a0;"
-                              href="#{active_url}">#{active_url}</a>
-                        </p>
-					</span>
+                    <span style="font-size: 17px; color: #c6d4df; font-family: Microsoft YaHei, sans-serif; font-weight: bold;">
+                        <p>您在 kcoin 上注册了一个新用户，帐号为：#{_user.login}</p>
+                        <p>请点击下面链接验证您的邮箱：</p>
+                        <p><a style="color: #8f98a0;" href="#{verification_url}">#{verification_url}</a></p>
+                    </span>
                     </td>
                 </tr>
 
